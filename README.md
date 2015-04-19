@@ -1,4 +1,4 @@
-LeetCode
+Algorithm Solutions
 ========
 
-OJ Code on LeetCode
+OJ Code on Hiho Coder and Leetcode
