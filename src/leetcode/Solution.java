@@ -8,6 +8,13 @@ import java.util.Map;
 import java.util.Queue;
 
 public class Solution {
+	public static void main(String[] args) {
+		System.out.println(new Solution().removeDuplicates(new int[] { 1, 2, 2,
+				2, 3, 3, 3, 4, 5, 6 }));
+		System.out.println(new Solution().strStr("aaab", "ab"));
+		System.out.println(new Solution().divide(1000, -11));
+	}
+
 	/**
 	 * Problem 1
 	 * 
@@ -131,6 +138,51 @@ public class Solution {
 	}
 
 	/**
+	 * Problem 8
+	 * 
+	 * @param str
+	 * @return int value of str
+	 */
+	public int myAtoi(String str) {
+		if (str == null)
+			return 0;
+		str = str.trim();
+		if (str.length() == 0)
+			return 0;
+		StringBuilder builder = new StringBuilder();
+		int start = 0;
+		if (str.charAt(0) == '-') {
+			builder.append('-');
+			start = 1;
+		}
+		if (str.charAt(0) == '+')
+			start = 1;
+		for (int i = start; i < str.length(); i++) {
+			if (Character.isDigit(str.charAt(i))) {
+				builder.append(str.charAt(i));
+			} else {
+				break;
+			}
+		}
+		try {
+			if (builder.toString().length() > 11) {
+				return builder.toString().charAt(0) == '-' ? Integer.MIN_VALUE
+						: Integer.MAX_VALUE;
+			}
+			long test = Long.parseLong(builder.toString());
+			if (test >= Integer.MAX_VALUE) {
+				return Integer.MAX_VALUE;
+			}
+			if (test <= Integer.MIN_VALUE) {
+				return Integer.MIN_VALUE;
+			}
+			return Integer.parseInt(builder.toString());
+		} catch (Exception e) {
+			return 0;
+		}
+	}
+
+	/**
 	 * Problem 13
 	 * 
 	 * @param s
@@ -225,6 +277,34 @@ public class Solution {
 	}
 
 	/**
+	 * Problem 26
+	 * 
+	 * @param A
+	 * @return the length of A without duplicate value
+	 */
+	public int removeDuplicates(int[] A) {
+		if (A == null) {
+			return -1;
+		}
+		if (A.length < 2) {
+			return A.length;
+		}
+		int length = A.length;
+		for (int i = 0; i < length - 1; i++) {
+			int runLength = 1;
+			if (A[i] == A[i + 1]) {
+				while (i + runLength < length - 1
+						&& A[i + runLength] == A[i + runLength + 1]) {
+					runLength++;
+				}
+				System.arraycopy(A, i + runLength, A, i, length - i - runLength);
+				length -= runLength;
+			}
+		}
+		return length;
+	}
+
+	/**
 	 * Problem 27
 	 * 
 	 * @param A
@@ -248,6 +328,77 @@ public class Solution {
 			}
 		}
 		return res;
+	}
+
+	/**
+	 * Problem 28
+	 * 
+	 * @param haystack
+	 * @param needle
+	 * @return
+	 */
+	public int strStr(String haystack, String needle) {
+		if (haystack == null || needle == null)
+			return -1;
+		if (needle.equals(""))
+			return 0;
+		int lengthH = haystack.length();
+		int lengthN = needle.length();
+		for (int i = 0; i < lengthH - lengthN + 1; i++) {
+			int j = 0;
+			for (; j < lengthN; j++) {
+				if (needle.charAt(j) != haystack.charAt(i + j)) {
+					break;
+				}
+			}
+			if (j == lengthN)
+				return i;
+		}
+		return -1;
+	}
+
+	/**
+	 * Problem 29
+	 * 
+	 * @param dividend
+	 * @param divisor
+	 * @return Divide two integers without using multiplication, division and
+	 *         mod operator. If it is overflow, return MAX_INT.
+	 */
+	public int divide(int dividend, int divisor) {
+		boolean flag = true;
+		if ((dividend > 0 && divisor < 0) || (dividend < 0 && divisor > 0)) {
+			flag = false;
+		}
+		long dividend1 = Math.abs((long) dividend);
+		long divisor1 = Math.abs((long) divisor);
+		long l = 0;
+		long r = dividend1;
+
+		while (l <= r) {
+			long mid = ((r - l) >> 1) + l;
+			if (divisor1 * mid > dividend1) {
+				r = mid - 1;
+			} else if ((dividend1 - divisor1 * mid < divisor1)) {
+				l = mid;
+				break;
+			} else {
+				l = mid + 1;
+			}
+		}
+		if (flag) {
+			if (l > Integer.MAX_VALUE)
+				return Integer.MAX_VALUE;
+			else {
+				return (int) l;
+			}
+		} else {
+			if (l < Integer.MIN_VALUE)
+				return Integer.MIN_VALUE;
+			else {
+				return (int) -l;
+			}
+		}
 	}
 
 	/**
