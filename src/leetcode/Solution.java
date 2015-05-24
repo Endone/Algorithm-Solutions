@@ -13,6 +13,7 @@ public class Solution {
 				2, 3, 3, 3, 4, 5, 6 }));
 		System.out.println(new Solution().strStr("aaab", "ab"));
 		System.out.println(new Solution().divide(1000, -11));
+		System.out.println(new Solution().generateParenthesis(4));
 	}
 
 	/**
@@ -221,6 +222,58 @@ public class Solution {
 	}
 
 	/**
+	 * Problem 19
+	 * 
+	 * @param head
+	 * @param n
+	 * @return list head without nth node from end
+	 */
+	public ListNode removeNthFromEnd(ListNode head, int n) {
+		ListNode pre = head;
+		ListNode post = head;
+		while (n-- > 0) {
+			pre = pre.next;
+		}
+		if (pre == null) {
+			head = head.next;
+			return head;
+		}
+		while (pre.next != null) {
+			pre = pre.next;
+			post = post.next;
+		}
+		post.next = post.next.next;
+		return head;
+	}
+
+	/**
+	 * Problem 20
+	 * 
+	 * @param s
+	 * @return whether s is valid
+	 */
+	public boolean isValid(String s) {
+		int[] chars = new int[s.length()];
+		int size = 0;
+		for (int i = 0; i < s.length(); i++) {
+			if (size == 0) {
+				size++;
+				chars[size - 1] = s.charAt(i);
+			} else if (chars[size - 1] == 40 && s.charAt(i) == 41
+					|| chars[size - 1] == 91 && s.charAt(i) == 93
+					|| chars[size - 1] == 123 && s.charAt(i) == 125) {
+				size--;
+			} else {
+				size++;
+				chars[size - 1] = s.charAt(i);
+			}
+		}
+		if (size == 0)
+			return true;
+		return false;
+	}
+
+	/**
 	 * Problem 21
 	 * 
 	 * @param l1
@@ -272,6 +325,60 @@ public class Solution {
 				}
 				cur = cur.next;
 			}
+		}
+		return res;
+	}
+
+	/**
+	 * Problem 22
+	 * 
+	 * @param n
+	 * @return valid parenthesis string list
+	 */
+	public List<String> generateParenthesis(int n) {
+		List<String> res = new ArrayList<>();
+		if (n == 0)
+			return res;
+		res.add("()");
+		int size = 1;
+		for (int i = 1; i < n; i++) {
+			int round = 0;
+			while (size-- != 0) {
+				String val = res.remove(size);
+				String middle = "(" + val + ")";
+				String right = "()" + val;
+				String left = val + "()";
+				if (val.indexOf(")(") % 2 == 1) {
+					int index = val.indexOf(")(") + 1;
+					String pre = val.substring(0, index);
+					String post = val.substring(index);
+					if (!res.contains("(" + pre + ")" + post)) {
+						res.add("(" + pre + ")" + post);
+						round++;
+					}
+					if (!res.contains(pre + "(" + post + ")")) {
+						res.add(pre + "(" + post + ")");
+						round++;
+					}
+					if (!res.contains(right)) {
+						res.add(right);
+						round++;
+					}
+				}
+				if (!res.contains(middle)) {
+					res.add(middle);
+					round++;
+				}
+				if (!res.contains(right)) {
+					res.add(right);
+					round++;
+				}
+				if (!res.contains(left)) {
+					res.add(left);
+					round++;
+				}
+			}
+			size = round;
 		}
 		return res;
 	}
