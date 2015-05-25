@@ -13,7 +13,7 @@ public class Solution {
 				2, 3, 3, 3, 4, 5, 6 }));
 		System.out.println(new Solution().strStr("aaab", "ab"));
 		System.out.println(new Solution().divide(1000, -11));
-		System.out.println(new Solution().generateParenthesis(4));
+		System.out.println(new Solution().generateParenthesis(5));
 	}
 
 	/**
@@ -348,21 +348,26 @@ public class Solution {
 				String middle = "(" + val + ")";
 				String right = "()" + val;
 				String left = val + "()";
-				if (val.indexOf(")(") % 2 == 1) {
-					int index = val.indexOf(")(") + 1;
-					String pre = val.substring(0, index);
-					String post = val.substring(index);
-					if (!res.contains("(" + pre + ")" + post)) {
-						res.add("(" + pre + ")" + post);
-						round++;
-					}
-					if (!res.contains(pre + "(" + post + ")")) {
-						res.add(pre + "(" + post + ")");
-						round++;
-					}
-					if (!res.contains(right)) {
-						res.add(right);
-						round++;
+				if (val.equals("(()())()")) {
+					System.out.println(val);
+				}
+				int startIndex = 0;
+				while (true) {
+					startIndex = val.indexOf(")(", startIndex + 1);
+					if (startIndex == -1)
+						break;
+					if (startIndex % 2 == 1) {
+						int index = startIndex + 1;
+						String pre = val.substring(0, index);
+						String post = val.substring(index);
+						if (!res.contains("(" + pre + ")" + post)) {
+							res.add("(" + pre + ")" + post);
+							round++;
+						}
+						if (!res.contains(pre + "(" + post + ")")) {
+							res.add(pre + "(" + post + ")");
+							round++;
+						}
 					}
 				}
 				if (!res.contains(middle)) {
