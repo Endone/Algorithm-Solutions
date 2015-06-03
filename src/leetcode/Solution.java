@@ -53,9 +53,10 @@ public class Solution {
 		// stack.getMin();
 		// stack.pop();
 		// stack.getMin();
-		System.out
-				.println(new Solution()
-						.isPalindrome("Damosel, a poem? A carol? Or a cameo pale? (So mad!)"));
+		// System.out
+		// .println(new Solution()
+		// .isPalindrome("Damosel, a poem? A carol? Or a cameo pale? (So mad!)"));
+		System.out.println(new Solution().convertToTitle(53));
 	}
 
 	/**
@@ -954,6 +955,25 @@ public class Solution {
 	}
 
 	/**
+	 * Problem 112 Path Sum -- Given a binary tree and a sum, determine if the
+	 * tree has a root-to-leaf path such that adding up all the values along the
+	 * path equals the given sum.
+	 * 
+	 * @param root
+	 * @param sum
+	 * @return
+	 */
+	public boolean hasPathSum(TreeNode root, int sum) {
+		if (root == null)
+			return false;
+		if (sum == root.val && root.left == null && root.right == null) {
+			return true;
+		}
+		sum -= root.val;
+		return hasPathSum(root.left, sum) || hasPathSum(root.right, sum);
+	}
+
+	/**
 	 * Problem 116
 	 * 
 	 * @param root
@@ -1187,6 +1207,32 @@ public class Solution {
 			}
 			return -1;
 		}
+	}
+
+	/**
+	 * Problem 168 Excel Sheet Column Title -- Given a positive integer, return
+	 * its corresponding column title as appear in an Excel sheet.
+	 * 
+	 * @param n
+	 * @return
+	 */
+	public String convertToTitle(int n) {
+		if (n <= 0) {
+			return "";
+		}
+		StringBuffer buffer = new StringBuffer();
+		while (n > 0) {
+			int tmp = n % 26;
+			if (tmp == 0) {
+				n--;
+				tmp = 26;
+			}
+			char c = (char) (tmp + 64);
+			n = n / 26;
+			buffer.append(c);
+		}
+		return new String(buffer.reverse());
+
 	}
 
 	/**
