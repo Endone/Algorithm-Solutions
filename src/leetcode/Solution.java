@@ -2,18 +2,60 @@ package leetcode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.Set;
+import java.util.Stack;
 
 public class Solution {
 	public static void main(String[] args) {
-		System.out.println(new Solution().removeDuplicates(new int[] { 1, 2, 2,
-				2, 3, 3, 3, 4, 5, 6 }));
-		System.out.println(new Solution().strStr("aaab", "ab"));
-		System.out.println(new Solution().divide(1000, -11));
-		System.out.println(new Solution().generateParenthesis(5));
+		// System.out.println(new Solution().removeDuplicates(new int[] { 1, 2,
+		// 2,
+		// 2, 3, 3, 3, 4, 5, 6 }));
+		// System.out.println(new Solution().strStr("aaab", "ab"));
+		// System.out.println(new Solution().divide(1000, -11));
+		// System.out.println(new Solution().generateParenthesis(5));
+		// System.out.println(new Solution().mySqrt(2147395599));
+		// System.out.println(new Solution().isHappy(41));
+		// System.out.println(new Solution().rob(new int[] { 1, 20, 3, 19, 20,
+		// 10,
+		// 40 }));
+		// System.out.println(new Solution().containsNearbyAlmostDuplicate(
+		// new int[] { 0, 10, 22, 15, 0, 5, 22, 12, 1, 5 }, 3, 3));
+		// System.out.println(new Solution().maximalSquare(new char[][] {
+		// new char[] { '1', '1', '1', '1', '1' },
+		// new char[] { '1', '0', '1', '0', '1' },
+		// new char[] { '1', '1', '1', '1', '1' },
+		// new char[] { '1', '0', '0', '1', '1' } }));
+		// for (int i : new Solution().plusOne(new int[] { 9, 2, 9 }))
+		// System.out.println(i);
+		// System.out.println(new Solution().longestCommonPrefix(new String[] {
+		// "123", "1234" }));
+		// Solution tmpSolution = new Solution();
+		// MinStack stack = tmpSolution.new MinStack();
+		// stack.push(2147483646);
+		// stack.push(2147483646);
+		// stack.push(2147483647);
+		// System.out.println(stack.top());
+		// stack.pop();
+		// System.out.println(stack.getMin());
+		// stack.pop();
+		// stack.getMin();
+		// stack.pop();
+		// stack.push(2147483647);
+		// stack.top();
+		// stack.getMin();
+		// stack.push(-2147483648);
+		// stack.top();
+		// stack.getMin();
+		// stack.pop();
+		// stack.getMin();
+		System.out
+				.println(new Solution()
+						.isPalindrome("Damosel, a poem? A carol? Or a cameo pale? (So mad!)"));
 	}
 
 	/**
@@ -219,6 +261,31 @@ public class Solution {
 			}
 		}
 		return sum;
+	}
+
+	/**
+	 * Problem 14 Longest Common Prefix -- Write a function to find the longest
+	 * common prefix string amongst an array of strings.
+	 * 
+	 * @param strs
+	 * @return
+	 */
+	public String longestCommonPrefix(String[] strs) {
+		if (strs == null)
+			return null;
+		if (strs.length == 0)
+			return "";
+		String common = strs[0];
+		for (String val : strs) {
+			int i = 0;
+			for (; i < val.length() && i < common.length(); i++) {
+				if (val.charAt(i) != common.charAt(i)) {
+					break;
+				}
+			}
+			common = common.substring(0, i);
+		}
+		return common;
 	}
 
 	/**
@@ -559,6 +626,88 @@ public class Solution {
 	}
 
 	/**
+	 * Problem 58 Length of Last Word -- Given a string s consists of
+	 * upper/lower-case alphabets and empty space characters ' ', return the
+	 * length of last word in the string.
+	 * 
+	 * If the last word does not exist, return 0.
+	 * 
+	 * Note: A word is defined as a character sequence consists of non-space
+	 * characters only.
+	 * 
+	 * For example, Given s = "Hello World", return 5.
+	 * 
+	 * @param s
+	 * @return
+	 */
+	public int lengthOfLastWord(String s) {
+		if (s == null)
+			return 0;
+		String[] parts = s.split(" ");
+		if (parts.length == 0)
+			return 0;
+		return parts[parts.length - 1].length();
+	}
+
+	/**
+	 * Problem 66 Plus One -- Given a non-negative number represented as an
+	 * array of digits, plus one to the number.
+	 * 
+	 * The digits are stored such that the most significant digit is at the head
+	 * of the list.
+	 * 
+	 * @param digits
+	 * @return
+	 */
+	public int[] plusOne(int[] digits) {
+		if (digits == null || digits.length == 0)
+			return digits;
+		int plus = 1;
+		for (int i = digits.length - 1; i >= 0; i--) {
+			int sum = digits[i] + plus;
+			if (sum < 10) {
+				digits[i] = digits[i] + 1;
+				return digits;
+			} else {
+				digits[i] = 0;
+			}
+		}
+		int[] res = new int[digits.length + 1];
+		res[0] = 1;
+		System.arraycopy(digits, 0, res, 1, digits.length);
+		return res;
+	}
+
+	/**
+	 * Problem 69
+	 * 
+	 * @param x
+	 * @return square root of x
+	 */
+	public int mySqrt(int x) {
+		if (x < 0)
+			throw new IllegalArgumentException();
+		if (x == 0)
+			return 0;
+		if (x < 4)
+			return 1;
+		int left = 2;
+		int right = x / 2;
+		while (left <= right) {
+			int mid = (left + right) / 2;
+			long power = (long) mid * (long) mid;
+			if (power == x)
+				return mid;
+			else if (power > x) {
+				right = mid - 1;
+			} else {
+				left = mid + 1;
+			}
+		}
+		return left - 1;
+	}
+
+	/**
 	 * Problem70
 	 * 
 	 * @param n
@@ -888,6 +1037,30 @@ public class Solution {
 	}
 
 	/**
+	 * Problem 125 Valid Palindrome -- Given a string, determine if it is a
+	 * palindrome, considering only alphanumeric characters and ignoring cases.
+	 * 
+	 * For example, "A man, a plan, a canal: Panama" is a palindrome.
+	 * "race a car" is not a palindrome.
+	 * 
+	 * @param s
+	 * @return
+	 */
+	public boolean isPalindrome(String s) {
+		if (s == null)
+			return false;
+		s = s.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+		System.out.println(s);
+		int length = s.length();
+		for (int i = 0; i < length / 2; i++) {
+			if (s.charAt(i) != s.charAt(length - i - 1)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
 	 * Problem 136
 	 * 
 	 * @param A
@@ -963,6 +1136,60 @@ public class Solution {
 	}
 
 	/**
+	 * Problem 155 Min Stack -- Design a stack that supports push, pop, top, and
+	 * retrieving the minimum element in constant time.
+	 * 
+	 * push(x) -- Push element x onto stack. pop() -- Removes the element on top
+	 * of the stack. top() -- Get the top element. getMin() -- Retrieve the
+	 * minimum element in the stack.
+	 * 
+	 * @author Administrator
+	 * 
+	 */
+	class MinStack {
+		private Stack<Integer> items;
+		private Stack<Integer> index;
+
+		public void push(int x) {
+			if (items == null) {
+				items = new Stack<>();
+				index = new Stack<>();
+				index.push(0);
+			} else if (!items.isEmpty()) {
+				if (items.get(index.peek()) > x) {
+					index.push(items.size());
+				} else {
+					index.push(index.peek());
+				}
+			} else {
+				index.push(0);
+			}
+			items.add(x);
+		}
+
+		public void pop() {
+			if (items != null && !items.isEmpty()) {
+				items.pop();
+				index.pop();
+			}
+		}
+
+		public int top() {
+			if (items != null && !items.isEmpty()) {
+				return items.peek();
+			}
+			return -1;
+		}
+
+		public int getMin() {
+			if (items != null && !items.isEmpty()) {
+				return items.get(index.peek());
+			}
+			return -1;
+		}
+	}
+
+	/**
 	 * Problem 169
 	 * 
 	 * @param nums
@@ -1006,6 +1233,64 @@ public class Solution {
 	}
 
 	/**
+	 * Problem 189 Rotate Array -- Rotate an array of n elements to the right by
+	 * k steps.
+	 * 
+	 * For example, with n = 7 and k = 3, the array [1,2,3,4,5,6,7] is rotated
+	 * to [5,6,7,1,2,3,4].
+	 * 
+	 * @param nums
+	 * @param k
+	 */
+	public void rotate1(int[] nums, int k) {
+		for (int i = nums.length - k; i < nums.length; i++) {
+			int tmp = nums[i];
+			int count = 0;
+			int j = i;
+			for (; count < nums.length - k; j--) {
+				nums[j] = nums[j - 1];
+				count++;
+			}
+			nums[j] = tmp;
+		}
+	}
+
+	public void rotate2(int[] nums, int k) {
+		if (k >= nums.length)
+			return;
+		int[] tmp = new int[nums.length - k];
+		System.arraycopy(nums, 0, tmp, 0, nums.length - k);
+		System.arraycopy(nums, nums.length - k, nums, 0, k);
+		System.arraycopy(tmp, 0, nums, k, nums.length - k);
+	}
+
+	/**
+	 * Problem 190 Reverse Bits -- Reverse bits of a given 32 bits unsigned
+	 * integer.
+	 * 
+	 * For example, given input 43261596 (represented in binary as
+	 * 00000010100101000001111010011100), return 964176192 (represented in
+	 * binary as 00111001011110000010100101000000).
+	 * 
+	 * @param n
+	 * @return
+	 */
+	// you need treat n as an unsigned values
+	public int reverseBits(int n) {
+		int res = 0;
+		int count = 31;
+		while (count >= 0) {
+			int tmp = n & 1;
+			if (tmp == 1) {
+				res |= (1 << count);
+			}
+			n >>= 1;
+			count -= 1;
+		}
+		return res;
+	}
+
+	/**
 	 * Problem 191
 	 * 
 	 * @param n
@@ -1024,6 +1309,34 @@ public class Solution {
 			number = number >> 1;
 		}
 		return res;
+	}
+
+	/**
+	 * Problem 198 House Robber
+	 * 
+	 * @param nums
+	 * @return
+	 */
+	public int rob(int[] nums) {
+		if (nums == null || nums.length == 0)
+			return 0;
+		int length = nums.length;
+		int back = 0;
+		List<Integer> sums = new ArrayList<>();
+		sums.add(nums[0]);
+		int max = 0;
+		for (int i = 1; i < length; i++) {
+			int tmp = sums.size();
+			sums.add(nums[i]);
+			for (int j = 0; j < back; j++) {
+				int val = nums[i] + sums.get(j);
+				sums.add(val);
+				if (val > max)
+					max = val;
+			}
+			back = tmp;
+		}
+		return max;
 	}
 
 	/**
@@ -1049,6 +1362,36 @@ public class Solution {
 			m >>= 1;
 			n >>= 1;
 			factor *= 2;
+		}
+		return sum;
+	}
+
+	/**
+	 * Problem 202
+	 * 
+	 * @param n
+	 * @return
+	 */
+	public boolean isHappy(int n) {
+		int sum = squaresOfDigits(n);
+		Set<Integer> set = new HashSet<>();
+		set.add(sum);
+		while (sum != 1) {
+			sum = squaresOfDigits(sum);
+			if (set.contains(sum))
+				return false;
+			else
+				set.add(sum);
+		}
+		return true;
+	}
+
+	public int squaresOfDigits(int num) {
+		int sum = 0;
+		while (num > 0) {
+			int tmp = num % 10;
+			sum += tmp * tmp;
+			num /= 10;
 		}
 		return sum;
 	}
@@ -1161,6 +1504,138 @@ public class Solution {
 			second = tmp;
 		}
 		return head;
+	}
+
+	/**
+	 * Problem 217 Contains Duplicate
+	 * 
+	 * @param nums
+	 * @return true if nums contains duplicate, false otherwise
+	 */
+	public boolean containsDuplicate(int[] nums) {
+		if (nums == null)
+			return true;
+		Set<Integer> set = new HashSet<>();
+		for (int val : nums) {
+			if (set.contains(val))
+				return true;
+			else
+				set.add(val);
+		}
+		return false;
+	}
+
+	/**
+	 * Problem 219 Contains Duplicate II -- Given an array of integers and an
+	 * integer k, find out whether there there are two distinct indices i and j
+	 * in the array such that nums[i] = nums[j] and the difference between i and
+	 * j is at most k.
+	 * 
+	 * @param nums
+	 * @param k
+	 * @return
+	 */
+	public boolean containsNearbyDuplicate(int[] nums, int k) {
+		Map<Integer, Integer> map = new HashMap<>();
+		for (int i = 0; i < nums.length; i++) {
+			if (map.containsKey(nums[i])) {
+				int val = map.get(nums[i]);
+				if (i - val <= k)
+					return true;
+				else
+					map.put(nums[i], i);
+			} else {
+				map.put(nums[i], i);
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Problem 220 Contains Duplicate III -- Given an array of integers, find
+	 * out whether there are two distinct indices i and j in the array such that
+	 * the difference between nums[i] and nums[j] is at most t and the
+	 * difference between i and j is at most k.
+	 * 
+	 * @param nums
+	 * @param k
+	 * @param t
+	 * @return
+	 */
+	public boolean containsNearbyAlmostDuplicate(int[] nums, int k, int t) {
+		if (nums == null || nums.length <= 1 || k == 0)
+			return false;
+		int[] tmp = new int[nums.length - 1];
+		for (int i = 0; i < nums.length - 1; i++) {
+			tmp[i] = nums[i + 1] - nums[i];
+		}
+		int diff = tmp[0];
+		int count = 1;
+		int start = 0;
+		for (int i = 1; i < tmp.length; i++) {
+			if (Math.abs(diff) <= t)
+				return true;
+			else {
+				if (Math.abs(tmp[i]) <= t)
+					return true;
+				diff += tmp[i];
+				count++;
+				if (count == k + 1) {
+					diff -= tmp[start];
+					start++;
+					count--;
+				}
+			}
+		}
+		if (Math.abs(diff) <= t && Math.abs(diff) >= 0)// for overflow
+			return true;
+		return false;
+	}
+
+	/**
+	 * Problem 221 Maximal Square -- Given a 2D binary matrix filled with 0's
+	 * and 1's, find the largest square containing all 1's and return its area.
+	 * 
+	 * @param matrix
+	 * @return
+	 */
+	public int maximalSquare(char[][] matrix) {
+		if (matrix == null || matrix.length == 0) {
+			return 0;
+		}
+		int length = matrix.length;
+		int length2 = matrix[0].length;
+		int max = 0;
+		int[][] sq = new int[length][length2];
+		for (int i = 0; i < length; i++) {
+			for (int j = 0; j < length2; j++) {
+				if (matrix[i][j] == '0') {
+					sq[i][j] = 0;
+				} else {
+					if (i == 0 || j == 0) {
+						sq[i][j] = 1;
+					} else if (sq[i - 1][j] > 0 && sq[i][j - 1] > 0) {
+						if (sq[i - 1][j] == sq[i][j - 1]) {
+							int tmp = sq[i - 1][j];
+							if (matrix[i - tmp][j - tmp] == '1')
+								sq[i][j] = tmp + 1;
+							else {
+								sq[i][j] = tmp;
+							}
+						} else {
+							int tmp = Math.min(sq[i - 1][j], sq[i][j - 1]);
+							sq[i][j] = tmp + 1;
+						}
+					} else {
+						sq[i][j] = 1;
+					}
+				}
+				if (max < sq[i][j]) {
+					max = sq[i][j];
+				}
+			}
+		}
+		return max * max;
 	}
 }
 
