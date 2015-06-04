@@ -56,7 +56,32 @@ public class Solution {
 		// System.out
 		// .println(new Solution()
 		// .isPalindrome("Damosel, a poem? A carol? Or a cameo pale? (So mad!)"));
-		System.out.println(new Solution().convertToTitle(53));
+		// System.out.println(new Solution().convertToTitle(53));
+		// System.out.println(new Solution().trailingZeroes(1808548329));
+		// System.out.println(new Solution().compareVersion("1.0", "1"));
+		// System.out.println(new Solution().getRow(1));
+		ListNode head = new ListNode(1);
+		ListNode node1 = new ListNode(2);
+		ListNode node2 = new ListNode(3);
+		ListNode node3 = new ListNode(4);
+		ListNode node4 = new ListNode(5);
+		ListNode node5 = new ListNode(6);
+		ListNode node6 = new ListNode(7);
+		ListNode node7 = new ListNode(8);
+		ListNode node8 = new ListNode(9);
+		head.next = node1;
+		node1.next = node2;
+		node2.next = node3;
+		node3.next = node4;
+		node4.next = node5;
+		node5.next = node6;
+		node6.next = node7;
+		node7.next = node8;
+		head = new Solution().reverseKGroup(head, 2);
+		while (head != null) {
+			System.out.println(head.val);
+			head = head.next;
+		}
 	}
 
 	/**
@@ -457,6 +482,62 @@ public class Solution {
 	}
 
 	/**
+	 * Problem 25 Reverse Nodes in k-Group -- Given a linked list, reverse the
+	 * nodes of a linked list k at a time and return its modified list.
+	 * 
+	 * If the number of nodes is not a multiple of k then left-out nodes in the
+	 * end should remain as it is.
+	 * 
+	 * You may not alter the values in the nodes, only nodes itself may be
+	 * changed.
+	 * 
+	 * Only constant memory is allowed.
+	 * 
+	 * For example, Given this linked list: 1->2->3->4->5
+	 * 
+	 * For k = 2, you should return: 2->1->4->3->5
+	 * 
+	 * For k = 3, you should return: 3->2->1->4->5
+	 * 
+	 * @param head
+	 * @param k
+	 * @return
+	 */
+	public ListNode reverseKGroup(ListNode head, int k) {
+		if (head == null)
+			return null;
+		ListNode end = head;// mark the end of one round reverse
+		ListNode pre = head;
+		ListNode post = head;
+		ListNode connector = null;// to connect different parts of reverse
+		int count = 0;
+		while (true) {
+			int tmp = k;
+			while (tmp > 0 && end != null) {
+				end = end.next;
+				tmp--;
+			}
+			if (tmp > 0)
+				return head;
+			ListNode node = null;
+			while (pre.next != end) {
+				node = pre.next;
+				pre.next = pre.next.next;
+				node.next = post;
+				post = node;
+			}
+			if (count == 0)
+				head = post;
+			else
+				connector.next = post;
+			connector = pre;
+			post = end;
+			pre = end;
+			count++;
+		}
+	}
+
+	/**
 	 * Problem 26
 	 * 
 	 * @param A
@@ -849,7 +930,9 @@ public class Solution {
 	}
 
 	/**
-	 * Problem 102
+	 * Problem 102 Binary Tree Level Order Traversal -- Given a binary tree,
+	 * return the level order traversal of its nodes' values. (ie, from left to
+	 * right, level by level).
 	 * 
 	 * @param root
 	 * @return level order traversal of tree at root
@@ -955,6 +1038,102 @@ public class Solution {
 	}
 
 	/**
+	 * Problem 107 Binary Tree Level Order Traversal II -- Given a binary tree,
+	 * return the bottom-up level order traversal of its nodes' values. (ie,
+	 * from left to right, level by level from leaf to root).
+	 * 
+	 * @param root
+	 * @return
+	 */
+	public List<List<Integer>> levelOrderBottom(TreeNode root) {
+		List<List<Integer>> res = new ArrayList<>();
+		if (root == null)
+			return res;
+		Queue<TreeNode> queue = new LinkedList<TreeNode>();
+		queue.offer(root);
+		int level = 1;
+		int newLevel = 0;
+		List<Integer> element = new ArrayList<>();
+		while (queue.size() > 0) {
+			TreeNode node = queue.poll();
+			if (node.left != null) {
+				queue.offer(node.left);
+				newLevel++;
+			}
+			if (node.right != null) {
+				queue.offer(node.right);
+				newLevel++;
+			}
+			element.add(node.val);
+			level--;
+			if (level == 0) {
+				res.add(0, element);
+				element = new ArrayList<>();
+				level = newLevel;
+				newLevel = 0;
+			}
+		}
+		return res;
+	}
+
+	/**
+	 * Problem 110 Balanced Binary Tree -- Given a binary tree, determine if it
+	 * is height-balanced.
+	 * 
+	 * For this problem, a height-balanced binary tree is defined as a binary
+	 * tree in which the depth of the two subtrees of every node never differ by
+	 * more than 1.
+	 * 
+	 * @param root
+	 * @return
+	 */
+	public boolean isBalanced(TreeNode root) {
+		if (root == null)
+			return true;
+		if (root.left != null && root.right != null)
+			// right and left subtree depth difference within 1 and right and
+			// left subtree be balanced
+			return Math.abs(depth(root.left) - depth(root.right)) <= 1
+					&& isBalanced(root.left) && isBalanced(root.right);
+		if (root.left != null) {
+			return depth(root.left) <= 1;
+		}
+		if (root.right != null)
+			return depth(root.right) <= 1;
+		return true;
+	}
+
+	public int depth(TreeNode root) {
+		if (root == null)
+			return 0;
+		return 1 + Math.max(depth(root.left), depth(root.right));
+	}
+
+	/**
+	 * Problem 111 Minimum Depth of Binary Tree -- Given a binary tree, find its
+	 * minimum depth.
+	 * 
+	 * The minimum depth is the number of nodes along the shortest path from the
+	 * root node down to the nearest leaf node.
+	 * 
+	 * @param root
+	 * @return
+	 */
+	public int minDepth(TreeNode root) {
+		if (root == null)
+			return 0;
+		if (root.left == null && root.right == null)
+			return 1;
+		if (root.left != null && root.right != null)
+			return 1 + Math.min(minDepth(root.left), minDepth(root.right));
+		if (root.left != null)
+			return 1 + minDepth(root.left);
+		if (root.right != null)
+			return 1 + minDepth(root.right);
+		return 0;
+	}
+
+	/**
 	 * Problem 112 Path Sum -- Given a binary tree and a sum, determine if the
 	 * tree has a root-to-leaf path such that adding up all the values along the
 	 * path equals the given sum.
@@ -1020,6 +1199,65 @@ public class Solution {
 			i *= 2;
 		}
 
+	}
+
+	/**
+	 * Problem 118 Pascal's Triangle -- Given numRows, generate the first
+	 * numRows of Pascal's triangle.
+	 * 
+	 * @param numRows
+	 * @return
+	 */
+	public List<List<Integer>> generate(int numRows) {
+		List<List<Integer>> res = new ArrayList<>();
+		if (numRows < 1) {
+			return res;
+		}
+		List<Integer> tmp = new ArrayList<>();
+		tmp.add(1);
+		res.add(tmp);
+		for (int i = 2; i <= numRows; i++) {
+			tmp = res.get(res.size() - 1);
+			List<Integer> element = new ArrayList<>();
+			element.add(tmp.get(0));
+			int j = 0;
+			for (; j < tmp.size() - 1; j++) {
+				element.add(tmp.get(j) + tmp.get(j + 1));
+			}
+			element.add(tmp.get(j));
+			res.add(element);
+		}
+		return res;
+	}
+
+	/**
+	 * Problem 119 Pascal's Triangle II -- Given an index k, return the kth row
+	 * of the Pascal's triangle.
+	 * 
+	 * For example, given k = 3, Return [1,3,3,1].
+	 * 
+	 * @param rowIndex
+	 * @return
+	 */
+	public List<Integer> getRow(int rowIndex) {
+		List<Integer> res = new ArrayList<>();
+		res.add(1);
+		for (int i = 1; i <= rowIndex; i++) {
+			int j = 0;
+			int size = res.size();
+			int tmp = res.get(j);// to remember the post one
+			for (; j < size - 1; j++) {
+				int pre = tmp;
+				int post = res.get(j + 1);
+				res.add(j + 1, pre + post);
+				if (j + 2 < size)
+					res.remove(j + 2);// remove added element
+				tmp = post;
+			}
+			if (i == 1)
+				res.add(1);
+		}
+		return res;
 	}
 
 	/**
@@ -1210,6 +1448,52 @@ public class Solution {
 	}
 
 	/**
+	 * Problem 165 Compare Version Numbers -- Compare two version numbers
+	 * version1 and version2. If version1 > version2 return 1, if version1 <
+	 * version2 return -1, otherwise return 0.
+	 * 
+	 * You may assume that the version strings are non-empty and contain only
+	 * digits and the . character. The . character does not represent a decimal
+	 * point and is used to separate number sequences. For instance, 2.5 is not
+	 * "two and a half" or "half way to version three", it is the fifth
+	 * second-level revision of the second first-level revision.
+	 * 
+	 * Here is an example of version numbers ordering:
+	 * 
+	 * 0.1 < 1.1 < 1.2 < 13.37
+	 * 
+	 * @param version1
+	 * @param version2
+	 * @return
+	 */
+	public int compareVersion(String version1, String version2) {
+		String[] vers1 = version1.split("\\.");
+		String[] vers2 = version2.split("\\.");
+		if (vers1.length == 0)
+			vers1 = new String[] { version1 };
+		if (vers2.length == 0)
+			vers2 = new String[] { version2 };
+		int i = 0;
+		for (; i < vers1.length && i < vers2.length; i++) {
+			int v1 = Integer.valueOf(vers1[i]);
+			int v2 = Integer.valueOf(vers2[i]);
+			if (v1 > v2)
+				return 1;
+			if (v1 < v2)
+				return -1;
+		}
+		while (i < vers1.length) {
+			if (Integer.valueOf(vers1[i++]) > 0)
+				return 1;
+		}
+		while (i < vers2.length) {
+			if (Integer.valueOf(vers2[i++]) > 0)
+				return -1;
+		}
+		return 0;
+	}
+
+	/**
 	 * Problem 168 Excel Sheet Column Title -- Given a positive integer, return
 	 * its corresponding column title as appear in an Excel sheet.
 	 * 
@@ -1276,6 +1560,22 @@ public class Solution {
 			factor *= base;
 		}
 		return sum;
+	}
+
+	/**
+	 * Problem 172 Factorial Trailing Zeroes -- Given an integer n, return the
+	 * number of trailing zeroes in n!.
+	 * 
+	 * Note: Your solution should be in logarithmic time complexity.
+	 * 
+	 * @param n
+	 * @return
+	 */
+	public int trailingZeroes(int n) {
+		int res = 0;
+		for (long i = 5; n / i >= 1; i *= 5)
+			res += n / i;
+		return res;
 	}
 
 	/**
