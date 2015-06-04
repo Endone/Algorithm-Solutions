@@ -60,28 +60,32 @@ public class Solution {
 		// System.out.println(new Solution().trailingZeroes(1808548329));
 		// System.out.println(new Solution().compareVersion("1.0", "1"));
 		// System.out.println(new Solution().getRow(1));
-		ListNode head = new ListNode(1);
-		ListNode node1 = new ListNode(2);
-		ListNode node2 = new ListNode(3);
-		ListNode node3 = new ListNode(4);
-		ListNode node4 = new ListNode(5);
-		ListNode node5 = new ListNode(6);
-		ListNode node6 = new ListNode(7);
-		ListNode node7 = new ListNode(8);
-		ListNode node8 = new ListNode(9);
-		head.next = node1;
-		node1.next = node2;
-		node2.next = node3;
-		node3.next = node4;
-		node4.next = node5;
-		node5.next = node6;
-		node6.next = node7;
-		node7.next = node8;
-		head = new Solution().reverseKGroup(head, 2);
-		while (head != null) {
-			System.out.println(head.val);
-			head = head.next;
-		}
+		// ListNode head = new ListNode(1);
+		// ListNode node1 = new ListNode(2);
+		// ListNode node2 = new ListNode(3);
+		// ListNode node3 = new ListNode(4);
+		// ListNode node4 = new ListNode(5);
+		// ListNode node5 = new ListNode(6);
+		// ListNode node6 = new ListNode(7);
+		// ListNode node7 = new ListNode(8);
+		// ListNode node8 = new ListNode(9);
+		// head.next = node1;
+		// node1.next = node2;
+		// node2.next = node3;
+		// node3.next = node4;
+		// node4.next = node5;
+		// node5.next = node6;
+		// node6.next = node7;
+		// node7.next = node8;
+		// head = new Solution().reverseKGroup(head, 2);
+		// while (head != null) {
+		// System.out.println(head.val);
+		// head = head.next;
+		// }
+		// System.out.println(new Solution().convert("PAYPALISHIRING", 5));
+		// System.out.println(new Solution().isPalindrome(-2147483648));
+		// System.out.println(new Solution().addBinary("11", "1"));
+		System.out.println(new Solution().countAndSay(5));
 	}
 
 	/**
@@ -169,14 +173,50 @@ public class Solution {
 	}
 
 	/**
-	 * problem 6
+	 * problem 6 ZigZag Conversion -- The string "PAYPALISHIRING" is written in
+	 * a zigzag pattern on a given number of rows like this: (you may want to
+	 * display this pattern in a fixed font for better legibility)
+	 * 
+	 * P A H N A P L S I I G Y I R And then read line by line: "PAHNAPLSIIGYIR"
+	 * Write the code that will take a string and make this conversion given a
+	 * number of rows:
+	 * 
+	 * string convert(string text, int nRows); convert("PAYPALISHIRING", 3)
+	 * should return "PAHNAPLSIIGYIR".
 	 * 
 	 * @param s
+	 *            https://leetcode.com/problems/zigzag-conversion/
 	 * @param numRows
 	 * @return zigzag pattern of s
 	 */
 	public String convert(String s, int numRows) {
-		return s;
+		if (s == null)
+			return null;
+		if (numRows == 1)
+			return s;
+		int step = 2 * numRows - 2;
+		int tmp = step;
+		StringBuffer buffer = new StringBuffer();
+		for (int j = 0; j < numRows; j++) {
+			int swi = tmp;
+			boolean sw = false;
+			for (int i = j; i < s.length();) {
+				char c = s.charAt(i);
+				buffer.append(c);
+				if (j > 0 && j < numRows - 1) {
+					if (sw) {
+						swi = step - swi;
+					} else {
+						sw = true;
+					}
+				}
+				i += swi;
+			}
+			tmp -= 2;
+			if (tmp == 0)
+				tmp = step;
+		}
+		return new String(buffer);
 	}
 
 	/**
@@ -249,6 +289,52 @@ public class Solution {
 		} catch (Exception e) {
 			return 0;
 		}
+	}
+
+	/**
+	 * Problem 9 Palindrome Number -- Determine whether an integer is a
+	 * palindrome. Do this without extra space.
+	 * 
+	 * click to show spoilers.
+	 * 
+	 * Some hints: Could negative integers be palindromes? (ie, -1)
+	 * 
+	 * If you are thinking of converting the integer to string, note the
+	 * restriction of using extra space.
+	 * 
+	 * You could also try reversing an integer. However, if you have solved the
+	 * problem "Reverse Integer", you know that the reversed integer might
+	 * overflow. How would you handle such case?
+	 * 
+	 * There is a more generic way of solving this problem.
+	 * 
+	 * @param x
+	 * @return
+	 */
+	public boolean isPalindrome(int x) {
+		if (x == Integer.MIN_VALUE)
+			return false;
+		if (x < 0)
+			x = -x;
+		int length = 1;
+		int tmp = x;
+		int topFactor = 1;
+		int botFactor = 10;
+		while (tmp >= 10) {
+			tmp /= 10;
+			length++;
+			topFactor *= 10;
+		}
+		if (length <= 1)
+			return true;
+		while (topFactor > 1) {
+			if (x / topFactor != x % botFactor)
+				return false;
+			x %= topFactor;
+			x /= botFactor;
+			topFactor /= 100;
+		}
+		return true;
 	}
 
 	/**
@@ -690,6 +776,46 @@ public class Solution {
 	}
 
 	/**
+	 * Problem 38 Count and Say -- The count-and-say sequence is the sequence of
+	 * integers beginning as follows: 1, 11, 21, 1211, 111221, ...
+	 * 
+	 * 1 is read off as "one 1" or 11. 11 is read off as "two 1s" or 21. 21 is
+	 * read off as "one 2, then one 1" or 1211. Given an integer n, generate the
+	 * nth sequence.
+	 * 
+	 * Note: The sequence of integers will be represented as a string.
+	 * 
+	 * @param n
+	 * @return
+	 */
+	public String countAndSay(int n) {
+		if (n < 1)
+			return "";
+		String a = "1";
+
+		for (int i = 1; i < n; i++) {
+			StringBuffer buffer = new StringBuffer();
+			int j = 0;
+			int ai = a.charAt(j);
+			int count = 1;
+			for (j = 1; j < a.length(); j++) {
+				if (a.charAt(j) == ai) {
+					count++;
+				} else {
+					buffer.append(count);
+					buffer.append(ai - 48);
+					ai = a.charAt(j);
+					count = 1;
+				}
+			}
+			buffer.append(count);
+			buffer.append(ai - 48);
+			a = new String(buffer);
+		}
+		return a;
+	}
+
+	/**
 	 * Problem 53
 	 * 
 	 * @param A
@@ -758,6 +884,53 @@ public class Solution {
 		res[0] = 1;
 		System.arraycopy(digits, 0, res, 1, digits.length);
 		return res;
+	}
+
+	/**
+	 * Problem 67 Add Binary -- Given two binary strings, return their sum (also
+	 * a binary string).
+	 * 
+	 * @param a
+	 * @param b
+	 * @return
+	 */
+	public String addBinary(String a, String b) {
+		if (a == null)
+			return b;
+		if (b == null)
+			return a;
+		StringBuffer buffer = new StringBuffer();
+		int al = a.length();
+		int bl = b.length();
+		int min = al > bl ? bl : al;
+		int carry = 0;
+		int i = 0;
+		for (; i < min; i++) {
+			int ai = a.charAt(al - 1 - i) - 48;
+			int bi = b.charAt(bl - 1 - i) - 48;
+			int tmp = ai + bi + carry;
+			buffer.append(tmp % 2);
+			carry = tmp / 2;
+		}
+		if (al > bl) {
+			while (i < al) {
+				int tmp = a.charAt(al - 1 - i) - 48 + carry;
+				buffer.append(tmp % 2);
+				carry = tmp / 2;
+				i++;
+			}
+		} else {
+			while (i < bl) {
+				int tmp = b.charAt(bl - 1 - i) - 48 + carry;
+				buffer.append(tmp % 2);
+				carry = tmp / 2;
+				i++;
+			}
+		}
+		if (carry == 1) {
+			buffer.append(1);
+		}
+		return new String(buffer.reverse());
 	}
 
 	/**
@@ -833,10 +1006,33 @@ public class Solution {
 	}
 
 	/**
+	 * Problem 88 Merge Sorted Array -- Given two sorted integer arrays nums1
+	 * and nums2, merge nums2 into nums1 as one sorted array.
+	 * 
+	 * Note: You may assume that nums1 has enough space (size that is greater or
+	 * equal to m + n) to hold additional elements from nums2. The number of
+	 * elements initialized in nums1 and nums2 are m and n respectively.
+	 * 
+	 * @param nums1
+	 * @param m
+	 * @param nums2
+	 * @param n
+	 */
+	public void merge(int[] nums1, int m, int[] nums2, int n) {
+		//
+		for (int i = 0; i < nums2.length; i++) {
+			int val = nums2[i];
+			for (int j = 0; j < nums1.length; j++) {
+
+			}
+		}
+	}
+
+	/**
 	 * Problem 94
 	 * 
 	 * @param root
-	 * @return inorder traversal
+	 * @return in order traversal
 	 */
 	public ArrayList<Integer> inorderTraversal(TreeNode root) {
 		ArrayList<Integer> res = new ArrayList<Integer>();
@@ -1448,6 +1644,55 @@ public class Solution {
 	}
 
 	/**
+	 * Problem 160 Intersection of Two Linked Lists Total -- Write a program to
+	 * find the node at which the intersection of two singly linked lists
+	 * begins.
+	 * 
+	 * @param headA
+	 * @param headB
+	 * @return
+	 */
+	public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+		if (headA == null || headB == null) {
+			return null;
+		}
+		int lengthA = 0;
+		int lengthB = 0;
+		ListNode tmp = headA;
+		while (tmp != null) {
+			tmp = tmp.next;
+			lengthA++;
+		}
+		tmp = headB;
+		while (tmp != null) {
+			tmp = tmp.next;
+			lengthB++;
+		}
+		ListNode tmpA = headA;
+		ListNode tmpB = headB;
+		int diff = Math.abs(lengthA - lengthB);
+		if (lengthA > lengthB) {
+			while (diff-- > 0) {
+				tmpA = tmpA.next;
+			}
+		}
+		if (lengthA < lengthB) {
+			while (diff-- > 0) {
+				tmpB = tmpB.next;
+			}
+		}
+		while (tmpA != null) {
+			if (tmpA == tmpB)
+				return tmpA;
+			else {
+				tmpA = tmpA.next;
+				tmpB = tmpB.next;
+			}
+		}
+		return null;
+	}
+
+	/**
 	 * Problem 165 Compare Version Numbers -- Compare two version numbers
 	 * version1 and version2. If version1 > version2 return 1, if version1 <
 	 * version2 return -1, otherwise return 0.
@@ -1658,7 +1903,16 @@ public class Solution {
 	}
 
 	/**
-	 * Problem 198 House Robber
+	 * Problem 198 House Robber -- You are a professional robber planning to rob
+	 * houses along a street. Each house has a certain amount of money stashed,
+	 * the only constraint stopping you from robbing each of them is that
+	 * adjacent houses have security system connected and it will automatically
+	 * contact the police if two adjacent houses were broken into on the same
+	 * night.
+	 * 
+	 * Given a list of non-negative integers representing the amount of money of
+	 * each house, determine the maximum amount of money you can rob tonight
+	 * without alerting the police.
 	 * 
 	 * @param nums
 	 * @return
@@ -1666,23 +1920,20 @@ public class Solution {
 	public int rob(int[] nums) {
 		if (nums == null || nums.length == 0)
 			return 0;
-		int length = nums.length;
-		int back = 0;
-		List<Integer> sums = new ArrayList<>();
-		sums.add(nums[0]);
-		int max = 0;
-		for (int i = 1; i < length; i++) {
-			int tmp = sums.size();
-			sums.add(nums[i]);
-			for (int j = 0; j < back; j++) {
-				int val = nums[i] + sums.get(j);
-				sums.add(val);
-				if (val > max)
-					max = val;
-			}
-			back = tmp;
+		if (nums.length == 1) {
+			return nums[0];
 		}
-		return max;
+		if (nums.length == 2) {
+			return Math.max(nums[0], nums[1]);
+		}
+		int[] s = new int[nums.length];
+		s[0] = nums[0];
+		s[1] = Math.max(nums[0], nums[1]);
+		for (int i = 2; i < nums.length; i++) {
+			s[i] = Math.max(s[i - 2] + nums[i], s[i - 1]);
+		}
+
+		return s[nums.length - 1];
 	}
 
 	/**
