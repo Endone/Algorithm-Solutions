@@ -1,6 +1,7 @@
 package leetcode;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -85,7 +86,13 @@ public class Solution {
 		// System.out.println(new Solution().convert("PAYPALISHIRING", 5));
 		// System.out.println(new Solution().isPalindrome(-2147483648));
 		// System.out.println(new Solution().addBinary("11", "1"));
-		System.out.println(new Solution().countAndSay(5));
+		// System.out.println(new Solution().countAndSay(5));
+		System.out.println(new Solution().isValidSudoku(new char[][] {
+				".87654321".toCharArray(), "2........".toCharArray(),
+				"3........".toCharArray(), "4........".toCharArray(),
+				"5........".toCharArray(), "6........".toCharArray(),
+				"7........".toCharArray(), "8........".toCharArray(),
+				"9........".toCharArray() }));
 	}
 
 	/**
@@ -776,6 +783,46 @@ public class Solution {
 	}
 
 	/**
+	 * Problem 36 Valid Sudoku -- Determine if a Sudoku is valid
+	 * 
+	 * @param board
+	 * @return
+	 */
+	public boolean isValidSudoku(char[][] board) {
+		Set<Character> set1 = new HashSet<>();
+		Set<Character> set2 = new HashSet<>();
+		for (int i = 0; i < board.length; i++) {
+			for (int j = 0; j < board[i].length; j++) {
+				if (board[i][j] != '.')
+					if (set1.contains(board[i][j]))
+						return false;
+					else
+						set1.add(board[i][j]);
+				if (board[j][i] != '.')
+					if (set2.contains(board[j][i]))
+						return false;
+					else
+						set2.add(board[j][i]);
+			}
+			set1.clear();
+			set2.clear();
+		}
+		for (int k = 0; k < 9; k++) {
+			for (int i = k / 3 * 3; i < k / 3 * 3 + 3; i++) {
+				for (int j = (k % 3) * 3; j < (k % 3) * 3 + 3; j++) {
+					if (board[i][j] != '.') {
+						if (set1.contains(board[i][j]))
+							return false;
+						set1.add(board[i][j]);
+					}
+				}
+			}
+			set1.clear();
+		}
+		return true;
+	}
+
+	/**
 	 * Problem 38 Count and Say -- The count-and-say sequence is the sequence of
 	 * integers beginning as follows: 1, 11, 21, 1211, 111221, ...
 	 * 
@@ -1020,12 +1067,10 @@ public class Solution {
 	 */
 	public void merge(int[] nums1, int m, int[] nums2, int n) {
 		//
-		for (int i = 0; i < nums2.length; i++) {
-			int val = nums2[i];
-			for (int j = 0; j < nums1.length; j++) {
-
-			}
-		}
+		if (nums1 == null || nums2 == null || n == 0)
+			return;
+		System.arraycopy(nums2, 0, nums1, m, n);
+		Arrays.sort(nums1);
 	}
 
 	/**
