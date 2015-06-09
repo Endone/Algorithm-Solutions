@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
+import java.util.TreeMap;
 
 public class Solution {
 	public static void main(String[] args) {
@@ -87,20 +88,56 @@ public class Solution {
 		// System.out.println(new Solution().isPalindrome(-2147483648));
 		// System.out.println(new Solution().addBinary("11", "1"));
 		// System.out.println(new Solution().countAndSay(5));
-		System.out.println(new Solution().isValidSudoku(new char[][] {
-				".87654321".toCharArray(), "2........".toCharArray(),
-				"3........".toCharArray(), "4........".toCharArray(),
-				"5........".toCharArray(), "6........".toCharArray(),
-				"7........".toCharArray(), "8........".toCharArray(),
-				"9........".toCharArray() }));
+		// System.out.println(new Solution().isValidSudoku(new char[][] {
+		// ".87654321".toCharArray(), "2........".toCharArray(),
+		// "3........".toCharArray(), "4........".toCharArray(),
+		// "5........".toCharArray(), "6........".toCharArray(),
+		// "7........".toCharArray(), "8........".toCharArray(),
+		// "9........".toCharArray() }));
+		// System.out.println(new Solution().findMin(new int[] { 3, 4, 5, 6, 7,
+		// 0,
+		// 1, 2 }));
+		// System.out.println(new Solution().maxProduct(new int[] { -4, -3, -2
+		// }));
+		// System.out.println(new Solution().intToRoman(1666));
+		// System.out.println(new Solution().canJump(new int[] { 2, 2, 1, 0, 4
+		// }));
+		// System.out.println(new Solution().numIslands(new char[][] {
+		// "10111".toCharArray(), "10101".toCharArray(),
+		// "11101".toCharArray() }));
+		// TreeNode root = new TreeNode(6);
+		// TreeNode node2 = new TreeNode(1);
+		// TreeNode node3 = new TreeNode(3);
+		// TreeNode node4 = new TreeNode(2);
+		// TreeNode node5 = new TreeNode(5);
+		// TreeNode node6 = new TreeNode(4);
+		// root.left = node2;
+		// node2.right = node3;
+		// node3.left = node4;
+		// node3.right = node5;
+		// node5.left = node6;
+		// System.out.println(new Solution().rightSideViewSimple(root));
+		System.out
+				.println(new Solution().computeArea(-2, -2, 2, 2, 3, 3, 4, 4));
 	}
 
 	/**
-	 * Problem 1
+	 * Problem 1 Two Sum -- Given an array of integers, find two numbers such
+	 * that they add up to a specific target number.
+	 * 
+	 * The function twoSum should return indices of the two numbers such that
+	 * they add up to the target, where index1 must be less than index2. Please
+	 * note that your returned answers (both index1 and index2) are not
+	 * zero-based.
+	 * 
+	 * You may assume that each input would have exactly one solution.
+	 * 
+	 * Input: numbers={2, 7, 11, 15}, target=9 Output: index1=1, index2=2
 	 * 
 	 * @param numbers
 	 * @param target
 	 * @return two index whose sum equals to target
+	 * @idea HashTable
 	 */
 	public int[] twoSum(int[] numbers, int target) {
 		Map<Integer, Integer> map = new HashMap<Integer, Integer>();
@@ -345,7 +382,121 @@ public class Solution {
 	}
 
 	/**
-	 * Problem 13
+	 * Problem 12 Integer to Roman -- Given an integer, convert it to a Roman
+	 * numeral.
+	 * 
+	 * Input is guaranteed to be within the range from 1 to 3999.
+	 * 
+	 * @param num
+	 * @return
+	 */
+	public String intToRoman(int num) {
+		int count = 1;
+		StringBuffer buffer = new StringBuffer();
+		while (num > 0) {
+			int remainder = num % 10;
+			num /= 10;
+			if (remainder == 9) {
+				switch (count) {
+				case 1:
+					buffer.append("XI");
+					break;
+				case 2:
+					buffer.append("CX");
+					break;
+				case 3:
+					buffer.append("MC");
+					break;
+				default:
+					break;
+				}
+			} else if (remainder == 4) {
+				switch (count) {
+				case 1:
+					buffer.append("VI");
+					break;
+				case 2:
+					buffer.append("LX");
+					break;
+				case 3:
+					buffer.append("DC");
+					break;
+				default:
+					break;
+				}
+			} else if (remainder == 5) {
+				switch (count) {
+				case 1:
+					buffer.append("V");
+					break;
+				case 2:
+					buffer.append("L");
+					break;
+				case 3:
+					buffer.append("D");
+					break;
+				default:
+					break;
+				}
+			} else if (remainder > 0 && remainder < 4) {
+				for (int j = 0; j < remainder; j++) {
+					switch (count) {
+					case 1:
+						buffer.append("I");
+						break;
+					case 2:
+						buffer.append("X");
+						break;
+					case 3:
+						buffer.append("C");
+						break;
+					case 4:
+						buffer.append("M");
+						break;
+					default:
+						break;
+					}
+				}
+			} else if (remainder > 5 && remainder < 9) {
+				for (int j = 0; j < remainder % 5; j++) {
+					switch (count) {
+					case 1:
+						buffer.append("I");
+						break;
+					case 2:
+						buffer.append("X");
+						break;
+					case 3:
+						buffer.append("C");
+						break;
+					default:
+						break;
+					}
+				}
+				switch (count) {
+				case 1:
+					buffer.append("V");
+					break;
+				case 2:
+					buffer.append("L");
+					break;
+				case 3:
+					buffer.append("D");
+					break;
+				default:
+					break;
+				}
+			}
+			count++;
+		}
+		return new String(buffer.reverse());
+	}
+
+	/**
+	 * Problem 13 Roman to Integer -- Given a Roman numeral, convert it to an
+	 * integer.
+	 * 
+	 * Input is guaranteed to be within the range from 1 to 3999.
 	 * 
 	 * @param s
 	 * @return integer value of s in Roman pattern
@@ -878,6 +1029,37 @@ public class Solution {
 				tmp = 0;
 		}
 		return res;
+	}
+
+	/**
+	 * Problem 55 Jump Game -- Given an array of non-negative integers, you are
+	 * initially positioned at the first index of the array.
+	 * 
+	 * Each element in the array represents your maximum jump length at that
+	 * position.
+	 * 
+	 * Determine if you are able to reach the last index.
+	 * 
+	 * For example: A = [2,3,1,1,4], return true.
+	 * 
+	 * A = [3,2,1,0,4], return false.
+	 * 
+	 * @param nums
+	 * @return
+	 */
+	public boolean canJump(int[] nums) {
+		if (nums.length < 2)
+			return true;
+		int distance = 1;
+		for (int i = nums.length - 2; i >= 0; i--) {
+			if (nums[i] >= distance) {
+				if (i == 0)
+					return true;
+				distance = 1;
+			} else
+				distance++;
+		}
+		return false;
 	}
 
 	/**
@@ -1635,6 +1817,87 @@ public class Solution {
 	}
 
 	/**
+	 * Problem 151 Reverse Words in a String -- Given an input string, reverse
+	 * the string word by word.
+	 * 
+	 * For example, Given s = "the sky is blue", return "blue is sky the".
+	 * 
+	 * Update (2015-02-12): For C programmers: Try to solve it in-place in O(1)
+	 * space. Clarification: What constitutes a word? A sequence of non-space
+	 * characters constitutes a word. Could the input string contain leading or
+	 * trailing spaces? Yes. However, your reversed string should not contain
+	 * leading or trailing spaces. How about multiple spaces between two words?
+	 * Reduce them to a single space in the reversed string.
+	 * 
+	 * @param s
+	 * @return
+	 */
+	public String reverseWords(String s) {
+		if (s == null)
+			return null;
+		return null;
+	}
+
+	/**
+	 * Problem 152 Maximum Product Subarray -- Find the contiguous subarray
+	 * within an array (containing at least one number) which has the largest
+	 * product.
+	 * 
+	 * For example, given the array [2,3,-2,4], the contiguous subarray [2,3]
+	 * has the largest product = 6.
+	 * 
+	 * @param nums
+	 * @return dynamic programming
+	 */
+	public int maxProduct(int[] nums) {
+		if (nums.length == 1)
+			return nums[0];
+		int[] max = new int[nums.length];
+		int[] min = new int[nums.length];
+		max[0] = nums[0];
+		min[0] = nums[0];
+		int tmp = max[0];
+		for (int i = 1; i < nums.length; i++) {
+			int val = nums[i];
+			if (val > 0) {
+				max[i] = max[i - 1] * val > val ? max[i - 1] * val : val;
+				min[i] = min[i - 1] * val < val ? min[i - 1] * val : val;
+			} else {
+				max[i] = min[i - 1] * val > val ? min[i - 1] * val : val;
+				min[i] = max[i - 1] * val < val ? max[i - 1] * val : val;
+			}
+			if (max[i] > tmp)
+				tmp = max[i];
+		}
+		return tmp;
+	}
+
+	/**
+	 * Problem 153 Find Minimum in Rotated Sorted Array -- Suppose a sorted
+	 * array is rotated at some pivot unknown to you beforehand.
+	 * 
+	 * (i.e., 0 1 2 4 5 6 7 might become 4 5 6 7 0 1 2).
+	 * 
+	 * Find the minimum element.
+	 * 
+	 * @param nums
+	 * @return
+	 */
+	public int findMin(int[] nums) {
+		int left = 0;
+		int right = nums.length - 1;
+		while (left != right) {
+			int middle = (left + right) / 2;
+			if (nums[middle] > nums[right]) {
+				left = middle + 1;
+			} else {
+				right = middle;
+			}
+		}
+		return nums[left];
+	}
+
+	/**
 	 * Problem 155 Min Stack -- Design a stack that supports push, pop, top, and
 	 * retrieving the minimum element in constant time.
 	 * 
@@ -1982,6 +2245,126 @@ public class Solution {
 	}
 
 	/**
+	 * Problem 199 Binary Tree Right Side View -- Given a binary tree, imagine
+	 * yourself standing on the right side of it, return the values of the nodes
+	 * you can see ordered from top to bottom.
+	 * 
+	 * @param root
+	 * @return
+	 */
+	public List<Integer> rightSideView(TreeNode root) {
+		List<Integer> res = new ArrayList<>();
+		if (root != null) {
+			Queue<TreeNode> queue = new LinkedList<TreeNode>();
+			queue.offer(root);
+			int level = 1;
+			int newLevel = 0;
+			while (queue.size() > 0) {
+				TreeNode node = queue.poll();
+				if (node != null) {
+					if (newLevel == 0)
+						res.add(node.val);
+					queue.offer(node.right);
+					newLevel++;
+					queue.offer(node.left);
+					newLevel++;
+				}
+				level--;
+				if (level == 0) {
+					level = newLevel;
+					newLevel = 0;
+				}
+			}
+		}
+		return res;
+	}
+
+	public List<Integer> rightSideViewSimple(TreeNode root) {
+		Map<Integer, Integer> m = new TreeMap<>();
+		traverse(root, 0, m);
+		return new ArrayList<>(m.values());
+	}
+
+	private void traverse(TreeNode node, int level, Map<Integer, Integer> m) {
+		if (node == null) {
+			return;
+		}
+		m.put(level, node.val);
+		traverse(node.left, level + 1, m);
+		traverse(node.right, level + 1, m);
+	}
+
+	/**
+	 * Problem 200 Number of Islands -- Given a 2d grid map of '1's (land) and
+	 * '0's (water), count the number of islands. An island is surrounded by
+	 * water and is formed by connecting adjacent lands horizontally or
+	 * vertically. You may assume all four edges of the grid are all surrounded
+	 * by water.
+	 * 
+	 * @param grid
+	 * @return
+	 */
+	public int numIslands(char[][] grid) {
+		if (grid == null || grid.length == 0)
+			return 0;
+		int count = 0;
+		int n = grid.length;
+		int m = grid[0].length;
+		int[][] visited = new int[n][m];
+		Queue<Integer> queue = new LinkedList<>();
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < m; j++) {
+				char c = grid[i][j];
+				if (c == '0')
+					visited[i][j] = 1;
+				if (c == '1' && visited[i][j] == 0) {
+					count++;
+					queue.offer(i);
+					queue.offer(j);
+					visited[i][j] = 1;
+					while (!queue.isEmpty()) {
+						int tmpi = queue.poll();
+						int tmpj = queue.poll();
+						if (tmpi < n - 1) {
+							if (grid[tmpi + 1][tmpj] == '1'
+									&& visited[tmpi + 1][tmpj] == 0) {
+								queue.offer(tmpi + 1);
+								queue.offer(tmpj);
+								visited[tmpi + 1][tmpj] = 1;
+							}
+						}
+						if (tmpj < m - 1) {
+							if (grid[tmpi][tmpj + 1] == '1'
+									&& visited[tmpi][tmpj + 1] == 0) {
+								queue.offer(tmpi);
+								queue.offer(tmpj + 1);
+								visited[tmpi][tmpj + 1] = 1;
+							}
+						}
+						if (tmpj > 0) {
+							if (grid[tmpi][tmpj - 1] == '1'
+									&& visited[tmpi][tmpj - 1] == 0) {
+								queue.offer(tmpi);
+								queue.offer(tmpj - 1);
+								visited[tmpi][tmpj - 1] = 1;
+							}
+						}
+						if (tmpi > 0) {
+							if (grid[tmpi - 1][tmpj] == '1'
+									&& visited[tmpi - 1][tmpj] == 0) {
+								queue.offer(tmpi - 1);
+								queue.offer(tmpj);
+								visited[tmpi - 1][tmpj] = 1;
+							}
+						}
+					}
+				}
+			}
+		}
+		return count;
+	}
+
+	/**
 	 * Problem 201
 	 * 
 	 * @param m
@@ -2278,6 +2661,45 @@ public class Solution {
 			}
 		}
 		return max * max;
+	}
+
+	/**
+	 * Problem 223 Rectangle Area -- Find the total area covered by two
+	 * rectilinear rectangles in a 2D plane.
+	 * 
+	 * Each rectangle is defined by its bottom left corner and top right corner
+	 * as shown in the figure.
+	 * 
+	 * @param A
+	 * @param B
+	 * @param C
+	 * @param D
+	 * @param E
+	 * @param F
+	 * @param G
+	 * @param H
+	 * @return
+	 */
+	public int computeArea(int A, int B, int C, int D, int E, int F, int G,
+			int H) {
+		int sum = (C - A) * (D - B) + (G - E) * (H - F);
+		return sum - intersection(A, C, E, G) * intersection(B, D, F, H);
+	}
+
+	private int intersection(int A, int B, int C, int D) {
+		if (A < C) {
+			if (B <= C) {
+				return 0;
+			} else {
+				return Math.min(B - C, D - C);
+			}
+		} else {
+			if (D <= A) {
+				return 0;
+			} else {
+				return Math.min(B - A, D - A);
+			}
+		}
 	}
 }
 
