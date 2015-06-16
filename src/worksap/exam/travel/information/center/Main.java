@@ -6,6 +6,12 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Scanner;
 
+/**
+ * Test Case: 5 5 1 2 1 3 3 4 3 5 2 5 2 3 1 3 2 3 2 4
+ * 
+ * @author Administrator
+ * 
+ */
 public class Main {
 	public static void main(String[] args) {
 		Scanner in = new Scanner(System.in);

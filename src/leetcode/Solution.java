@@ -2,6 +2,7 @@ package leetcode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.EmptyStackException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -117,8 +118,47 @@ public class Solution {
 		// node3.right = node5;
 		// node5.left = node6;
 		// System.out.println(new Solution().rightSideViewSimple(root));
-		System.out
-				.println(new Solution().computeArea(-2, -2, 2, 2, 3, 3, 4, 4));
+		// System.out
+		// .println(new Solution().computeArea(-2, -2, 2, 2, 3, 3, 4, 4));
+		// MyStack stack = new MyStack();
+		// stack.push(1);
+		// stack.push(2);
+		// System.out.println(stack.top());
+		// System.out.println(stack.empty());
+		// stack.pop();
+		// System.out.println(stack.top());
+		// stack.pop();
+		// System.out.println(stack.empty());
+		System.out.println(new Solution().canFinishWithStack(5, new int[][] {
+				new int[] { 0, 2 }, new int[] { 1, 2 }, new int[] { 2, 3 },
+				new int[] { 2, 4 }, new int[] { 3, 4 } }));
+		System.out.println(new Solution().canFinishWithStack(2, new int[][] {
+				new int[] { 0, 1 }, new int[] { 1, 0 } }));
+		System.out.println(new Solution().canFinishWithStack(10, new int[][] {
+				new int[] { 5, 8 }, new int[] { 3, 5 }, new int[] { 1, 9 },
+				new int[] { 4, 5 }, new int[] { 0, 2 }, new int[] { 1, 9 },
+				new int[] { 7, 8 }, new int[] { 4, 9 } }));
+		System.out.println(new Solution().canFinishWithRecurence(5,
+				new int[][] { new int[] { 0, 2 }, new int[] { 1, 2 },
+						new int[] { 2, 3 }, new int[] { 2, 4 },
+						new int[] { 3, 4 } }));
+		System.out.println(new Solution().canFinishWithRecurence(2,
+				new int[][] { new int[] { 0, 1 }, new int[] { 1, 0 } }));
+		System.out.println(new Solution().canFinishWithRecurence(10,
+				new int[][] { new int[] { 5, 8 }, new int[] { 3, 5 },
+						new int[] { 1, 9 }, new int[] { 4, 5 },
+						new int[] { 0, 2 }, new int[] { 1, 9 },
+						new int[] { 7, 8 }, new int[] { 4, 9 } }));
+		System.out.println(new Solution().canFinishWithIndegree(5, new int[][] {
+				new int[] { 0, 2 }, new int[] { 1, 2 }, new int[] { 2, 3 },
+				new int[] { 2, 4 }, new int[] { 3, 4 } }));
+		System.out.println(new Solution().canFinishWithIndegree(2, new int[][] {
+				new int[] { 0, 1 }, new int[] { 1, 0 } }));
+		System.out.println(new Solution().canFinishWithIndegree(10,
+				new int[][] { new int[] { 5, 8 }, new int[] { 3, 5 },
+						new int[] { 1, 9 }, new int[] { 4, 5 },
+						new int[] { 0, 2 }, new int[] { 1, 9 },
+						new int[] { 7, 8 }, new int[] { 4, 9 } }));
 	}
 
 	/**
@@ -2532,6 +2572,152 @@ public class Solution {
 	}
 
 	/**
+	 * Problem 207 Course Schedule -- There are a total of n courses you have to
+	 * take, labeled from 0 to n - 1.
+	 * 
+	 * Some courses may have prerequisites, for example to take course 0 you
+	 * have to first take course 1, which is expressed as a pair: [0,1]
+	 * 
+	 * Given the total number of courses and a list of prerequisite pairs, is it
+	 * possible for you to finish all courses?
+	 * 
+	 * For example:
+	 * 
+	 * 2, [[1,0]] There are a total of 2 courses to take. To take course 1 you
+	 * should have finished course 0. So it is possible.
+	 * 
+	 * 2, [[1,0],[0,1]] There are a total of 2 courses to take. To take course 1
+	 * you should have finished course 0, and to take course 0 you should also
+	 * have finished course 1. So it is impossible.
+	 * 
+	 * @param numCourses
+	 * @param prerequisites
+	 * @return
+	 */
+	public boolean canFinishWithStack(int numCourses, int[][] prerequisites) {
+		List<Course> courses = new LinkedList<>();
+		for (int i = 0; i < numCourses; i++) {
+			courses.add(new Course(i));
+		}
+		for (int i = 0; i < prerequisites.length; i++) {
+			if (!courses.get(prerequisites[i][0]).prerequisites
+					.contains(prerequisites[i][1]))
+				courses.get(prerequisites[i][0]).prerequisites
+						.add(prerequisites[i][1]);
+		}
+		Stack<Integer> stack = new Stack<>();
+		for (Course course : courses) {
+			if (course.status == 0) {
+				stack.push(course.id);
+			}
+			while (!stack.isEmpty()) {
+				int courseId = stack.peek();
+				Course cur = courses.get(courseId);
+				cur.status = 1;
+				boolean flag = false;
+				for (int pre : cur.prerequisites) {
+					if (courses.get(pre).status == 1)
+						return false;
+					if (courses.get(pre).status == 2)
+						continue;
+					stack.push(pre);
+					courses.get(pre).status = 1;
+					flag = true;
+				}
+				if (cur.prerequisites.isEmpty() || !flag) {
+					stack.pop();
+					cur.status = 2;
+				}
+			}
+		}
+		return true;
+	}
+
+	public boolean canFinishWithRecurence(int numCourses, int[][] prerequisites) {
+		List<Course> courses = new LinkedList<>();
+		for (int i = 0; i < numCourses; i++) {
+			courses.add(new Course(i));
+		}
+		for (int i = 0; i < prerequisites.length; i++) {
+			if (!courses.get(prerequisites[i][0]).prerequisites
+					.contains(prerequisites[i][1]))
+				courses.get(prerequisites[i][0]).prerequisites
+						.add(prerequisites[i][1]);
+		}
+		for (Course course : courses) {
+			if (course.status == 0) {
+				if (!DFS(courses, course.id))
+					return false;
+			}
+		}
+		return true;
+	}
+
+	private boolean DFS(List<Course> courses, int id) {
+		Course cur = courses.get(id);
+		cur.status = 1;
+		for (int pre : cur.prerequisites) {
+			if (courses.get(pre).status == 1)
+				return false;
+			if (courses.get(pre).status == 2)
+				continue;
+			if (!DFS(courses, pre))
+				return false;
+		}
+		cur.status = 2;
+		return true;
+	}
+
+	public boolean canFinishWithIndegree(int numCourses, int[][] prerequisites) {
+		List<Course> courses = new LinkedList<>();
+		for (int i = 0; i < numCourses; i++) {
+			courses.add(new Course(i));
+		}
+		for (int i = 0; i < prerequisites.length; i++) {
+			Course cur = courses.get(prerequisites[i][0]);
+			int pre = prerequisites[i][1];
+			if (!cur.prerequisites.contains(pre)) {
+				courses.get(pre).indegree++;
+				cur.prerequisites.add(pre);
+			}
+		}
+		Queue<Integer> queue = new LinkedList<>();
+		for (Course course : courses) {
+			if (course.indegree == 0) {
+				queue.offer(course.id);
+			}
+		}
+		int count = 0;
+		while (!queue.isEmpty()) {
+			int courseId = queue.poll();
+			count++;
+			for (int pre : courses.get(courseId).prerequisites) {
+				courses.get(pre).indegree--;
+				if (courses.get(pre).indegree == 0) {
+					queue.offer(pre);
+				}
+			}
+		}
+		return count == numCourses;
+	}
+
+	class Course {
+		List<Integer> prerequisites;
+		int id;
+		int status;
+		int indegree;
+
+		public Course(int id) {
+			super();
+			this.id = id;
+			this.prerequisites = new ArrayList<>();
+			this.status = 0;
+			this.indegree = 0;
+		}
+
+	}
+
+	/**
 	 * Problem 217 Contains Duplicate
 	 * 
 	 * @param nums
@@ -2700,6 +2886,121 @@ public class Solution {
 				return Math.min(B - A, D - A);
 			}
 		}
+	}
+
+	/**
+	 * Problem 226 Invert Binary Tree -- This problem was inspired by this
+	 * original tweet by Max Howell: Google: 90% of our engineers use the
+	 * software you wrote (Homebrew), but you can¡¯t invert a binary tree on a
+	 * whiteboard so fuck off. (https://twitter.com/mxcl)
+	 * 
+	 * @param root
+	 * @return
+	 */
+	public TreeNode invertTree(TreeNode root) {
+		if (root == null)
+			return null;
+		TreeNode tmp = root.left;
+		root.left = root.right;
+		root.right = tmp;
+		if (root.left != null) {
+			invertTree(root.left);
+		}
+		if (root.right != null) {
+			invertTree(root.right);
+		}
+		return root;
+	}
+}
+
+/**
+ * Problem 225 Implement Stack using Queues -- Implement the following
+ * operations of a stack using queues.
+ * 
+ * push(x) -- Push element x onto stack. pop() -- Removes the element on top of
+ * the stack. top() -- Get the top element. empty() -- Return whether the stack
+ * is empty. Notes: You must use only standard operations of a queue -- which
+ * means only push to back, peek/pop from front, size, and is empty operations
+ * are valid. Depending on your language, queue may not be supported natively.
+ * You may simulate a queue by using a list or deque (double-ended queue), as
+ * long as you use only standard operations of a queue. You may assume that all
+ * operations are valid (for example, no pop or top operations will be called on
+ * an empty stack).
+ * 
+ * @author Administrator
+ * 
+ */
+class MyStack {
+	Queue<Integer> queue1;
+	Queue<Integer> queue2;
+
+	public MyStack() {
+		queue1 = new LinkedList<>();
+		queue2 = new LinkedList<>();
+	}
+
+	// Push element x onto stack.
+	public void push(int x) {
+		if (!queue1.isEmpty()) {
+			queue1.offer(x);
+		} else if (!queue2.isEmpty()) {
+			queue2.offer(x);
+		} else {
+			queue1.offer(x);
+		}
+	}
+
+	// Removes the element on top of the stack.
+	public void pop() {
+		if (queue1.isEmpty() && queue2.isEmpty()) {
+			throw new EmptyStackException();
+		}
+		if (!queue1.isEmpty()) {
+			int size = queue1.size();
+			while (size-- > 1) {
+				queue2.offer(queue1.peek());
+				queue1.poll();
+			}
+			queue1.poll();
+		} else {
+			int size = queue2.size();
+			while (size-- > 1) {
+				queue1.offer(queue2.peek());
+				queue2.poll();
+			}
+			queue2.poll();
+		}
+	}
+
+	// Get the top element.
+	public int top() {
+		if (queue1.isEmpty() && queue2.isEmpty()) {
+			throw new EmptyStackException();
+		}
+		if (!queue1.isEmpty()) {
+			int size = queue1.size();
+			while (size-- > 1) {
+				queue2.offer(queue1.peek());
+				queue1.poll();
+			}
+			int res = queue1.poll();
+			queue2.offer(res);
+			return res;
+		} else {
+			int size = queue2.size();
+			while (size-- > 1) {
+				queue1.offer(queue2.peek());
+				queue2.poll();
+			}
+			int res = queue2.poll();
+			queue1.offer(res);
+			return res;
+		}
+	}
+
+	// Return whether the stack is empty.
+	public boolean empty() {
+		return queue1.isEmpty() && queue2.isEmpty();
 	}
 }
 
