@@ -165,7 +165,9 @@ public class Solution {
 		// System.out.println(new Solution().summaryRanges(new int[] { 0, 1, 2,
 		// 4,
 		// 5, 6, 8, 9, 11, 13, 15, 16, 17 }));
-		System.out.println(new Solution().calculate("(1+(4+5+2)-3)-(6+8)"));
+		// System.out.println(new Solution().calculate("(1+(4+5+2)-3)-(6+8)"));
+		// System.out.println(new Solution().calculate2("3*2*2/4/2*3"));
+		System.out.println(new Solution().calculate2(" 3+5 / 2 "));
 	}
 
 	/**
@@ -3018,6 +3020,9 @@ public class Solution {
 		StringBuffer buffer = new StringBuffer();
 		for (int i = 0; i < s.length(); i++) {
 			char c = s.charAt(i);
+			if (c == ' ') {
+				continue;
+			}
 			if (c >= '0' && c <= '9') {
 				buffer.append(c);
 				if (i == s.length() - 1 || !Character.isDigit(s.charAt(i + 1))) {
@@ -3104,6 +3109,89 @@ public class Solution {
 			invertTree(root.right);
 		}
 		return root;
+	}
+
+	/**
+	 * Basic Calculator II -- Implement a basic calculator to evaluate a simple
+	 * expression string.
+	 * 
+	 * The expression string contains only non-negative integers, +, -, *, /
+	 * operators and empty spaces . The integer division should truncate toward
+	 * zero.
+	 * 
+	 * You may assume that the given expression is always valid.
+	 * 
+	 * Some examples: "3+2*2" = 7 " 3/2 " = 1 " 3+5 / 2 " = 5
+	 * 
+	 * @param s
+	 * @return
+	 */
+	public int calculate2(String s) {
+		s = s.replace(" ", "");
+		Stack<String> stack = new Stack<>();
+		boolean shouldCalc = false;
+		StringBuffer buffer = new StringBuffer();
+		for (int i = 0; i < s.length(); i++) {
+			char c = s.charAt(i);
+			if (c == ' ') {
+				continue;
+			}
+			if (c >= '0' && c <= '9') {
+				buffer.append(c);
+				if (i == s.length() - 1 || !Character.isDigit(s.charAt(i + 1))) {
+					if (stack.isEmpty()) {
+						stack.push(buffer.toString());
+					} else {
+						if (i < s.length() - 1
+								&& (s.charAt(i + 1) == '*' || s.charAt(i + 1) == '/')) {
+							if (shouldCalc) {
+								calc(stack, Long.valueOf(buffer.toString()),
+										s.charAt(i + 1));
+							} else {
+								stack.push(buffer.toString());
+							}
+						} else {
+							shouldCalc = false;
+							calc(stack, Long.valueOf(buffer.toString()),
+									i == s.length() - 1 ? ' ' : s.charAt(i + 1));
+						}
+					}
+					buffer.delete(0, buffer.length());
+				}
+			} else {
+				if (c == '*' || c == '/')
+					shouldCalc = true;
+				stack.push(String.valueOf(c));
+			}
+		}
+		return Integer.valueOf(stack.pop());
+	}
+
+	private void calc(Stack<String> stack, Long op2, char c) {
+		String peek = stack.peek();
+		String res = "";
+		if (peek.equals("+")) {
+			stack.pop();
+			Long op1 = Long.valueOf(stack.pop());
+			res = String.valueOf(op1 + op2);
+		} else if (peek.equals("-")) {
+			stack.pop();
+			Long op1 = Long.valueOf(stack.pop());
+			res = String.valueOf(op1 - op2);
+		} else if (peek.equals("*")) {
+			stack.pop();
+			Long op1 = Long.valueOf(stack.pop());
+			res = String.valueOf(op1 * op2);
+		} else if (peek.equals("/")) {
+			stack.pop();
+			Long op1 = Long.valueOf(stack.pop());
+			res = String.valueOf(op1 / op2);
+		}
+		if (c != '*' && c != '/' && !stack.isEmpty()) {
+			calc(stack, Long.valueOf(res), ' ');
+		} else {
+			stack.push(res);
+		}
 	}
 
 	/**
