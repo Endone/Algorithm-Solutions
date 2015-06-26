@@ -129,36 +129,41 @@ public class Solution {
 		// System.out.println(stack.top());
 		// stack.pop();
 		// System.out.println(stack.empty());
-		System.out.println(new Solution().canFinishWithStack(5, new int[][] {
-				new int[] { 0, 2 }, new int[] { 1, 2 }, new int[] { 2, 3 },
-				new int[] { 2, 4 }, new int[] { 3, 4 } }));
-		System.out.println(new Solution().canFinishWithStack(2, new int[][] {
-				new int[] { 0, 1 }, new int[] { 1, 0 } }));
-		System.out.println(new Solution().canFinishWithStack(10, new int[][] {
-				new int[] { 5, 8 }, new int[] { 3, 5 }, new int[] { 1, 9 },
-				new int[] { 4, 5 }, new int[] { 0, 2 }, new int[] { 1, 9 },
-				new int[] { 7, 8 }, new int[] { 4, 9 } }));
-		System.out.println(new Solution().canFinishWithRecurence(5,
-				new int[][] { new int[] { 0, 2 }, new int[] { 1, 2 },
-						new int[] { 2, 3 }, new int[] { 2, 4 },
-						new int[] { 3, 4 } }));
-		System.out.println(new Solution().canFinishWithRecurence(2,
-				new int[][] { new int[] { 0, 1 }, new int[] { 1, 0 } }));
-		System.out.println(new Solution().canFinishWithRecurence(10,
-				new int[][] { new int[] { 5, 8 }, new int[] { 3, 5 },
-						new int[] { 1, 9 }, new int[] { 4, 5 },
-						new int[] { 0, 2 }, new int[] { 1, 9 },
-						new int[] { 7, 8 }, new int[] { 4, 9 } }));
-		System.out.println(new Solution().canFinishWithIndegree(5, new int[][] {
-				new int[] { 0, 2 }, new int[] { 1, 2 }, new int[] { 2, 3 },
-				new int[] { 2, 4 }, new int[] { 3, 4 } }));
-		System.out.println(new Solution().canFinishWithIndegree(2, new int[][] {
-				new int[] { 0, 1 }, new int[] { 1, 0 } }));
-		System.out.println(new Solution().canFinishWithIndegree(10,
-				new int[][] { new int[] { 5, 8 }, new int[] { 3, 5 },
-						new int[] { 1, 9 }, new int[] { 4, 5 },
-						new int[] { 0, 2 }, new int[] { 1, 9 },
-						new int[] { 7, 8 }, new int[] { 4, 9 } }));
+		// System.out.println(new Solution().canFinishWithStack(5, new int[][] {
+		// new int[] { 0, 2 }, new int[] { 1, 2 }, new int[] { 2, 3 },
+		// new int[] { 2, 4 }, new int[] { 3, 4 } }));
+		// System.out.println(new Solution().canFinishWithStack(2, new int[][] {
+		// new int[] { 0, 1 }, new int[] { 1, 0 } }));
+		// System.out.println(new Solution().canFinishWithStack(10, new int[][]
+		// {
+		// new int[] { 5, 8 }, new int[] { 3, 5 }, new int[] { 1, 9 },
+		// new int[] { 4, 5 }, new int[] { 0, 2 }, new int[] { 1, 9 },
+		// new int[] { 7, 8 }, new int[] { 4, 9 } }));
+		// System.out.println(new Solution().canFinishWithRecurence(5,
+		// new int[][] { new int[] { 0, 2 }, new int[] { 1, 2 },
+		// new int[] { 2, 3 }, new int[] { 2, 4 },
+		// new int[] { 3, 4 } }));
+		// System.out.println(new Solution().canFinishWithRecurence(2,
+		// new int[][] { new int[] { 0, 1 }, new int[] { 1, 0 } }));
+		// System.out.println(new Solution().canFinishWithRecurence(10,
+		// new int[][] { new int[] { 5, 8 }, new int[] { 3, 5 },
+		// new int[] { 1, 9 }, new int[] { 4, 5 },
+		// new int[] { 0, 2 }, new int[] { 1, 9 },
+		// new int[] { 7, 8 }, new int[] { 4, 9 } }));
+		// System.out.println(new Solution().canFinishWithIndegree(5, new
+		// int[][] {
+		// new int[] { 0, 2 }, new int[] { 1, 2 }, new int[] { 2, 3 },
+		// new int[] { 2, 4 }, new int[] { 3, 4 } }));
+		// System.out.println(new Solution().canFinishWithIndegree(2, new
+		// int[][] {
+		// new int[] { 0, 1 }, new int[] { 1, 0 } }));
+		// System.out.println(new Solution().canFinishWithIndegree(10,
+		// new int[][] { new int[] { 5, 8 }, new int[] { 3, 5 },
+		// new int[] { 1, 9 }, new int[] { 4, 5 },
+		// new int[] { 0, 2 }, new int[] { 1, 9 },
+		// new int[] { 7, 8 }, new int[] { 4, 9 } }));
+		System.out.println(new Solution().summaryRanges(new int[] { 0, 1, 2, 4,
+				5, 6, 8, 9, 11, 13, 15, 16, 17 }));
 	}
 
 	/**
@@ -2262,6 +2267,8 @@ public class Solution {
 	 * each house, determine the maximum amount of money you can rob tonight
 	 * without alerting the police.
 	 * 
+	 * @idea Dynamic Programming: s[i] = Math.max(s[i - 2] + nums[i], s[i - 1])
+	 *       and s[0] = nums[0]; s[1] = Math.max(nums[0], nums[1]);
 	 * @param nums
 	 * @return
 	 */
@@ -2289,6 +2296,8 @@ public class Solution {
 	 * yourself standing on the right side of it, return the values of the nodes
 	 * you can see ordered from top to bottom.
 	 * 
+	 * @idea use level order traversal and keep the first element in the new
+	 *       level
 	 * @param root
 	 * @return
 	 */
@@ -2319,6 +2328,12 @@ public class Solution {
 		return res;
 	}
 
+	/**
+	 * @idea use map to store the level-element pair, and the same key will be
+	 *       Overwritten
+	 * @param root
+	 * @return
+	 */
 	public List<Integer> rightSideViewSimple(TreeNode root) {
 		Map<Integer, Integer> m = new TreeMap<>();
 		traverse(root, 0, m);
@@ -2341,6 +2356,7 @@ public class Solution {
 	 * vertically. You may assume all four edges of the grid are all surrounded
 	 * by water.
 	 * 
+	 * @idea depth-first search or bread-first search
 	 * @param grid
 	 * @return
 	 */
@@ -2405,8 +2421,14 @@ public class Solution {
 	}
 
 	/**
-	 * Problem 201
+	 * Problem 201 Bitwise AND of Numbers Range -- Given a range [m, n] where 0
+	 * <= m <= n <= 2147483647, return the bitwise AND of all numbers in this
+	 * range, inclusive.
 	 * 
+	 * For example, given the range [5, 7], you should return 4.
+	 * 
+	 * @idea the result of a range bitwise is the common 'left header' of m and
+	 *       n.
 	 * @param m
 	 * @param n
 	 * @return the bitwise AND of all numbers in this range, inclusive.
@@ -2432,8 +2454,21 @@ public class Solution {
 	}
 
 	/**
-	 * Problem 202
+	 * Problem 202 Happy Number -- Write an algorithm to determine if a number
+	 * is "happy".
 	 * 
+	 * A happy number is a number defined by the following process: Starting
+	 * with any positive integer, replace the number by the sum of the squares
+	 * of its digits, and repeat the process until the number equals 1 (where it
+	 * will stay), or it loops endlessly in a cycle which does not include 1.
+	 * Those numbers for which this process ends in 1 are happy numbers.
+	 * 
+	 * Example: 19 is a happy number
+	 * 
+	 * 12 + 92 = 82 82 + 22 = 68 62 + 82 = 100 12 + 02 + 02 = 1
+	 * 
+	 * @idea use set to store the number and once it shows again, return false,
+	 *       otherwise when the sum equals one return true;
 	 * @param n
 	 * @return
 	 */
@@ -2462,8 +2497,14 @@ public class Solution {
 	}
 
 	/**
-	 * Problem 203
+	 * Problem 203 Remove Linked List Elements -- Remove all elements from a
+	 * linked list of integers that have value val.
 	 * 
+	 * Example Given: 1 --> 2 --> 6 --> 3 --> 4 --> 5 --> 6, val = 6 Return: 1
+	 * --> 2 --> 3 --> 4 --> 5
+	 * 
+	 * @idea use two pointers, mind to deal with the case that the head val
+	 *       equals the remove val
 	 * @param head
 	 * @param val
 	 * @return ListNode at head without node of value val
@@ -2495,6 +2536,12 @@ public class Solution {
 	/**
 	 * Problem 204
 	 * 
+	 * @idea Sieve of Eratosthenes: start off with a table of n numbers. Let's
+	 *       look at the first number, 2. We know all multiples of 2 must not be
+	 *       primes, so we mark them off as non-primes. Then we look at the next
+	 *       number, 3. Similarly, all multiples of 3 such as 3 ¡Á 2 = 6, 3 ¡Á 3 =
+	 *       9, ... must not be primes, so we mark them off as well. Now we look
+	 *       at the next number, 4, which was already marked off.
 	 * @param n
 	 * @return number of primes less than n
 	 */
@@ -2523,8 +2570,26 @@ public class Solution {
 	}
 
 	/**
-	 * Problem 205
+	 * Problem 205 Isomorphic Strings -- iven two strings s and t, determine if
+	 * they are isomorphic.
 	 * 
+	 * Two strings are isomorphic if the characters in s can be replaced to get
+	 * t.
+	 * 
+	 * All occurrences of a character must be replaced with another character
+	 * while preserving the order of characters. No two characters may map to
+	 * the same character but a character may map to itself.
+	 * 
+	 * For example, Given "egg", "add", return true.
+	 * 
+	 * Given "foo", "bar", return false.
+	 * 
+	 * Given "paper", "title", return true.
+	 * 
+	 * @idea use hashtable, if the table contains key s[i], check whether
+	 *       val(s[i]) equals t[i], if not equal return false; else if the table
+	 *       contains value t[i], return false since no two characters may map
+	 *       to the same character, otherwise put (s[i],t[i]) into hashtable;
 	 * @param s
 	 * @param t
 	 * @return whether s and t are isomorphic
@@ -2550,8 +2615,10 @@ public class Solution {
 	}
 
 	/**
-	 * Problem 206
+	 * Problem 206 Reverse Linked List -- Reverse a singly linked list.
 	 * 
+	 * @idea use two pointer, in every loop, reverse two node at a time and keep
+	 *       one pointer going
 	 * @param head
 	 * @return reverse ListNode of head
 	 */
@@ -2590,6 +2657,10 @@ public class Solution {
 	 * you should have finished course 0, and to take course 0 you should also
 	 * have finished course 1. So it is impossible.
 	 * 
+	 * @idea mark the node on current path as visiting and the node with dead
+	 *       end as visited, and when the path goes back to some node marked
+	 *       visiting, return false; otherwise return true when all the nodes
+	 *       are visited
 	 * @param numCourses
 	 * @param prerequisites
 	 * @return
@@ -2633,6 +2704,16 @@ public class Solution {
 		return true;
 	}
 
+	/**
+	 * @idea use Depth First Search to solve the problem, start with the node
+	 *       with status 0, and mark it as 1 (visiting), if encounter some node
+	 *       with status 1, return false; if encounter some node with status 2,
+	 *       continue; otherwise start DFS on the node recursively and mark the
+	 *       node with status 2 (visited)
+	 * @param numCourses
+	 * @param prerequisites
+	 * @return
+	 */
 	public boolean canFinishWithRecurence(int numCourses, int[][] prerequisites) {
 		List<Course> courses = new LinkedList<>();
 		for (int i = 0; i < numCourses; i++) {
@@ -2668,6 +2749,16 @@ public class Solution {
 		return true;
 	}
 
+	/**
+	 * @idea first calculate the indegree of every node in the graph, and put
+	 *       the node with indegree 0 into the queue or stack, while the queue
+	 *       is not empty, remove one node from queue and update the indegree of
+	 *       the adjacent nodes, put the new 0-indegree node into queue, if all
+	 *       the nodes are put in the queue return true, otherwise return false;
+	 * @param numCourses
+	 * @param prerequisites
+	 * @return
+	 */
 	public boolean canFinishWithIndegree(int numCourses, int[][] prerequisites) {
 		List<Course> courses = new LinkedList<>();
 		for (int i = 0; i < numCourses; i++) {
@@ -2720,6 +2811,7 @@ public class Solution {
 	/**
 	 * Problem 217 Contains Duplicate
 	 * 
+	 * @idea use hashtable
 	 * @param nums
 	 * @return true if nums contains duplicate, false otherwise
 	 */
@@ -2742,6 +2834,9 @@ public class Solution {
 	 * in the array such that nums[i] = nums[j] and the difference between i and
 	 * j is at most k.
 	 * 
+	 * @idea use hashtable to store the number: if the table does not contain
+	 *       the number, put it in; otherwise check whether the difference
+	 *       between two index is less or equal to k
 	 * @param nums
 	 * @param k
 	 * @return
@@ -2768,6 +2863,11 @@ public class Solution {
 	 * the difference between nums[i] and nums[j] is at most t and the
 	 * difference between i and j is at most k.
 	 * 
+	 * @idea use tmp array to store the difference between two adjacent element,
+	 *       return true if one of the element if tmp absolute val is not
+	 *       greater than t, if not, calculate the sum in [i,i+k] and move the
+	 *       interval forward till the end; if one of the sum is not greater
+	 *       than t, return true, else return false;
 	 * @param nums
 	 * @param k
 	 * @param t
@@ -2807,6 +2907,13 @@ public class Solution {
 	 * Problem 221 Maximal Square -- Given a 2D binary matrix filled with 0's
 	 * and 1's, find the largest square containing all 1's and return its area.
 	 * 
+	 * @idea Dynamic Programming: let sq[i][j] be the maximal square at the
+	 *       point matrix[i][j], if matrix[i][j]='0', sq[i][j]=0; if
+	 *       matrix[i][j]='1': if it's on left or top border, sq[i][j]=1;
+	 *       otherwise, if both sq[i-1][j] and sq[i][j-1] are greater than 0,
+	 *       when they are equal, check matrix[i-sq[i-1][j]], if it's '1',
+	 *       sq[i][j] = sq[i-1][j]+1; else sq[i][j] = sq[i-1][j]; if not equal,
+	 *       sq[i][j] = min(sq[i-1],sq[i][j-1])
 	 * @param matrix
 	 * @return
 	 */
@@ -2856,6 +2963,8 @@ public class Solution {
 	 * Each rectangle is defined by its bottom left corner and top right corner
 	 * as shown in the figure.
 	 * 
+	 * @idea the area of the two rectangle equal the sum of the two rectangle
+	 *       minus the common area of the two rectangle
 	 * @param A
 	 * @param B
 	 * @param C
@@ -2889,11 +2998,31 @@ public class Solution {
 	}
 
 	/**
+	 * Problem 224 Basic Calculator -- Implement a basic calculator to evaluate
+	 * a simple expression string.
+	 * 
+	 * The expression string may contain open ( and closing parentheses ), the
+	 * plus + or minus sign -, non-negative integers and empty spaces .
+	 * 
+	 * You may assume that the given expression is always valid.
+	 * 
+	 * Some examples: "1 + 1" = 2 " 2-1 + 2 " = 3 "(1+(4+5+2)-3)+(6+8)" = 23
+	 * 
+	 * @param s
+	 * @return
+	 */
+	public int calculate(String s) {
+		return 0;
+	}
+
+	/**
 	 * Problem 226 Invert Binary Tree -- This problem was inspired by this
 	 * original tweet by Max Howell: Google: 90% of our engineers use the
 	 * software you wrote (Homebrew), but you can¡¯t invert a binary tree on a
 	 * whiteboard so fuck off. (https://twitter.com/mxcl)
 	 * 
+	 * @idea first revert the left and right subtree and recursively call
+	 *       invertTree on left and right subtree;
 	 * @param root
 	 * @return
 	 */
@@ -2911,6 +3040,47 @@ public class Solution {
 		}
 		return root;
 	}
+
+	/**
+	 * Problem 228 Summary Ranges -- Given a sorted integer array without
+	 * duplicates, return the summary of its ranges.
+	 * 
+	 * For example, given [0,1,2,4,5,7], return ["0->2","4->5","7"].
+	 * 
+	 * @param nums
+	 * @return
+	 */
+	public List<String> summaryRanges(int[] nums) {
+		List<String> res = new ArrayList<String>();
+		if (nums == null || nums.length == 0)
+			return res;
+		int val = nums[0];
+		int start = 0;
+		for (int i = 1; i < nums.length; i++) {
+			if (nums[i] != nums[i - 1] + 1) {
+				if (i == start + 1) {
+					res.add(val + "");
+					if (i == nums.length - 1) {
+						res.add(nums[i] + "");
+					}
+
+				} else {
+					res.add(val + "->" + nums[i - 1]);
+					if (i == nums.length - 1) {
+						res.add(nums[i] + "");
+					}
+
+				}
+				val = nums[i];
+				start = i;
+			} else if (i == nums.length - 1) {
+				res.add(val + "->" + nums[i]);
+			}
+		}
+		if (nums.length == 1)
+			res.add(val + "");
+		return res;
+	}
 }
 
 /**
@@ -2927,6 +3097,10 @@ public class Solution {
  * operations are valid (for example, no pop or top operations will be called on
  * an empty stack).
  * 
+ * @idea Use to queues to act like a stack, always keep one queue empty, and
+ *       push will be added at the tail of the nonempty queue, and top or pop
+ *       will be implemented in the way: pop all the elements in the nonempty
+ *       queue into the empty queue and deal with the last element
  * @author Administrator
  * 
  */
