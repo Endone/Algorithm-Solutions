@@ -162,8 +162,10 @@ public class Solution {
 		// new int[] { 1, 9 }, new int[] { 4, 5 },
 		// new int[] { 0, 2 }, new int[] { 1, 9 },
 		// new int[] { 7, 8 }, new int[] { 4, 9 } }));
-		System.out.println(new Solution().summaryRanges(new int[] { 0, 1, 2, 4,
-				5, 6, 8, 9, 11, 13, 15, 16, 17 }));
+		// System.out.println(new Solution().summaryRanges(new int[] { 0, 1, 2,
+		// 4,
+		// 5, 6, 8, 9, 11, 13, 15, 16, 17 }));
+		System.out.println(new Solution().calculate("(1+(4+5+2)-3)-(6+8)"));
 	}
 
 	/**
@@ -3012,7 +3014,70 @@ public class Solution {
 	 * @return
 	 */
 	public int calculate(String s) {
-		return 0;
+		Stack<String> stack = new Stack<>();
+		StringBuffer buffer = new StringBuffer();
+		for (int i = 0; i < s.length(); i++) {
+			char c = s.charAt(i);
+			if (c >= '0' && c <= '9') {
+				buffer.append(c);
+				if (i == s.length() - 1 || !Character.isDigit(s.charAt(i + 1))) {
+					if (stack.isEmpty()) {
+						stack.push(buffer.toString());
+					} else {
+						String peek = stack.peek();
+						if (peek.equals("+")) {
+							stack.pop();
+							int op1 = Integer.valueOf(stack.pop());
+							stack.push(String.valueOf(op1
+									+ Integer.valueOf(buffer.toString())));
+						} else if (peek.equals("-")) {
+							stack.pop();
+							int op1 = Integer.valueOf(stack.pop());
+							stack.push(String.valueOf(op1
+									- Integer.valueOf(buffer.toString())));
+						} else {
+							stack.push(buffer.toString());
+						}
+					}
+					buffer.delete(0, buffer.length());
+				}
+			} else {
+				switch (c) {
+				case '+':
+					stack.push(String.valueOf(c));
+					break;
+				case '-':
+					stack.push(String.valueOf(c));
+					break;
+				case '(':
+					stack.push(String.valueOf(c));
+					break;
+				case ')':
+					String op = stack.pop();
+					stack.pop();
+					if (stack.isEmpty()) {
+						stack.push(op);
+					} else {
+						String peek = stack.peek();
+						if (peek.equals("+")) {
+							stack.pop();
+							int op1 = Integer.valueOf(stack.pop());
+							stack.push(String.valueOf(op1 + Integer.valueOf(op)));
+						} else if (peek.equals("-")) {
+							stack.pop();
+							int op1 = Integer.valueOf(stack.pop());
+							stack.push(String.valueOf(op1 - Integer.valueOf(op)));
+						} else {
+							stack.push(op);
+						}
+					}
+					break;
+				default:
+					break;
+				}
+			}
+		}
+		return Integer.valueOf(stack.pop());
 	}
 
 	/**
@@ -3047,6 +3112,7 @@ public class Solution {
 	 * 
 	 * For example, given [0,1,2,4,5,7], return ["0->2","4->5","7"].
 	 * 
+	 * @idea mind the beginning and the ending of the array
 	 * @param nums
 	 * @return
 	 */
