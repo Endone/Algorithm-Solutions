@@ -167,7 +167,26 @@ public class Solution {
 		// 5, 6, 8, 9, 11, 13, 15, 16, 17 }));
 		// System.out.println(new Solution().calculate("(1+(4+5+2)-3)-(6+8)"));
 		// System.out.println(new Solution().calculate2("3*2*2/4/2*3"));
-		System.out.println(new Solution().calculate2(" 3+5 / 2 "));
+		// System.out.println(new Solution().calculate2(" 3+5 / 2 "));
+		// System.out.println(new Solution().majorityElementII(new int[] { 1, 2,
+		// 2, 2, 3, 3, 1, 1, 1 }));
+		// System.out.println(new Solution().robII(new int[] { 1, 1, 3, 6, 7,
+		// 10,
+		// 7, 1, 8, 5, 9, 1, 4, 4, 3 }));
+		// System.out.println(new Solution().isPowerOfTwo(1024));
+		// ListNode head = new ListNode(3);
+		// ListNode node1 = new ListNode(4);
+		// ListNode node2 = new ListNode(1);
+		// head.next = node1;
+		// node1.next = node2;
+		// ListNode tmp = new Solution().sortList(head);
+		// while (tmp != null) {
+		// System.out.println(tmp.val);
+		// tmp = tmp.next;
+		// }
+		// System.out.println(new Solution().minSubArrayLen(7, new int[] { 2, 3,
+		// 1, 2, 4, 3 }));
+		System.out.println(new Solution().firstBadVersion(2126753390));
 	}
 
 	/**
@@ -1259,6 +1278,35 @@ public class Solution {
 	}
 
 	/**
+	 * Problem 75 Sort Colors - Given an array with n objects colored red, white
+	 * or blue, sort them so that objects of the same color are adjacent, with
+	 * the colors in the order red, white and blue.
+	 * 
+	 * Here, we will use the integers 0, 1, and 2 to represent the color red,
+	 * white, and blue respectively.
+	 * 
+	 * @param nums
+	 */
+	public void sortColors(int[] nums) {
+		int start = 0;
+		int end = 0;
+		int count = 0;
+		int length = nums.length;
+		while (end < length - count) {
+			if (nums[end] == 0) {
+				swap(nums, end, start);
+				start++;
+				end++;
+			} else if (nums[end] == 2) {
+				swap(nums, end, length - 1 - count);
+				count++;
+			} else {
+				end++;
+			}
+		}
+	}
+
+	/**
 	 * Problem 83
 	 * 
 	 * @param head
@@ -1863,6 +1911,57 @@ public class Solution {
 			res.addAll(preorderTraversal(root.right));
 		}
 		return res;
+	}
+
+	/**
+	 * Problem 148 Sort List - Sort a linked list in O(n log n) time using
+	 * constant space complexity.
+	 * 
+	 * @param head
+	 * @return
+	 */
+	public ListNode sortList(ListNode head) {
+		if (head == null || head.next == null)
+			return head;
+		int n = 0;
+		ListNode tmp = head;
+		while (tmp != null) {
+			n++;
+			tmp = tmp.next;
+		}
+		tmp = head;
+		for (int i = 0; i < n / 2 - 1; i++) {
+			tmp = tmp.next;
+		}
+		ListNode right = tmp.next;
+		tmp.next = null;
+		ListNode left = head;
+		left = sortList(left);
+		right = sortList(right);
+		head = mergeList(left, right);
+		return head;
+	}
+
+	private ListNode mergeList(ListNode left, ListNode right) {
+		ListNode head = new ListNode(0);
+		ListNode p = head;
+		while (left != null && right != null) {
+			if (left.val > right.val) {
+				p.next = right;
+				right = right.next;
+			} else {
+				p.next = left;
+				left = left.next;
+			}
+			p = p.next;
+		}
+		if (left != null) {
+			p.next = left;
+		}
+		if (right != null) {
+			p.next = right;
+		}
+		return head.next;
 	}
 
 	/**
@@ -2543,7 +2642,7 @@ public class Solution {
 	 * @idea Sieve of Eratosthenes: start off with a table of n numbers. Let's
 	 *       look at the first number, 2. We know all multiples of 2 must not be
 	 *       primes, so we mark them off as non-primes. Then we look at the next
-	 *       number, 3. Similarly, all multiples of 3 such as 3 ¡Á 2 = 6, 3 ¡Á 3 =
+	 *       number, 3. Similarly, all multiples of 3 such as 3 Ã— 2 = 6, 3 Ã— 3 =
 	 *       9, ... must not be primes, so we mark them off as well. Now we look
 	 *       at the next number, 4, which was already marked off.
 	 * @param n
@@ -2810,6 +2909,88 @@ public class Solution {
 			this.indegree = 0;
 		}
 
+	}
+
+	/**
+	 * Problem 209 Minimum Size Subarray Sum - Given an array of n positive
+	 * integers and a positive integer s, find the minimal length of a subarray
+	 * of which the sum â‰¥ s. If there isn't one, return 0 instead.
+	 * 
+	 * For example, given the array [2,3,1,2,4,3] and s = 7, the subarray [4,3]
+	 * has the minimal length under the problem constraint.
+	 * 
+	 * @param s
+	 * @param nums
+	 * @return
+	 */
+	public int minSubArrayLen(int s, int[] nums) {
+		int length = nums.length;
+		int start = 0;
+		int end = 0;
+		int sum = 0;
+		int min = length;
+		for (; end < length; end++) {
+			sum += nums[end];
+			while (sum >= s) {
+				if (end - start + 1 < min)
+					min = end - start + 1;
+				sum -= nums[start];
+				start++;
+			}
+		}
+		return min == length ? 0 : min;
+	}
+
+	public void swap(int[] data, int i, int j) {
+		int tmp = data[i];
+		data[i] = data[j];
+		data[j] = tmp;
+	}
+
+	/**
+	 * Problem 213 House Robber II -- Note: This is an extension of House
+	 * Robber.
+	 * 
+	 * After robbing those houses on that street, the thief has found himself a
+	 * new place for his thievery so that he will not get too much attention.
+	 * This time, all houses at this place are arranged in a circle. That means
+	 * the first house is the neighbor of the last one. Meanwhile, the security
+	 * system for these houses remain the same as for those in the previous
+	 * street.
+	 * 
+	 * Given a list of non-negative integers representing the amount of money of
+	 * each house, determine the maximum amount of money you can rob tonight
+	 * without alerting the police.
+	 * 
+	 * @idea Run With House Robber I twice, first with nums[0..n-1] and second
+	 *       with nums[1,n];
+	 * @param nums
+	 * @return
+	 */
+	public int robII(int[] nums) {
+		if (nums == null || nums.length <= 0)
+			return 0;
+		if (nums.length == 1) {
+			return nums[0];
+		}
+		if (nums.length == 2) {
+			return Math.max(nums[0], nums[1]);
+		}
+		int rob1 = rob(nums, 0, nums.length - 1);
+		int rob2 = rob(nums, 1, nums.length);
+		return Math.max(rob1, rob2);
+	}
+
+	private int rob(int[] nums, int start, int end) {
+		int length = end - start;
+		int[] s = new int[length];
+		s[0] = nums[start];
+		s[1] = Math.max(nums[start], nums[start + 1]);
+		for (int i = start + 2, j = 2; i < end; i++, j++) {
+			s[j] = Math.max(s[j - 2] + nums[i], s[j - 1]);
+		}
+
+		return s[length - 1];
 	}
 
 	/**
@@ -3088,7 +3269,7 @@ public class Solution {
 	/**
 	 * Problem 226 Invert Binary Tree -- This problem was inspired by this
 	 * original tweet by Max Howell: Google: 90% of our engineers use the
-	 * software you wrote (Homebrew), but you can¡¯t invert a binary tree on a
+	 * software you wrote (Homebrew), but you canâ€™t invert a binary tree on a
 	 * whiteboard so fuck off. (https://twitter.com/mxcl)
 	 * 
 	 * @idea first revert the left and right subtree and recursively call
@@ -3112,8 +3293,8 @@ public class Solution {
 	}
 
 	/**
-	 * Basic Calculator II -- Implement a basic calculator to evaluate a simple
-	 * expression string.
+	 * Problem 227 Basic Calculator II -- Implement a basic calculator to
+	 * evaluate a simple expression string.
 	 * 
 	 * The expression string contains only non-negative integers, +, -, *, /
 	 * operators and empty spaces . The integer division should truncate toward
@@ -3234,6 +3415,238 @@ public class Solution {
 		if (nums.length == 1)
 			res.add(val + "");
 		return res;
+	}
+
+	/**
+	 * Problem 229 Majority Element II -- Given an integer array of size n, find
+	 * all elements that appear more than n/3 times. The algorithm should run in
+	 * linear time and in O(1) space.
+	 * 
+	 * @param nums
+	 * @return
+	 */
+	public List<Integer> majorityElementII(int[] nums) {
+		List<Integer> res = new ArrayList<>();
+		int candidate1 = 0;
+		int count1 = 0;
+		int candidate2 = 0;
+		int count2 = 0;
+		for (int val : nums) {
+			if (count1 == 0 && count2 == 0) {
+				count1++;
+				candidate1 = val;
+			} else if (count1 == 0) {
+				if (candidate2 == val) {
+					count2++;
+				} else {
+					count1++;
+					candidate1 = val;
+				}
+			} else if (count2 == 0) {
+				if (candidate1 == val) {
+					count1++;
+				} else {
+					count2++;
+					candidate2 = val;
+				}
+			} else {
+				if (candidate1 == val || candidate2 == val) {
+					if (candidate1 == val) {
+						count1++;
+					} else {
+						count2++;
+					}
+				} else {
+					count1--;
+					count2--;
+				}
+			}
+		}
+		if (count1 != 0) {
+			count1 = 0;
+			for (int val : nums) {
+				if (val == candidate1)
+					count1++;
+			}
+			if (count1 > nums.length / 3)
+				res.add(candidate1);
+		}
+		if (count2 != 0) {
+			count2 = 0;
+			for (int val : nums) {
+				if (val == candidate2)
+					count2++;
+			}
+			if (count2 > nums.length / 3)
+				res.add(candidate2);
+		}
+		return res;
+	}
+
+	/**
+	 * Problem 230 Kth Smallest Element in a BST -- Given a binary search tree,
+	 * write a function kthSmallest to find the kth smallest element in it.
+	 * 
+	 * Note: You may assume k is always valid, 1 â‰¤ k â‰¤ BST's total elements.
+	 * 
+	 * Follow up: What if the BST is modified (insert/delete operations) often
+	 * and you need to find the kth smallest frequently? How would you optimize
+	 * the kthSmallest routine?
+	 * 
+	 * @param root
+	 * @param k
+	 * @return
+	 */
+	private int count = 0;
+
+	public int kthSmallest(TreeNode root, int k) {
+		int tmp = -1;
+		if (root.left != null) {
+			tmp = kthSmallest(root.left, k);
+		}
+		if (tmp == -1) {
+			count++;
+			if (count == k) {
+				return root.val;
+			} else if (root.right != null) {
+				tmp = kthSmallest(root.right, k);
+			}
+		}
+		return tmp;
+	}
+
+	/**
+	 * Problem 231 Power of Two -- Given an integer, write a function to
+	 * determine if it is a power of two.
+	 * 
+	 * @idea bit manipulation
+	 * @param n
+	 * @return false if there are two 1s
+	 */
+	public boolean isPowerOfTwo(int n) {
+		if (n <= 0)
+			return false;
+		boolean flag = false;
+		while (n > 0) {
+			if ((n & 1) == 1 && flag) {
+				return false;
+			} else if ((n & 1) == 1 && !flag) {
+				flag = true;
+			}
+			n = n >> 1;
+		}
+		return true;
+	}
+
+	/**
+	 * Problem 242 Valid Anagram - Given two strings s and t, write a function
+	 * to determine if t is an anagram of s.
+	 * 
+	 * For example, s = "anagram", t = "nagaram", return true. s = "rat", t =
+	 * "car", return false.
+	 * 
+	 * @param s
+	 * @param t
+	 * @return
+	 */
+	public boolean isAnagram(String s, String t) {
+		if (s == null && t == null)
+			return true;
+		else if (s == null || t == null)
+			return false;
+		Map<Character, Integer> map = new HashMap<>();
+		for (int i = 0; i < s.length(); i++) {
+			char ch = s.charAt(i);
+			if (map.containsKey(ch)) {
+				map.put(ch, map.get(ch) + 1);
+			} else {
+				map.put(ch, 1);
+			}
+		}
+		for (int i = 0; i < t.length(); i++) {
+			char ch = t.charAt(i);
+			if (map.containsKey(ch)) {
+				if (map.get(ch) > 0) {
+					map.put(ch, map.get(ch) - 1);
+				} else {
+					return false;
+				}
+			} else {
+				return false;
+			}
+		}
+		for (Map.Entry<Character, Integer> entry : map.entrySet()) {
+			if (entry.getValue() != 0)
+				return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Problem 278 First Bad Version - You are a product manager and currently
+	 * leading a team to develop a new product. Unfortunately, the latest
+	 * version of your product fails the quality check. Since each version is
+	 * developed based on the previous version, all the versions after a bad
+	 * version are also bad.
+	 * 
+	 * Suppose you have n versions [1, 2, ..., n] and you want to find out the
+	 * first bad one, which causes all the following ones to be bad.
+	 * 
+	 * You are given an API bool isBadVersion(version) which will return whether
+	 * version is bad. Implement a function to find the first bad version. You
+	 * should minimize the number of calls to the API.
+	 * 
+	 * @idea binary search - careful about int value overflow caused by
+	 *       addition.
+	 * @param n
+	 * @return
+	 */
+	public int firstBadVersion(int n) {
+		return firstBadVersion(1, n);
+	}
+
+	public int firstBadVersion(long left, long right) {
+		while (left < right) {
+			long mid = (left + right) / 2;
+			if (isBadVersion((int) mid))
+				right = mid;
+			else
+				left = mid + 1;
+		}
+		return (int) left;
+	}
+
+	private boolean isBadVersion(int mid) {
+		if (mid >= 1702766719)
+			return true;
+		return false;
+	}
+
+	/**
+	 * Problem 279 Perfect Squares - Given a positive integer n, find the least
+	 * number of perfect square numbers (for example, 1, 4, 9, 16, ...) which
+	 * sum to n.
+	 * 
+	 * For example, given n = 12, return 3 because 12 = 4 + 4 + 4; given n = 13,
+	 * return 2 because 13 = 4 + 9.
+	 * 
+	 * @param n
+	 * @return
+	 */
+	public int numSquares(int n) {
+		int[] v = new int[n + 1];
+		v[0] = 0;
+		v[1] = 1;
+		for (int i = 2; i <= n; i++) {
+			int sq = (int) Math.sqrt(i);
+			int min = Integer.MAX_VALUE;
+			for (int j = 1; j <= sq; j++) {
+				if (v[i - j * j] + 1 < min)
+					min = v[i - j * j] + 1;
+			}
+			v[i] = min;
+		}
+		return v[n];
 	}
 }
 
