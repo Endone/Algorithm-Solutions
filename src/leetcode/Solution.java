@@ -3583,6 +3583,65 @@ public class Solution {
 	}
 
 	/**
+	 * Problem 263 Ugly Number - Write a program to check whether a given number
+	 * is an ugly number.
+	 * 
+	 * Ugly numbers are positive numbers whose prime factors only include 2, 3,
+	 * 5. For example, 6, 8 are ugly while 14 is not ugly since it includes
+	 * another prime factor 7.
+	 * 
+	 * Note that 1 is typically treated as an ugly number.
+	 * 
+	 * @param num
+	 * @return
+	 */
+	public boolean isUgly(int num) {
+		if (num == 0)
+			return false;
+		while (num % 2 == 0)
+			num /= 2;
+		while (num % 3 == 0)
+			num /= 3;
+		while (num % 5 == 0)
+			num /= 5;
+		return num == 1;
+	}
+
+	/**
+	 * Proble 268 Missing Number - Given an array containing n distinct numbers
+	 * taken from 0, 1, 2, ..., n, find the one that is missing from the array.
+	 * 
+	 * For example, Given nums = [0, 1, 3] return 2.
+	 * 
+	 * @param nums
+	 * @return
+	 */
+	public int missingNumber(int[] nums) {
+		int n = nums.length;
+		boolean isNShow = false;
+		int i = 0;
+		while (i < n) {
+			if (nums[i] == n) {
+				isNShow = true;
+				i++;
+			} else if (nums[i] != i) {
+				int tmp = nums[i];
+				nums[i] = nums[tmp];
+				nums[tmp] = tmp;
+			} else {
+				i++;
+			}
+		}
+		if (!isNShow)
+			return n;
+		for (int j = 0; j < n; j++) {
+			if (nums[j] == n)
+				return j;
+		}
+		return -1;
+	}
+
+	/**
 	 * Problem 278 First Bad Version - You are a product manager and currently
 	 * leading a team to develop a new product. Unfortunately, the latest
 	 * version of your product fails the quality check. Since each version is
