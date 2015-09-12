@@ -63,28 +63,24 @@ public class Solution {
 		// System.out.println(new Solution().trailingZeroes(1808548329));
 		// System.out.println(new Solution().compareVersion("1.0", "1"));
 		// System.out.println(new Solution().getRow(1));
-		// ListNode head = new ListNode(1);
-		// ListNode node1 = new ListNode(2);
-		// ListNode node2 = new ListNode(3);
-		// ListNode node3 = new ListNode(4);
-		// ListNode node4 = new ListNode(5);
-		// ListNode node5 = new ListNode(6);
-		// ListNode node6 = new ListNode(7);
-		// ListNode node7 = new ListNode(8);
-		// ListNode node8 = new ListNode(9);
-		// head.next = node1;
-		// node1.next = node2;
-		// node2.next = node3;
-		// node3.next = node4;
-		// node4.next = node5;
-		// node5.next = node6;
-		// node6.next = node7;
-		// node7.next = node8;
-		// head = new Solution().reverseKGroup(head, 2);
-		// while (head != null) {
-		// System.out.println(head.val);
-		// head = head.next;
-		// }
+		ListNode head = new ListNode(1);
+		ListNode node1 = new ListNode(2);
+		ListNode node2 = new ListNode(3);
+		ListNode node3 = new ListNode(4);
+		ListNode node4 = new ListNode(5);
+		ListNode node5 = new ListNode(6);
+		ListNode node6 = new ListNode(7);
+		ListNode node7 = new ListNode(8);
+		ListNode node8 = new ListNode(9);
+		head.next = node1;
+		node1.next = node2;
+		node2.next = node3;
+		node3.next = node4;
+		node4.next = node5;
+		node5.next = node6;
+		node6.next = node7;
+		node7.next = node8;
+		System.out.println(new Solution().isPalindrome(head));
 		// System.out.println(new Solution().convert("PAYPALISHIRING", 5));
 		// System.out.println(new Solution().isPalindrome(-2147483648));
 		// System.out.println(new Solution().addBinary("11", "1"));
@@ -186,7 +182,7 @@ public class Solution {
 		// }
 		// System.out.println(new Solution().minSubArrayLen(7, new int[] { 2, 3,
 		// 1, 2, 4, 3 }));
-		System.out.println(new Solution().firstBadVersion(2126753390));
+		// System.out.println(new Solution().firstBadVersion(2126753390));
 	}
 
 	/**
@@ -3539,6 +3535,110 @@ public class Solution {
 	}
 
 	/**
+	 * Problem 234 Palindrome Linked List - Given a singly linked list,
+	 * determine if it is a palindrome.
+	 * 
+	 * Follow up: Could you do it in O(n) time and O(1) space?
+	 * 
+	 * @param head
+	 * @return
+	 */
+	public boolean isPalindrome(ListNode head) {
+		ListNode quick = head;
+		ListNode slow = head;
+		while (quick != null && quick.next != null) {
+			slow = slow.next;
+			quick = quick.next.next;
+		}
+		ListNode half = null;
+		if (quick == null)
+			half = reverseList(slow);
+		else
+			half = reverseList(slow.next);
+		while (half != null) {
+			if (head.val != half.val)
+				return false;
+			head = head.next;
+			half = half.next;
+		}
+		return true;
+	}
+
+	/**
+	 * Problem 235 Lowest Common Ancestor of a Binary Search Tree - Given a
+	 * binary search tree (BST), find the lowest common ancestor (LCA) of two
+	 * given nodes in the BST.
+	 * 
+	 * According to the definition of LCA on Wikipedia: “The lowest common
+	 * ancestor is defined between two nodes v and w as the lowest node in T
+	 * that has both v and w as descendants (where we allow a node to be a
+	 * descendant of itself).”
+	 * 
+	 * _______6______ / \ ___2__ ___8__ / \ / \ 0 _4 7 9 / \ 3 5 For example,
+	 * the lowest common ancestor (LCA) of nodes 2 and 8 is 6. Another example
+	 * is LCA of nodes 2 and 4 is 2, since a node can be a descendant of itself
+	 * according to the LCA definition.
+	 * 
+	 * @param root
+	 * @param p
+	 * @param q
+	 * @return
+	 */
+	public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+		if (root == p || root == q)
+			return root;
+		int pp = find(root, p);
+		int pq = find(root, q);
+		if (pp != pq)
+			return root;
+		else if (pp == 0) {
+			return lowestCommonAncestor(root.left, p, q);
+		} else {
+			return lowestCommonAncestor(root.right, p, q);
+		}
+	}
+
+	public int find(TreeNode root, TreeNode node) {
+		if (root == null)
+			return -1;
+		if (root.left == node)
+			return 0;
+		if (root.right == node)
+			return 1;
+		int left = find(root.left, node);
+		int right = find(root.right, node);
+		if (left == -1 && right == -1)
+			return -1;
+		else if (left != -1)
+			return 0;
+		else
+			return 1;
+	}
+
+	/**
+	 * Problem 237 Delete Node in a Linked List - Write a function to delete a
+	 * node (except the tail) in a singly linked list, given only access to that
+	 * node.
+	 * 
+	 * Supposed the linked list is 1 -> 2 -> 3 -> 4 and you are given the third
+	 * node with value 3, the linked list should become 1 -> 2 -> 4 after
+	 * calling your function
+	 * 
+	 * @param node
+	 */
+	public void deleteNode(ListNode node) {
+		if (node.next == null)
+			node = null;
+		ListNode pre = null;
+		while (node.next != null) {
+			node.val = node.next.val;
+			pre = node;
+			node = node.next;
+		}
+		pre.next = null;
+	}
+
+	/**
 	 * Problem 242 Valid Anagram - Given two strings s and t, write a function
 	 * to determine if t is an anagram of s.
 	 * 
@@ -3580,6 +3680,66 @@ public class Solution {
 				return false;
 		}
 		return true;
+	}
+
+	/**
+	 * Problem 257 Binary Tree Paths - Given a binary tree, return all
+	 * root-to-leaf paths.
+	 * 
+	 * For example, given the following binary tree:
+	 * 
+	 * 1 / \ 2 3 \ 5 All root-to-leaf paths are:
+	 * 
+	 * ["1->2->5", "1->3"]
+	 * 
+	 * @param root
+	 * @return
+	 */
+	public List<String> binaryTreePaths(TreeNode root) {
+		List<String> res = new ArrayList<>();
+		if (root == null)
+			return res;
+		List<String> left = null;
+		List<String> right = null;
+		if (root.left == null && root.right == null) {
+			res.add(root.val + "");
+			return res;
+		}
+		if (root.left != null)
+			left = binaryTreePaths(root.left);
+		if (root.right != null)
+			right = binaryTreePaths(root.right);
+		if (left != null)
+			for (String str : left)
+				res.add(root.val + "->" + str);
+		if (right != null)
+			for (String str : right)
+				res.add(root.val + "->" + str);
+		return res;
+	}
+
+	/**
+	 * Problem 258 Add Digits - Given a non-negative integer num, repeatedly add
+	 * all its digits until the result has only one digit.
+	 * 
+	 * For example:
+	 * 
+	 * Given num = 38, the process is like: 3 + 8 = 11, 1 + 1 = 2. Since 2 has
+	 * only one digit, return it.
+	 * 
+	 * @param num
+	 * @return
+	 */
+	public int addDigits(int num) {
+		while (num > 9) {
+			int sum = 0;
+			while (num > 0) {
+				sum += num % 10;
+				num /= 10;
+			}
+			num = sum;
+		}
+		return num;
 	}
 
 	/**
@@ -3706,6 +3866,69 @@ public class Solution {
 			v[i] = min;
 		}
 		return v[n];
+	}
+}
+
+/**
+ * Problem 232 Implement Queue using Stacks - Implement the following operations
+ * of a queue using stacks.
+ * 
+ * push(x) -- Push element x to the back of queue. pop() -- Removes the element
+ * from in front of queue. peek() -- Get the front element. empty() -- Return
+ * whether the queue is empty.
+ * 
+ * @author Administrator
+ * 
+ */
+class MyQueue {
+	Stack<Integer> stack1;
+	Stack<Integer> stack2;
+
+	// Push element x to the back of queue.
+	public void push(int x) {
+		if (stack1 == null) {
+			stack1 = new Stack<Integer>();
+		}
+		stack1.push(x);
+	}
+
+	// Removes the element from in front of queue.
+	public void pop() {
+		if (!stack1.isEmpty()) {
+			if (stack2 == null) {
+				stack2 = new Stack<>();
+			}
+			while (!stack1.isEmpty()) {
+				stack2.push(stack1.pop());
+			}
+			stack2.pop();
+			while (!stack2.isEmpty()) {
+				stack1.push(stack2.pop());
+			}
+		}
+	}
+
+	// Get the front element.
+	public int peek() {
+		if (!stack1.isEmpty()) {
+			if (stack2 == null) {
+				stack2 = new Stack<>();
+			}
+			while (!stack1.isEmpty()) {
+				stack2.push(stack1.pop());
+			}
+			int val = stack2.peek();
+			while (!stack2.isEmpty()) {
+				stack1.push(stack2.pop());
+			}
+			return val;
+		}
+		return -1;
+	}
+
+	// Return whether the queue is empty.
+	public boolean empty() {
+		return stack1 == null || stack1.isEmpty();
 	}
 }
 
