@@ -15,6 +15,7 @@ import java.util.TreeMap;
 
 public class Solution {
 	public static void main(String[] args) {
+		Solution solution = new Solution();
 		// System.out.println(new Solution().removeDuplicates(new int[] { 1, 2,
 		// 2,
 		// 2, 3, 3, 3, 4, 5, 6 }));
@@ -63,24 +64,24 @@ public class Solution {
 		// System.out.println(new Solution().trailingZeroes(1808548329));
 		// System.out.println(new Solution().compareVersion("1.0", "1"));
 		// System.out.println(new Solution().getRow(1));
-		ListNode head = new ListNode(1);
-		ListNode node1 = new ListNode(2);
-		ListNode node2 = new ListNode(3);
-		ListNode node3 = new ListNode(4);
-		ListNode node4 = new ListNode(5);
-		ListNode node5 = new ListNode(6);
-		ListNode node6 = new ListNode(7);
-		ListNode node7 = new ListNode(8);
-		ListNode node8 = new ListNode(9);
-		head.next = node1;
-		node1.next = node2;
-		node2.next = node3;
-		node3.next = node4;
-		node4.next = node5;
-		node5.next = node6;
-		node6.next = node7;
-		node7.next = node8;
-		System.out.println(new Solution().isPalindrome(head));
+		// ListNode head = new ListNode(1);
+		// ListNode node1 = new ListNode(2);
+		// ListNode node2 = new ListNode(3);
+		// ListNode node3 = new ListNode(4);
+		// ListNode node4 = new ListNode(5);
+		// ListNode node5 = new ListNode(6);
+		// ListNode node6 = new ListNode(7);
+		// ListNode node7 = new ListNode(8);
+		// ListNode node8 = new ListNode(9);
+		// head.next = node1;
+		// node1.next = node2;
+		// node2.next = node3;
+		// node3.next = node4;
+		// node4.next = node5;
+		// node5.next = node6;
+		// node6.next = node7;
+		// node7.next = node8;
+		// System.out.println(new Solution().isPalindrome(head));
 		// System.out.println(new Solution().convert("PAYPALISHIRING", 5));
 		// System.out.println(new Solution().isPalindrome(-2147483648));
 		// System.out.println(new Solution().addBinary("11", "1"));
@@ -183,6 +184,8 @@ public class Solution {
 		// System.out.println(new Solution().minSubArrayLen(7, new int[] { 2, 3,
 		// 1, 2, 4, 3 }));
 		// System.out.println(new Solution().firstBadVersion(2126753390));
+		System.out.println(solution.singleNumberIII(new int[] { -145417756,
+				744132272 })[0]);
 	}
 
 	/**
@@ -3740,6 +3743,49 @@ public class Solution {
 			num = sum;
 		}
 		return num;
+	}
+
+	/**
+	 * Problem 260 Single Number III - Given an array of numbers nums, in which
+	 * exactly two elements appear only once and all the other elements appear
+	 * exactly twice. Find the two elements that appear only once.
+	 * 
+	 * For example:
+	 * 
+	 * Given nums = [1, 2, 1, 3, 2, 5], return [3, 5].
+	 * 
+	 * @Note: The order of the result is not important. So in the above example,
+	 *        [5, 3] is also correct. Your algorithm should run in linear
+	 *        runtime complexity. Could you implement it using only constant
+	 *        space complexity?
+	 * 
+	 * @param nums
+	 * @return
+	 */
+	public int[] singleNumberIII(int[] nums) {
+		int res = 0;
+		for (int val : nums) {
+			res ^= val;
+		}
+		int count = 0;
+		while (true) {
+			if ((res & 1) == 0) {
+				count++;
+			} else {
+				break;
+			}
+			res >>= 1;
+		}
+		int num1 = 0;
+		int num2 = 0;
+		for (int val : nums) {
+			if (((val >> count) & 1) == 1) {
+				num1 ^= val;
+			} else {
+				num2 ^= val;
+			}
+		}
+		return new int[] { num1, num2 };
 	}
 
 	/**
