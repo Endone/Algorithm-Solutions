@@ -2,6 +2,7 @@ package leetcode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.EmptyStackException;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -16,54 +17,6 @@ import java.util.TreeMap;
 public class Solution {
 	public static void main(String[] args) {
 		Solution solution = new Solution();
-		// System.out.println(new Solution().removeDuplicates(new int[] { 1, 2,
-		// 2,
-		// 2, 3, 3, 3, 4, 5, 6 }));
-		// System.out.println(new Solution().strStr("aaab", "ab"));
-		// System.out.println(new Solution().divide(1000, -11));
-		// System.out.println(new Solution().generateParenthesis(5));
-		// System.out.println(new Solution().mySqrt(2147395599));
-		// System.out.println(new Solution().isHappy(41));
-		// System.out.println(new Solution().rob(new int[] { 1, 20, 3, 19, 20,
-		// 10,
-		// 40 }));
-		// System.out.println(new Solution().containsNearbyAlmostDuplicate(
-		// new int[] { 0, 10, 22, 15, 0, 5, 22, 12, 1, 5 }, 3, 3));
-		// System.out.println(new Solution().maximalSquare(new char[][] {
-		// new char[] { '1', '1', '1', '1', '1' },
-		// new char[] { '1', '0', '1', '0', '1' },
-		// new char[] { '1', '1', '1', '1', '1' },
-		// new char[] { '1', '0', '0', '1', '1' } }));
-		// for (int i : new Solution().plusOne(new int[] { 9, 2, 9 }))
-		// System.out.println(i);
-		// System.out.println(new Solution().longestCommonPrefix(new String[] {
-		// "123", "1234" }));
-		// Solution tmpSolution = new Solution();
-		// MinStack stack = tmpSolution.new MinStack();
-		// stack.push(2147483646);
-		// stack.push(2147483646);
-		// stack.push(2147483647);
-		// System.out.println(stack.top());
-		// stack.pop();
-		// System.out.println(stack.getMin());
-		// stack.pop();
-		// stack.getMin();
-		// stack.pop();
-		// stack.push(2147483647);
-		// stack.top();
-		// stack.getMin();
-		// stack.push(-2147483648);
-		// stack.top();
-		// stack.getMin();
-		// stack.pop();
-		// stack.getMin();
-		// System.out
-		// .println(new Solution()
-		// .isPalindrome("Damosel, a poem? A carol? Or a cameo pale? (So mad!)"));
-		// System.out.println(new Solution().convertToTitle(53));
-		// System.out.println(new Solution().trailingZeroes(1808548329));
-		// System.out.println(new Solution().compareVersion("1.0", "1"));
-		// System.out.println(new Solution().getRow(1));
 		// ListNode head = new ListNode(1);
 		// ListNode node1 = new ListNode(2);
 		// ListNode node2 = new ListNode(3);
@@ -81,28 +34,6 @@ public class Solution {
 		// node5.next = node6;
 		// node6.next = node7;
 		// node7.next = node8;
-		// System.out.println(new Solution().isPalindrome(head));
-		// System.out.println(new Solution().convert("PAYPALISHIRING", 5));
-		// System.out.println(new Solution().isPalindrome(-2147483648));
-		// System.out.println(new Solution().addBinary("11", "1"));
-		// System.out.println(new Solution().countAndSay(5));
-		// System.out.println(new Solution().isValidSudoku(new char[][] {
-		// ".87654321".toCharArray(), "2........".toCharArray(),
-		// "3........".toCharArray(), "4........".toCharArray(),
-		// "5........".toCharArray(), "6........".toCharArray(),
-		// "7........".toCharArray(), "8........".toCharArray(),
-		// "9........".toCharArray() }));
-		// System.out.println(new Solution().findMin(new int[] { 3, 4, 5, 6, 7,
-		// 0,
-		// 1, 2 }));
-		// System.out.println(new Solution().maxProduct(new int[] { -4, -3, -2
-		// }));
-		// System.out.println(new Solution().intToRoman(1666));
-		// System.out.println(new Solution().canJump(new int[] { 2, 2, 1, 0, 4
-		// }));
-		// System.out.println(new Solution().numIslands(new char[][] {
-		// "10111".toCharArray(), "10101".toCharArray(),
-		// "11101".toCharArray() }));
 		// TreeNode root = new TreeNode(6);
 		// TreeNode node2 = new TreeNode(1);
 		// TreeNode node3 = new TreeNode(3);
@@ -114,78 +45,12 @@ public class Solution {
 		// node3.left = node4;
 		// node3.right = node5;
 		// node5.left = node6;
-		// System.out.println(new Solution().rightSideViewSimple(root));
-		// System.out
-		// .println(new Solution().computeArea(-2, -2, 2, 2, 3, 3, 4, 4));
-		// MyStack stack = new MyStack();
-		// stack.push(1);
-		// stack.push(2);
-		// System.out.println(stack.top());
-		// System.out.println(stack.empty());
-		// stack.pop();
-		// System.out.println(stack.top());
-		// stack.pop();
-		// System.out.println(stack.empty());
-		// System.out.println(new Solution().canFinishWithStack(5, new int[][] {
-		// new int[] { 0, 2 }, new int[] { 1, 2 }, new int[] { 2, 3 },
-		// new int[] { 2, 4 }, new int[] { 3, 4 } }));
-		// System.out.println(new Solution().canFinishWithStack(2, new int[][] {
-		// new int[] { 0, 1 }, new int[] { 1, 0 } }));
-		// System.out.println(new Solution().canFinishWithStack(10, new int[][]
-		// {
-		// new int[] { 5, 8 }, new int[] { 3, 5 }, new int[] { 1, 9 },
-		// new int[] { 4, 5 }, new int[] { 0, 2 }, new int[] { 1, 9 },
-		// new int[] { 7, 8 }, new int[] { 4, 9 } }));
-		// System.out.println(new Solution().canFinishWithRecurence(5,
-		// new int[][] { new int[] { 0, 2 }, new int[] { 1, 2 },
-		// new int[] { 2, 3 }, new int[] { 2, 4 },
-		// new int[] { 3, 4 } }));
-		// System.out.println(new Solution().canFinishWithRecurence(2,
-		// new int[][] { new int[] { 0, 1 }, new int[] { 1, 0 } }));
-		// System.out.println(new Solution().canFinishWithRecurence(10,
-		// new int[][] { new int[] { 5, 8 }, new int[] { 3, 5 },
-		// new int[] { 1, 9 }, new int[] { 4, 5 },
-		// new int[] { 0, 2 }, new int[] { 1, 9 },
-		// new int[] { 7, 8 }, new int[] { 4, 9 } }));
-		// System.out.println(new Solution().canFinishWithIndegree(5, new
-		// int[][] {
-		// new int[] { 0, 2 }, new int[] { 1, 2 }, new int[] { 2, 3 },
-		// new int[] { 2, 4 }, new int[] { 3, 4 } }));
-		// System.out.println(new Solution().canFinishWithIndegree(2, new
-		// int[][] {
-		// new int[] { 0, 1 }, new int[] { 1, 0 } }));
-		// System.out.println(new Solution().canFinishWithIndegree(10,
-		// new int[][] { new int[] { 5, 8 }, new int[] { 3, 5 },
-		// new int[] { 1, 9 }, new int[] { 4, 5 },
-		// new int[] { 0, 2 }, new int[] { 1, 9 },
-		// new int[] { 7, 8 }, new int[] { 4, 9 } }));
-		// System.out.println(new Solution().summaryRanges(new int[] { 0, 1, 2,
-		// 4,
-		// 5, 6, 8, 9, 11, 13, 15, 16, 17 }));
-		// System.out.println(new Solution().calculate("(1+(4+5+2)-3)-(6+8)"));
-		// System.out.println(new Solution().calculate2("3*2*2/4/2*3"));
-		// System.out.println(new Solution().calculate2(" 3+5 / 2 "));
-		// System.out.println(new Solution().majorityElementII(new int[] { 1, 2,
-		// 2, 2, 3, 3, 1, 1, 1 }));
-		// System.out.println(new Solution().robII(new int[] { 1, 1, 3, 6, 7,
-		// 10,
-		// 7, 1, 8, 5, 9, 1, 4, 4, 3 }));
-		// System.out.println(new Solution().isPowerOfTwo(1024));
-		// ListNode head = new ListNode(3);
-		// ListNode node1 = new ListNode(4);
-		// ListNode node2 = new ListNode(1);
-		// head.next = node1;
-		// node1.next = node2;
-		// ListNode tmp = new Solution().sortList(head);
-		// while (tmp != null) {
-		// System.out.println(tmp.val);
-		// tmp = tmp.next;
-		// }
-		// System.out.println(new Solution().minSubArrayLen(7, new int[] { 2, 3,
-		// 1, 2, 4, 3 }));
-		// System.out.println(new Solution().firstBadVersion(2126753390));
-		System.out.println(solution.singleNumberIII(new int[] { -145417756,
-				744132272 })[0]);
+		// System.out.println(solution.nthUglyNumber(10));
+		// solution.threeSum2(new int[] { 0, 0, 0, -1, 1, -2, -2, 2 });
+		// solution.fourSum(new int[] { 0, 0, 0, 0 }, 0);
+		System.out.println(solution.searchRange(
+				new int[] { 5, 7, 7, 8, 8, 10 }, 8));
+
 	}
 
 	/**
@@ -220,6 +85,8 @@ public class Solution {
 	/**
 	 * Problem 2
 	 * 
+	 * @idea list iteration with inc to tag whether there is an increment from
+	 *       lower addition
 	 * @param l1
 	 * @param l2
 	 * @return head of ListNode represent the sum of l1 and l2
@@ -256,6 +123,9 @@ public class Solution {
 	/**
 	 * Problem 3
 	 * 
+	 * @idea string character iteration with two pointers, move the right one
+	 *       and increase the length if no repeat character, move the left to
+	 *       the repeat position otherwise
 	 * @param s
 	 * @return the length
 	 */
@@ -626,6 +496,209 @@ public class Solution {
 	}
 
 	/**
+	 * Problem 15 3Sum - Given an array S of n integers, are there elements a,
+	 * b, c in S such that a + b + c = 0? Find all unique triplets in the array
+	 * which gives the sum of zero.
+	 * 
+	 * @Note: Elements in a triplet (a,b,c) must be in non-descending order.
+	 *        (ie, a ≤ b ≤ c) The solution set must not contain duplicate
+	 *        triplets. For example, given array S = {-1 0 1 2 -1 -4},
+	 * 
+	 *        A solution set is: (-1, 0, 1) (-1, -1, 2)
+	 * 
+	 * @param nums
+	 * @return
+	 */
+	public List<List<Integer>> threeSum(int[] nums) {
+		Set<Integer> set = new HashSet<Integer>();
+		List<List<Integer>> result = new ArrayList<>();
+		for (int i = 0; i < nums.length; i++) {
+			if (i > 0 && nums[i] == nums[i - 1])
+				continue;
+			if (!set.contains(nums[i])) {
+				int target = -nums[i];
+				Set<Integer> setSum = new HashSet<Integer>();
+				for (int j = i + 1; j < nums.length; j++) {
+					if (setSum.contains(target - nums[j])) {
+						List<Integer> list = new ArrayList<>();
+						list.add(nums[i]);
+						list.add(nums[j]);
+						list.add(target - nums[j]);
+						Collections.sort(list);
+						result.add(list);
+						setSum.remove(target - nums[j]);
+						while (j < nums.length - 1) {
+							if (nums[j + 1] == nums[j])
+								j++;
+							else {
+								break;
+							}
+						}
+					} else
+						setSum.add(nums[j]);
+				}
+				setSum.clear();
+				set.add(nums[i]);
+			}
+		}
+		return result;
+	}
+
+	public List<List<Integer>> threeSum2(int[] nums) {
+		Arrays.sort(nums);
+
+		List<List<Integer>> result = new ArrayList<>();
+		for (int i = 0; i < nums.length; i++) {
+			if (i > 0 && nums[i] == nums[i - 1])
+				continue;
+			int target = 0 - nums[i];
+			int head = i + 1;
+			int tail = nums.length - 1;
+			while (head < tail) {
+				if (nums[head] + nums[tail] > target) {
+					tail--;
+				} else if (nums[head] + nums[tail] < target) {
+					head++;
+				} else {
+					List<Integer> list = new ArrayList<>();
+					list.add(nums[i]);
+					list.add(nums[head]);
+					list.add(nums[tail]);
+					int k = head + 1;
+					while (k < tail) {
+						if (nums[k] == nums[head])
+							k++;
+						else
+							break;
+					}
+					head = k;
+					k = tail - 1;
+					while (head < k) {
+						if (nums[tail] == nums[k])
+							k--;
+						else
+							break;
+					}
+					tail = k;
+					result.add(list);
+				}
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * Problem 16 3Sum Closest - Given an array S of n integers, find three
+	 * integers in S such that the sum is closest to a given number, target.
+	 * Return the sum of the three integers. You may assume that each input
+	 * would have exactly one solution.
+	 * 
+	 * For example, given array S = {-1 2 1 -4}, and target = 1.
+	 * 
+	 * The sum that is closest to the target is 2. (-1 + 2 + 1 = 2).
+	 * 
+	 * @param nums
+	 * @param target
+	 * @return
+	 */
+	public int threeSumClosest(int[] nums, int target) {
+		Arrays.sort(nums);
+		int min = Integer.MAX_VALUE;
+		int minSum = Integer.MAX_VALUE;
+		for (int i = 0; i < nums.length; i++) {
+			if (i > 0 && nums[i] == nums[i - 1])
+				continue;
+			int val = target - nums[i];
+			int head = i + 1;
+			int tail = nums.length - 1;
+			while (head < tail) {
+				int diff = nums[head] + nums[tail] - val;
+				if (diff > 0) {
+					if (diff < min) {
+						min = diff;
+						minSum = nums[head] + nums[tail] + nums[i];
+					}
+					tail--;
+				} else if (diff < 0) {
+					if (-diff < min) {
+						min = -diff;
+						minSum = nums[head] + nums[tail] + nums[i];
+					}
+					head++;
+				} else {
+					return target;
+				}
+			}
+		}
+		return minSum;
+	}
+
+	/**
+	 * Problem 18 4Sum - Given an array S of n integers, are there elements a,
+	 * b, c, and d in S such that a + b + c + d = target? Find all unique
+	 * quadruplets in the array which gives the sum of target.
+	 * 
+	 * @Note: Elements in a quadruplet (a,b,c,d) must be in non-descending
+	 *        order. (ie, a ≤ b ≤ c ≤ d) The solution set must not contain
+	 *        duplicate quadruplets. For example, given array S = {1 0 -1 0 -2
+	 *        2}, and target = 0.
+	 * 
+	 *        A solution set is: (-1, 0, 0, 1) (-2, -1, 1, 2) (-2, 0, 0, 2)
+	 * 
+	 * @param nums
+	 * @param target
+	 * @return
+	 */
+	public List<List<Integer>> fourSum(int[] nums, int target) {
+		Arrays.sort(nums);
+
+		List<List<Integer>> result = new ArrayList<>();
+		for (int m = 0; m < nums.length - 3; m++) {
+			if (m > 0 && nums[m] == nums[m - 1])
+				continue;
+			int val = target - nums[m];
+			for (int i = m + 1; i < nums.length - 2; i++) {
+				if (i > 0 && nums[i] == nums[i - 1])
+					continue;
+				int tar = val - nums[i];
+				int head = i + 1;
+				int tail = nums.length - 1;
+				while (head < tail) {
+					if (nums[head] + nums[tail] > tar) {
+						tail--;
+					} else if (nums[head] + nums[tail] < tar) {
+						head++;
+					} else {
+						List<Integer> list = new ArrayList<>();
+						list.add(nums[m]);
+						list.add(nums[i]);
+						list.add(nums[head]);
+						list.add(nums[tail]);
+						int k = head + 1;
+						while (k < tail) {
+							if (nums[k] == nums[head])
+								k++;
+							else
+								break;
+						}
+						head = k;
+						k = tail - 1;
+						while (head < k) {
+							if (nums[tail] == nums[k])
+								k--;
+							else
+								break;
+						}
+						tail = k;
+						result.add(list);
+					}
+				}
+			}
+		}
+		return result;
+	}
+
+	/**
 	 * Problem 19
 	 * 
 	 * @param head
@@ -790,6 +863,41 @@ public class Solution {
 			size = round;
 		}
 		return res;
+	}
+
+	/**
+	 * Problem 24 Swap Nodes - in Pairs My Submissions Question Solution Total
+	 * Given a linked list, swap every two adjacent nodes and return its head.
+	 * 
+	 * For example, Given 1->2->3->4, you should return the list as 2->1->4->3.
+	 * 
+	 * Your algorithm should use only constant space. You may not modify the
+	 * values in the list, only nodes itself can be changed.
+	 * 
+	 * @param head
+	 * @return
+	 */
+	public ListNode swapPairs(ListNode head) {
+		if (head == null || head.next == null)
+			return head;
+		ListNode left = head;
+		ListNode right = head.next;
+		ListNode tmp = new ListNode(0);
+		tmp.next = swapPairs(left, right);
+		return tmp.next;
+	}
+
+	public ListNode swapPairs(ListNode left, ListNode right) {
+		left.next = right.next;
+		right.next = left;
+		ListNode tmpL = left;
+		ListNode tmpR = right;
+		left = left.next;
+		if (left != null && left.next != null) {
+			right = left.next;
+			tmpL.next = swapPairs(left, right);
+		}
+		return tmpR;
 	}
 
 	/**
@@ -971,6 +1079,104 @@ public class Solution {
 				return (int) -l;
 			}
 		}
+	}
+
+	/**
+	 * Problem 31 Next Permutation - Implement next permutation, which
+	 * rearranges numbers into the lexicographically next greater permutation of
+	 * numbers.
+	 * 
+	 * If such arrangement is not possible, it must rearrange it as the lowest
+	 * possible order (ie, sorted in ascending order).
+	 * 
+	 * The replacement must be in-place, do not allocate extra memory.
+	 * 
+	 * Here are some examples. Inputs are in the left-hand column and its
+	 * corresponding outputs are in the right-hand column.
+	 * 
+	 * @example 1,2,3 → 1,3,2
+	 * @example 3,2,1 → 1,2,3
+	 * @example 1,1,5 → 1,5,1
+	 * 
+	 * @param nums
+	 */
+	public void nextPermutation(int[] nums) {
+		int length = nums.length;
+		int index = -1;
+		int max = -1;
+		int position = -1;
+		for (int j = length - 1; j > 0; j--) {
+			int val = nums[j];
+			for (int i = j - 1; i >= 0; i--) {
+				if (nums[i] < val) {
+					if (i > max) {
+						max = i;
+						position = j;
+					}
+				}
+			}
+		}
+		if (max == -1) {
+			Arrays.sort(nums);
+		} else {
+			int tmp = nums[position];
+			nums[position] = nums[max];
+			nums[max] = tmp;
+			Arrays.sort(nums, max + 1, length);
+		}
+	}
+
+	/**
+	 * Problem 34 Search for a Range - Given a sorted array of integers, find
+	 * the starting and ending position of a given target value.
+	 * 
+	 * Your algorithm's runtime complexity must be in the order of O(log n).
+	 * 
+	 * If the target is not found in the array, return [-1, -1].
+	 * 
+	 * @example For example, Given [5, 7, 7, 8, 8, 10] and target value 8,
+	 *          return [3, 4].
+	 * 
+	 * @param nums
+	 * @param target
+	 * @return
+	 */
+	public int[] searchRange(int[] nums, int target) {
+		int tarMin = target - 1;
+		int tarMax = target + 1;
+		int p1 = search(nums, tarMin, true);
+		int p2 = search(nums, tarMax, false);
+		if (p1 > p2)
+			return new int[] { -1, -1 };
+		else {
+			return new int[] { p1, p2 };
+		}
+	}
+
+	public int search(int[] nums, int val, boolean flag) {
+		int left = 0;
+		int right = nums.length - 1;
+		int res = -1;
+		while (left <= right) {
+			int middle = (left + right) / 2;
+			if (nums[middle] < val) {
+				left = middle + 1;
+			} else if (nums[middle] > val) {
+				right = middle - 1;
+			} else {
+				if (flag) {
+					res = middle;
+					left = middle + 1;
+				} else {
+					res = middle;
+					right = middle - 1;
+				}
+			}
+		}
+		if (res == -1)
+			return flag ? left : right;
+
+		return flag ? res + 1 : res - 1;
 	}
 
 	/**
@@ -3811,6 +4017,60 @@ public class Solution {
 		while (num % 5 == 0)
 			num /= 5;
 		return num == 1;
+	}
+
+	/**
+	 * Problem 264 Ugly Number II - Write a program to find the n-th ugly
+	 * number.
+	 * 
+	 * Ugly numbers are positive numbers whose prime factors only include 2, 3,
+	 * 5. For example, 1, 2, 3, 4, 5, 6, 8, 9, 10, 12 is the sequence of the
+	 * first 10 ugly numbers.
+	 * 
+	 * Note that 1 is typically treated as an ugly number.
+	 * 
+	 * @param n
+	 * @return
+	 */
+	public int nthUglyNumber(int n) {
+		List<Integer> l1 = new LinkedList<>();
+		List<Integer> l2 = new LinkedList<>();
+		List<Integer> l3 = new LinkedList<>();
+		Set<Integer> set = new HashSet<>();
+		l1.add(2);
+		l2.add(3);
+		l3.add(5);
+		int count = 1;
+		int val = 1;
+		while (count < n) {
+			val = getMin(l1, l2, l3);
+			if (!set.contains(val)) {
+				l1.add(val * 2);
+				l2.add(val * 3);
+				l3.add(val * 5);
+				count++;
+				set.add(val);
+			}
+		}
+		return val;
+	}
+
+	public int getMin(List<Integer> l1, List<Integer> l2, List<Integer> l3) {
+		int val = 0;
+		if (l1.get(0) > l2.get(0)) {
+			if (l2.get(0) > l3.get(0)) {
+				val = l3.remove(0);
+			} else {
+				val = l2.remove(0);
+			}
+		} else {
+			if (l1.get(0) > l3.get(0)) {
+				val = l3.remove(0);
+			} else {
+				val = l1.remove(0);
+			}
+		}
+		return val;
 	}
 
 	/**
