@@ -48,9 +48,10 @@ public class Solution {
 		// System.out.println(solution.nthUglyNumber(10));
 		// solution.threeSum2(new int[] { 0, 0, 0, -1, 1, -2, -2, 2 });
 		// solution.fourSum(new int[] { 0, 0, 0, 0 }, 0);
-		System.out.println(solution.searchRange(
-				new int[] { 5, 7, 7, 8, 8, 10 }, 8));
-
+		// System.out.println(solution.searchRange(
+		// new int[] { 5, 7, 7, 8, 8, 10 }, 8));
+		solution.rotate(new int[][] { { 1, 2, 3, 4 }, { 5, 6, 7, 8 },
+				{ 9, 10, 11, 12 }, { 13, 14, 15, 16 } });
 	}
 
 	/**
@@ -1102,7 +1103,6 @@ public class Solution {
 	 */
 	public void nextPermutation(int[] nums) {
 		int length = nums.length;
-		int index = -1;
 		int max = -1;
 		int position = -1;
 		for (int j = length - 1; j > 0; j--) {
@@ -1287,6 +1287,30 @@ public class Solution {
 	}
 
 	/**
+	 * Problem 48 Rotate Image - You are given an n x n 2D matrix representing
+	 * an image.
+	 * 
+	 * Rotate the image by 90 degrees (clockwise).
+	 * 
+	 * Follow up: Could you do this in-place?
+	 * 
+	 * @param matrix
+	 */
+	public void rotate(int[][] matrix) {
+		int n = matrix.length;
+		int layer = n / 2;
+		for (int i = 0; i < layer; i++) {
+			for (int j = i; j < n - 1 - i; j++) {
+				int tmp = matrix[i][j];
+				matrix[i][j] = matrix[n - 1 - j][i];
+				matrix[n - 1 - j][i] = matrix[n - 1 - i][n - 1 - j];
+				matrix[n - 1 - i][n - 1 - j] = matrix[j][n - 1 - i];
+				matrix[j][n - 1 - i] = tmp;
+			}
+		}
+	}
+
+	/**
 	 * Problem 53
 	 * 
 	 * @param A
@@ -1357,6 +1381,67 @@ public class Solution {
 		if (parts.length == 0)
 			return 0;
 		return parts[parts.length - 1].length();
+	}
+
+	/**
+	 * Problem 62 Unique Paths - A robot is located at the top-left corner of a
+	 * m x n grid (marked 'Start' in the diagram below).
+	 * 
+	 * The robot can only move either down or right at any point in time. The
+	 * robot is trying to reach the bottom-right corner of the grid (marked
+	 * 'Finish' in the diagram below).
+	 * 
+	 * How many possible unique paths are there?
+	 * 
+	 * @param m
+	 * @param n
+	 * @return
+	 */
+	public int uniquePaths(int m, int n) {
+		int[][] path = new int[m][n];
+		path[0][0] = 1;
+		for (int i = 1; i < m; i++) {
+			path[i][0] = 1;
+		}
+		for (int i = 1; i < n; i++) {
+			path[0][i] = 1;
+		}
+		for (int i = 1; i < m; i++) {
+			for (int j = 1; j < n; j++) {
+				path[i][j] = path[i - 1][j] + path[i][j - 1];
+			}
+		}
+		return path[m - 1][n - 1];
+	}
+
+	/**
+	 * Problem 64 Minimum Path Sum - Given a m x n grid filled with non-negative
+	 * numbers, find a path from top left to bottom right which minimizes the
+	 * sum of all numbers along its path.
+	 * 
+	 * @Note: You can only move either down or right at any point in time.
+	 * 
+	 * @param grid
+	 * @return
+	 */
+	public int minPathSum(int[][] grid) {
+		int m = grid.length;
+		int n = grid[0].length;
+		int[][] path = new int[m][n];
+		path[0][0] = grid[0][0];
+		for (int i = 1; i < m; i++) {
+			path[i][0] = path[i - 1][0] + grid[i][0];
+		}
+		for (int i = 1; i < n; i++) {
+			path[0][i] = path[0][i - 1] + grid[0][i];
+		}
+		for (int i = 1; i < m; i++) {
+			for (int j = 1; j < n; j++) {
+				path[i][j] = Math.min(path[i - 1][j], path[i][j - 1])
+						+ grid[i][j];
+			}
+		}
+		return path[m - 1][n - 1];
 	}
 
 	/**
@@ -1876,7 +1961,41 @@ public class Solution {
 		sum -= root.val;
 		return hasPathSum(root.left, sum) || hasPathSum(root.right, sum);
 	}
-
+    /**
+	 * Problem 113 Path Sum II -- Given a binary tree and a sum, find all root-to-leaf paths where each path's sum equals the given sum.
+	 * 
+	 * @param root
+	 * @param sum
+	 * @return
+	 */
+    public List<List<Integer>> pathSum(TreeNode root, int sum) {
+        List<List<Integer>> res = new ArrayList<>();
+        if(root==null) return res;
+        List<Integer> list = new ArrayList<>();
+        pathSum(root,sum,res,list);
+        return res;
+    }
+    public void pathSum(TreeNode root,int sum,List<List<Integer>> res,List<Integer> list){
+        if(root.left==null&&root.right==null){
+            if(root.val==sum){
+                List<Integer> tmp = new ArrayList<>();
+                for(int val:list){
+                    tmp.add(val);
+                }
+                tmp.add(root.val);
+                res.add(tmp);
+            }
+        }else{
+            list.add(root.val);
+            if(root.left!=null){
+                pathSum(root.left,sum-root.val,res,list);
+            }
+            if(root.right!=null){
+                pathSum(root.right,sum-root.val,res,list);
+            }
+            list.remove(list.size()-1);
+        }
+    }
 	/**
 	 * Problem 116
 	 * 
@@ -3848,6 +3967,33 @@ public class Solution {
 	}
 
 	/**
+	 * Problen 238 Product of Array Except Self - Given an array of n integers
+	 * where n > 1, nums, return an array output such that output[i] is equal to
+	 * the product of all the elements of nums except nums[i].
+	 * 
+	 * Solve it without division and in O(n).
+	 * 
+	 * @For example, given [1,2,3,4], return [24,12,8,6].
+	 * 
+	 * @param nums
+	 * @return
+	 */
+	public int[] productExceptSelf(int[] nums) {
+		int n = nums.length;
+		int[] res = new int[n];
+		res[0] = 1;
+		for (int i = 1; i < n; i++) {
+			res[i] = res[i - 1] * nums[i - 1];
+		}
+		int p = 1;
+		for (int i = n - 1; i >= 0; i--) {
+			res[i] *= p;
+			p *= nums[i];
+		}
+		return res;
+	}
+
+	/**
 	 * Problem 242 Valid Anagram - Given two strings s and t, write a function
 	 * to determine if t is an anagram of s.
 	 * 
@@ -4105,6 +4251,94 @@ public class Solution {
 				return j;
 		}
 		return -1;
+	}
+
+	/**
+	 * Problem 273 Integer to English Words - Convert a non-negative integer to
+	 * its english words representation. Given input is guaranteed to be less
+	 * than 231 - 1.
+	 * 
+	 * @For example, 123 -> "One Hundred Twenty Three" 12345 ->
+	 *      "Twelve Thousand Three Hundred Forty Five" 1234567 ->
+	 *      "One Million Two Hundred Thirty Four Thousand Five Hundred Sixty Seven"
+	 * 
+	 * @param num
+	 * @return
+	 */
+	public String numberToWords(int num) {// 2,147,483,647
+		if (num == 0)
+			return "Zero";
+		StringBuffer buf = new StringBuffer();
+		Map<Integer, String> map = new HashMap<>();
+		initTranslation(map);
+		int flag = 0;
+		while (num > 0) {
+			int part = num % 1000;
+			String words = numberToWordsBelowThousand(part, map);
+			buf.insert(0, words);
+			num /= 1000;
+			flag++;
+			if (num % 1000 != 0) {
+				buf.insert(0, map.get((int) Math.pow(1000, flag)) + " ");
+			}
+		}
+		return new String(buf).trim();
+	}
+
+	public String numberToWordsBelowThousand(int num, Map<Integer, String> map) {
+		int hundred = num / 100;
+		int ten = (num % 100) / 10;
+		int unit = num % 10;
+		StringBuffer buf = new StringBuffer();
+		if (hundred != 0) {
+			buf.append(map.get(hundred) + " Hundred ");
+		}
+		if (ten > 1) {
+			buf.append(map.get(ten * 10) + " ");
+			if (unit != 0) {
+				buf.append(map.get(unit) + " ");
+			}
+		} else if (ten == 1) {
+			buf.append(map.get(10 + unit) + " ");
+		} else {
+			if (unit != 0) {
+				buf.append(map.get(unit) + " ");
+			}
+		}
+		return new String(buf);
+	}
+
+	public void initTranslation(Map<Integer, String> map) {
+		map.put(1, "One");
+		map.put(2, "Two");
+		map.put(3, "Three");
+		map.put(4, "Four");
+		map.put(5, "Five");
+		map.put(6, "Six");
+		map.put(7, "Seven");
+		map.put(8, "Eight");
+		map.put(9, "Nine");
+		map.put(10, "Ten");
+		map.put(11, "Eleven");
+		map.put(12, "Twelve");
+		map.put(13, "Thirteen");
+		map.put(14, "Fourteen");
+		map.put(15, "Fifteen");
+		map.put(16, "Sixteen");
+		map.put(17, "Seventeen");
+		map.put(18, "Eighteen");
+		map.put(19, "Nineteen");
+		map.put(20, "Twenty");
+		map.put(30, "Thirty");
+		map.put(40, "Forty");
+		map.put(50, "Fifty");
+		map.put(60, "Sixty");
+		map.put(70, "Seventy");
+		map.put(80, "Eighty");
+		map.put(90, "Ninety");
+		map.put(1000, "Thousand");
+		map.put(1000000, "Million");
+		map.put(1000000000, "Billion");
 	}
 
 	/**
