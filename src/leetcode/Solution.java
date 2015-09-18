@@ -1384,6 +1384,40 @@ public class Solution {
 	}
 
 	/**
+	 * Problem 61 Rotate List - Given a list, rotate the list to the right by k
+	 * places, where k is non-negative.
+	 * 
+	 * @example Given 1->2->3->4->5->NULL and k = 2, return 4->5->1->2->3->NULL.
+	 * 
+	 * @param head
+	 * @param k
+	 * @return
+	 */
+	public ListNode rotateRight(ListNode head, int k) {
+		if (head == null)
+			return head;
+		int n = 1;
+		ListNode tmp = head;
+		while (tmp.next != null) {
+			tmp = tmp.next;
+			n++;
+		}
+		if (k == n)
+			return head;
+		if (k > n)
+			k %= n;
+		ListNode cur = head;
+		int count = 0;
+		while (count++ < n - k - 1) {
+			cur = cur.next;
+		}
+		tmp.next = head;
+		head = cur.next;
+		cur.next = null;
+		return head;
+	}
+
+	/**
 	 * Problem 62 Unique Paths - A robot is located at the top-left corner of a
 	 * m x n grid (marked 'Start' in the diagram below).
 	 * 
@@ -1550,7 +1584,7 @@ public class Solution {
 	}
 
 	/**
-	 * Problem70
+	 * Problem 70
 	 * 
 	 * @param n
 	 * @return ways to climb n stairs
@@ -1565,6 +1599,47 @@ public class Solution {
 			c = tmp + c;
 		}
 		return c;
+	}
+
+	/**
+	 * Problem 71 Simplify Path - Given an absolute path for a file
+	 * (Unix-style), simplify it.
+	 * 
+	 * @example path = "/home/", => "/home"
+	 * @example path = "/a/./b/../../c/", => "/c"
+	 * 
+	 * @note Did you consider the case where path = "/../"? In this case, you
+	 *       should return "/". Another corner case is the path might contain
+	 *       multiple slashes '/' together, such as "/home//foo/". In this case,
+	 *       you should ignore redundant slashes and return "/home/foo".
+	 * @param path
+	 * @return
+	 */
+	public String simplifyPath(String path) {
+		Stack<String> stack = new Stack<>();
+		String[] parts = path.split("/");
+		for (String str : parts) {
+			if (str.length() != 0) {
+				if (str.equals("..")) {
+					if (!stack.isEmpty()) {
+						stack.pop();
+					}
+				} else if (str.equals(".")) {
+					continue;
+				} else {
+					stack.push(str);
+				}
+			}
+		}
+		if (stack.isEmpty()) {
+			return "/";
+		}
+		StringBuffer buf = new StringBuffer();
+		while (!stack.isEmpty()) {
+			String str = stack.pop();
+			buf.insert(0, "/" + str);
+		}
+		return buf.toString();
 	}
 
 	/**
@@ -1640,6 +1715,61 @@ public class Solution {
 			return;
 		System.arraycopy(nums2, 0, nums1, m, n);
 		Arrays.sort(nums1);
+	}
+
+	/**
+	 * Problem 91 Decode Ways - A message containing letters from A-Z is being
+	 * encoded to numbers using the following mapping:
+	 * 
+	 * 'A' -> 1 'B' -> 2 ... 'Z' -> 26 Given an encoded message containing
+	 * digits, determine the total number of ways to decode it.
+	 * 
+	 * For example, Given encoded message "12", it could be decoded as "AB" (1
+	 * 2) or "L" (12).
+	 * 
+	 * The number of ways decoding "12" is 2.
+	 * 
+	 * @idea 1.string starts with 0 is no ways to decode; 2.string contains 00
+	 *       is no ways to decode; 3.empty string with 0 way;
+	 *       4.one-length-string with 1 way; 5.solve other with DP, careful with
+	 *       0;
+	 * @param s
+	 * @return
+	 */
+	public int numDecodings(String s) {
+		if (s.startsWith("0"))
+			return 0;
+		if (s.contains("00"))
+			return 0;
+		if (s.length() == 0)
+			return 0;
+		if (s.length() == 1)
+			return 1;
+		int n = s.length();
+		int[] ways = new int[n + 1];
+		if (s.charAt(n - 1) == '0')
+			ways[1] = 0;
+		else
+			ways[1] = 1;
+		int val = Integer.valueOf(s.substring(n - 2));
+		if (val > 26) {
+			ways[2] = ways[1];
+		} else if (val < 10) {
+			ways[2] = 0;
+		} else {
+			ways[2] = ways[1] + 1;
+		}
+		for (int i = 3; i <= n; i++) {
+			int firstTwo = Integer.valueOf(s.substring(n - i, n - i + 2));
+			if (firstTwo > 26) {
+				ways[i] = ways[i - 1];
+			} else if (firstTwo < 10) {
+				ways[i] = 0;
+			} else {
+				ways[i] = ways[i - 1] + ways[i - 2];
+			}
+		}
+		return ways[n];
 	}
 
 	/**
@@ -1961,41 +2091,47 @@ public class Solution {
 		sum -= root.val;
 		return hasPathSum(root.left, sum) || hasPathSum(root.right, sum);
 	}
-    /**
-	 * Problem 113 Path Sum II -- Given a binary tree and a sum, find all root-to-leaf paths where each path's sum equals the given sum.
+
+	/**
+	 * Problem 113 Path Sum II -- Given a binary tree and a sum, find all
+	 * root-to-leaf paths where each path's sum equals the given sum.
 	 * 
 	 * @param root
 	 * @param sum
 	 * @return
 	 */
-    public List<List<Integer>> pathSum(TreeNode root, int sum) {
-        List<List<Integer>> res = new ArrayList<>();
-        if(root==null) return res;
-        List<Integer> list = new ArrayList<>();
-        pathSum(root,sum,res,list);
-        return res;
-    }
-    public void pathSum(TreeNode root,int sum,List<List<Integer>> res,List<Integer> list){
-        if(root.left==null&&root.right==null){
-            if(root.val==sum){
-                List<Integer> tmp = new ArrayList<>();
-                for(int val:list){
-                    tmp.add(val);
-                }
-                tmp.add(root.val);
-                res.add(tmp);
-            }
-        }else{
-            list.add(root.val);
-            if(root.left!=null){
-                pathSum(root.left,sum-root.val,res,list);
-            }
-            if(root.right!=null){
-                pathSum(root.right,sum-root.val,res,list);
-            }
-            list.remove(list.size()-1);
-        }
-    }
+	public List<List<Integer>> pathSum(TreeNode root, int sum) {
+		List<List<Integer>> res = new ArrayList<>();
+		if (root == null)
+			return res;
+		List<Integer> list = new ArrayList<>();
+		pathSum(root, sum, res, list);
+		return res;
+	}
+
+	public void pathSum(TreeNode root, int sum, List<List<Integer>> res,
+			List<Integer> list) {
+		if (root.left == null && root.right == null) {
+			if (root.val == sum) {
+				List<Integer> tmp = new ArrayList<>();
+				for (int val : list) {
+					tmp.add(val);
+				}
+				tmp.add(root.val);
+				res.add(tmp);
+			}
+		} else {
+			list.add(root.val);
+			if (root.left != null) {
+				pathSum(root.left, sum - root.val, res, list);
+			}
+			if (root.right != null) {
+				pathSum(root.right, sum - root.val, res, list);
+			}
+			list.remove(list.size() - 1);
+		}
+	}
+
 	/**
 	 * Problem 116
 	 * 
@@ -2105,37 +2241,60 @@ public class Solution {
 	}
 
 	/**
-	 * Problem 122
+	 * Problem 121 Best Time to Buy and Sell Stock - Say you have an array for
+	 * which the ith element is the price of a given stock on day i.
+	 * 
+	 * If you were only permitted to complete at most one transaction (ie, buy
+	 * one and sell one share of the stock), design an algorithm to find the
+	 * maximum profit.
+	 * 
+	 * @param prices
+	 * @return
+	 */
+	public int maxProfit(int[] prices) {
+		int cur = 0;
+		int max = 0;
+		int n = prices.length;
+		if (n == 1)
+			return max;
+		for (int i = 0; i < n - 1; i++) {
+			if (prices[i + 1] - prices[i] < 0) {
+				if (cur > max)
+					max = cur;
+			}
+			cur += prices[i + 1] - prices[i];
+			if (cur < 0)
+				cur = 0;
+		}
+		return max > cur ? max : cur;
+	}
+
+	/**
+	 * Problem 122 Best Time to Buy and Sell Stock II - Say you have an array
+	 * for which the ith element is the price of a given stock on day i.
+	 * 
+	 * Design an algorithm to find the maximum profit. You may complete as many
+	 * transactions as you like (ie, buy one and sell one share of the stock
+	 * multiple times). However, you may not engage in multiple transactions at
+	 * the same time (ie, you must sell the stock before you buy again).
 	 * 
 	 * @param prices
 	 * @return max profit with stock prices
 	 */
-	public int maxProfit(int[] prices) {
-		// Note: The Solution object is instantiated only once and is reused by
-		// each test case.
-		if (prices == null || prices.length == 0 || prices.length == 1) {
-			return 0;
-		}
-		int profit = 0;
-		boolean buy = false;
-		for (int i = 0; i < prices.length - 1; i++) {
-			if (prices[i] < prices[i + 1] && buy == false) {
-				profit -= prices[i];
-				buy = true;
-			}
-			if (buy == true && prices[i] > prices[i + 1]) {
-				profit += prices[i];
-				buy = false;
-			}
-			if (buy == true && i == prices.length - 2) {
-				profit += prices[i + 1];
-				buy = false;
+	public int maxProfitII(int[] prices) {
+		int cur = 0;
+		int max = 0;
+		int n = prices.length;
+		if (n == 1)
+			return max;
+		for (int i = 0; i < n - 1; i++) {
+			if (prices[i + 1] - prices[i] > 0) {
+				cur += prices[i + 1] - prices[i];
+				if (cur > max)
+					max = cur;
 			}
 		}
-		if (profit <= 0) {
-			return 0;
-		}
-		return profit;
+		return max;
 	}
 
 	/**
@@ -2235,6 +2394,48 @@ public class Solution {
 			res.addAll(preorderTraversal(root.right));
 		}
 		return res;
+	}
+
+	/**
+	 * problem 147 Insertion Sort List - Sort a linked list using insertion
+	 * sort.
+	 * 
+	 * @idea four pointers to control the insertion process, two for the current
+	 *       node and current previous node; two for exchange node and its
+	 *       previous node; The situation that the exchange node is head needs
+	 *       to be handled differently
+	 * @param root
+	 * @return
+	 */
+	public ListNode insertionSortList(ListNode head) {
+		if (head == null || head.next == null)
+			return head;
+		ListNode cur = head.next;
+		ListNode preCur = head;
+		while (cur != null) {
+			ListNode tmp = head;
+			ListNode pre = tmp;
+			while (tmp.val < cur.val) {
+				pre = tmp;
+				tmp = tmp.next;
+			}
+			if (tmp != cur) {
+				if (tmp == head) {
+					preCur.next = cur.next;
+					cur.next = tmp;
+					head = cur;
+				} else {
+					pre.next = cur;
+					preCur.next = cur.next;
+					cur.next = tmp;
+				}
+				cur = preCur.next;
+			} else {
+				preCur = cur;
+				cur = cur.next;
+			}
+		}
+		return head;
 	}
 
 	/**
@@ -2601,6 +2802,61 @@ public class Solution {
 		for (long i = 5; n / i >= 1; i *= 5)
 			res += n / i;
 		return res;
+	}
+
+	/**
+	 * Problem 179 Largest Number - Given a list of non negative integers,
+	 * arrange them such that they form the largest number.
+	 * 
+	 * For example, given [3, 30, 34, 5, 9], the largest formed number is
+	 * 9534330.
+	 * 
+	 * Note: The result may be very large, so you need to return a string
+	 * instead of an integer.
+	 * 
+	 * @param nums
+	 * @return
+	 */
+	public String largestNumber(int[] nums) {
+		int i = 0;
+		for (; i < nums.length; i++) {
+			if (nums[i] != 0)
+				break;
+		}
+		if (i == nums.length)
+			return "0";
+		for (i = 0; i < nums.length; i++) {
+			for (int j = i + 1; j < nums.length; j++) {
+				if (compare(nums[i], nums[j])) {
+					swap(nums, i, j);
+				}
+			}
+		}
+		StringBuilder s = new StringBuilder();
+		for (i = 0; i < nums.length; i++) {
+			s.append(nums[i]);
+		}
+		return s.toString();
+	}
+
+	public void swap(int[] nums, int i, int j) {
+		nums[i] = nums[i] ^ nums[j];
+		nums[j] = nums[i] ^ nums[j];
+		nums[i] = nums[i] ^ nums[j];
+	}
+
+	public boolean compare(int a, int b) {
+		if (a == 0 && b != 0)
+			return true;
+		else if (a != 0 && b == 0)
+			return false;
+		int i = (int) Math.log10(a) + 1, j = (int) Math.log10(b) + 1;
+		if (i == j && a < b)
+			return true;
+		else if (i == j && a > b)
+			return false;
+		else
+			return (a * Math.pow(10, j) + b) < (b * Math.pow(10, i) + a);
 	}
 
 	/**
@@ -3263,12 +3519,6 @@ public class Solution {
 			}
 		}
 		return min == length ? 0 : min;
-	}
-
-	public void swap(int[] data, int i, int j) {
-		int tmp = data[i];
-		data[i] = data[j];
-		data[j] = tmp;
 	}
 
 	/**
