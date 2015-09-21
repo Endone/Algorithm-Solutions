@@ -45,13 +45,8 @@ public class Solution {
 		// node3.left = node4;
 		// node3.right = node5;
 		// node5.left = node6;
-		// System.out.println(solution.nthUglyNumber(10));
-		// solution.threeSum2(new int[] { 0, 0, 0, -1, 1, -2, -2, 2 });
-		// solution.fourSum(new int[] { 0, 0, 0, 0 }, 0);
-		// System.out.println(solution.searchRange(
-		// new int[] { 5, 7, 7, 8, 8, 10 }, 8));
-		solution.rotate(new int[][] { { 1, 2, 3, 4 }, { 5, 6, 7, 8 },
-				{ 9, 10, 11, 12 }, { 13, 14, 15, 16 } });
+		int[] nums = new int[] { 1, 2, 3 };
+		solution.permute(nums);
 	}
 
 	/**
@@ -1095,6 +1090,8 @@ public class Solution {
 	 * Here are some examples. Inputs are in the left-hand column and its
 	 * corresponding outputs are in the right-hand column.
 	 * 
+	 * @idea find the max index of which the val is greater than the val whose
+	 *       index is greater than i; if not found, sort the array;
 	 * @example 1,2,3 → 1,3,2
 	 * @example 3,2,1 → 1,2,3
 	 * @example 1,1,5 → 1,5,1
@@ -1284,6 +1281,82 @@ public class Solution {
 			a = new String(buffer);
 		}
 		return a;
+	}
+
+	/**
+	 * Problem 46 Permutations - Given a collection of numbers, return all
+	 * possible permutations.
+	 * 
+	 * For example, [1,2,3] have the following permutations: [1,2,3], [1,3,2],
+	 * [2,1,3], [2,3,1], [3,1,2], and [3,2,1].
+	 * 
+	 * @param nums
+	 * @return
+	 */
+	public List<List<Integer>> permute(int[] nums) {
+		return permute(nums, 0, nums.length - 1);
+	}
+
+	public List<List<Integer>> permute(int[] nums, int start, int end) {
+		List<List<Integer>> list = new ArrayList<>();
+		if (start == end) {
+			List<Integer> val = new ArrayList<>();
+			val.add(nums[start]);
+			list.add(val);
+			return list;
+		} else {
+			for (int i = start; i <= end; i++) {
+				int val = nums[i];
+				swap(nums, i, start);
+				List<List<Integer>> res = permute(nums, start + 1, end);
+				for (List<Integer> tmp : res) {
+					tmp.add(0, val);
+					list.add(tmp);
+				}
+				swap(nums, i, start);
+			}
+		}
+		return list;
+	}
+
+	/**
+	 * Problem 47 Permutation II - Given a collection of numbers that might
+	 * contain duplicates, return all possible unique permutations.
+	 * 
+	 * For example, [1,1,2] have the following unique permutations: [1,1,2],
+	 * [1,2,1], and [2,1,1].
+	 * 
+	 * @param nums
+	 * @return
+	 */
+	public List<List<Integer>> permuteUnique(int[] nums) {
+		return permuteII(nums, 0, nums.length - 1);
+	}
+
+	public List<List<Integer>> permuteII(int[] nums, int start, int end) {
+		List<List<Integer>> list = new ArrayList<>();
+		if (start == end) {
+			List<Integer> val = new ArrayList<>();
+			val.add(nums[start]);
+			list.add(val);
+			return list;
+		} else {
+			Set<Integer> set = new HashSet<>();
+			for (int i = start; i <= end; i++) {
+				int val = nums[i];
+				if (i != start && nums[i] == nums[start] || set.contains(val))
+					continue;
+				set.add(val);
+				swap(nums, i, start);
+				List<List<Integer>> res = permute(nums, start + 1, end);
+				for (List<Integer> tmp : res) {
+					tmp.add(0, val);
+					list.add(tmp);
+				}
+				swap(nums, i, start);
+			}
+		}
+		return list;
 	}
 
 	/**
@@ -2840,6 +2913,8 @@ public class Solution {
 	}
 
 	public void swap(int[] nums, int i, int j) {
+		if (i == j)
+			return;
 		nums[i] = nums[i] ^ nums[j];
 		nums[j] = nums[i] ^ nums[j];
 		nums[i] = nums[i] ^ nums[j];
