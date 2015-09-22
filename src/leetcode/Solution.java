@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.EmptyStackException;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -45,8 +46,8 @@ public class Solution {
 		// node3.left = node4;
 		// node3.right = node5;
 		// node5.left = node6;
-		int[] nums = new int[] { 1, 2, 3 };
-		solution.permute(nums);
+		// int[] nums = new int[] { 1, 2, 3 };
+		solution.addOperators("232", 8);
 	}
 
 	/**
@@ -147,6 +148,72 @@ public class Solution {
 			}
 		}
 		return max;
+	}
+
+	/**
+	 * Problem 5 Longest Palindromic Substring - Given a string S, find the
+	 * longest palindromic substring in S. You may assume that the maximum
+	 * length of S is 1000, and there exists one unique longest palindromic
+	 * substring.
+	 * 
+	 * @idea 以某个元素为中心，分别计算偶数长度的回文最大长度和奇数长度的回文最大长度。时间复杂度O(n^2)，空间O（1）
+	 * @param s
+	 * @return
+	 */
+	public String longestPalindrome(String s) {
+		int len = s.length();
+		if (len < 2)
+			return s;
+		int start = 0, maxLen = 0;
+		for (int i = 1; i < len; i++) {
+			int low = i - 1, high = i;
+			while (low >= 0 && high < len && s.charAt(low) == s.charAt(high)) {
+				low--;
+				high++;
+			}
+			if (high - low - 1 > maxLen) {
+				maxLen = high - low - 1;
+				start = low + 1;
+			}
+
+			low = i - 1;
+			high = i + 1;
+			while (low >= 0 && high < len && s.charAt(low) == s.charAt(high)) {
+				low--;
+				high++;
+			}
+			if (high - low - 1 > maxLen) {
+				maxLen = high - low - 1;
+				start = low + 1;
+			}
+		}
+		return s.substring(start, start + maxLen);
+	}
+
+	public String longestPalindromeDP(String s) {
+		int len = s.length();
+		if (len < 2)
+			return s;
+		int max = 0;
+		int start = 0;
+		boolean[][] d = new boolean[len][len];
+		d[0][0] = true;
+		for (int i = 1; i < len; i++) {
+			d[i][i] = true;
+			d[i][i - 1] = true;
+		}
+		for (int i = 2; i <= len; i++) {
+			for (int j = 0; j <= len - i; j++) {
+				if (s.charAt(j) == s.charAt(j + i - 1) && d[j + 1][i + j - 2]) {
+					d[j][j + i - 1] = true;
+					if (max < i) {
+						max = i;
+						start = j;
+					}
+				}
+			}
+		}
+		return s.substring(start, start + max);
 	}
 
 	/**
@@ -627,6 +694,60 @@ public class Solution {
 			}
 		}
 		return minSum;
+	}
+
+	/**
+	 * Problem 17 Letter Combinations of a Phone Number - Given a digit string,
+	 * return all possible letter combinations that the number could represent.
+	 * 
+	 * A mapping of digit to letters (just like on the telephone buttons) is
+	 * 
+	 * @example Input:Digit string "23"
+	 * @example Output: ["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"].
+	 *          given below.
+	 * 
+	 * @param digits
+	 * @return
+	 */
+	public List<String> letterCombinations(String digits) {
+		List<String> res = new ArrayList<>();
+		map.put(2, "a,b,c");
+		map.put(3, "d,e,f");
+		map.put(4, "g,h,i");
+		map.put(5, "j,k,l");
+		map.put(6, "m,n,o");
+		map.put(7, "p,q,r,s");
+		map.put(8, "t,u,v");
+		map.put(9, "w,x,y,z");
+		if (digits.contains("0") || digits.contains("1")
+				|| digits.length() == 0)
+			return res;
+		return letterCombinations(digits, 0, digits.length() - 1);
+	}
+
+	Map<Integer, String> map = new HashMap<>();
+
+	public List<String> letterCombinations(String digits, int start, int end) {
+		if (start == end) {
+			int digit = digits.charAt(start) - '0';
+			String letters = map.get(digit);
+			List<String> res = new ArrayList<>();
+			for (String letter : letters.split(",")) {
+				res.add(letter);
+			}
+			return res;
+		} else {
+			int digit = digits.charAt(start) - '0';
+			List<String> res = letterCombinations(digits, start + 1, end);
+			List<String> list = new ArrayList<>();
+			String[] letters = map.get(digit).split(",");
+			for (String letter : letters) {
+				for (String val : res) {
+					list.add(letter + val);
+				}
+			}
+			return list;
+		}
 	}
 
 	/**
@@ -1284,6 +1405,182 @@ public class Solution {
 	}
 
 	/**
+	 * Problem 39 Combination Sum - Given a set of candidate numbers (C) and a
+	 * target number (T), find all unique combinations in C where the candidate
+	 * numbers sums to T.
+	 * 
+	 * The same repeated number may be chosen from C unlimited number of times.
+	 * 
+	 * Note: All numbers (including target) will be positive integers. Elements
+	 * in a combination (a1, a2, … , ak) must be in non-descending order. (ie,
+	 * a1 ≤ a2 ≤ … ≤ ak). The solution set must not contain duplicate
+	 * combinations.
+	 * 
+	 * @example For example, given candidate set 2,3,6,7 and target 7, A
+	 *          solution set is: [7] [2, 2, 3]
+	 * 
+	 * @param candidates
+	 * @param target
+	 * @return
+	 */
+	public List<List<Integer>> combinationSum(int[] candidates, int target) {
+		Arrays.sort(candidates);
+		List<List<Integer>> res = new ArrayList<>();
+		combinationSum(candidates, target, 0, res, new ArrayList<Integer>());
+		return res;
+	}
+
+	public void combinationSum(int[] candidates, int target, int cur,
+			List<List<Integer>> list, List<Integer> vals) {
+		if (cur == target) {
+			List<Integer> ele = new ArrayList<>();
+			for (int val : vals) {
+				ele.add(val);
+			}
+			list.add(ele);
+			return;
+		} else if (cur > target) {
+			return;
+		} else {
+			for (int val : candidates) {
+				if (!vals.isEmpty() && val < vals.get(vals.size() - 1))
+					continue;
+				vals.add(val);
+				combinationSum(candidates, target, cur + val, list, vals);
+				vals.remove(vals.size() - 1);
+			}
+		}
+	}
+
+	/**
+	 * Problem 40 Combination Sum II - Given a collection of candidate numbers
+	 * (C) and a target number (T), find all unique combinations in C where the
+	 * candidate numbers sums to T.
+	 * 
+	 * Each number in C may only be used once in the combination.
+	 * 
+	 * Note: All numbers (including target) will be positive integers. Elements
+	 * in a combination (a1, a2, … , ak) must be in non-descending order. (ie,
+	 * a1 ≤ a2 ≤ … ≤ ak). The solution set must not contain duplicate
+	 * combinations.
+	 * 
+	 * @example For example, given candidate set 10,1,2,7,6,1,5 and target 8, A
+	 *          solution set is: [1, 7] [1, 2, 5] [2, 6] [1, 1, 6]
+	 * 
+	 * @param candidates
+	 * @param target
+	 * @return
+	 */
+	public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+		Arrays.sort(candidates);
+		List<List<Integer>> res = new ArrayList<>();
+		combinationSum2(candidates, target, 0, res, new ArrayList<Integer>(),
+				0, candidates.length - 1);
+		return res;
+	}
+
+	public void combinationSum2(int[] candidates, int target, int cur,
+			List<List<Integer>> list, List<Integer> vals, int start, int end) {
+		if (cur == target) {
+			List<Integer> ele = new ArrayList<>();
+			for (int val : vals) {
+				ele.add(val);
+			}
+			list.add(ele);
+			return;
+		} else if (cur > target) {
+			return;
+		} else {
+			Set<Integer> set = new HashSet<>();
+			for (int i = start; i <= end; i++) {
+				int val = candidates[i];
+				if (set.contains(val))
+					continue;
+				vals.add(val);
+				set.add(val);
+				combinationSum2(candidates, target, cur + val, list, vals,
+						i + 1, end);
+				vals.remove(vals.size() - 1);
+			}
+		}
+	}
+
+	/**
+	 * Problem 43 Multiply Strings - Given two numbers represented as strings,
+	 * return multiplication of the numbers as a string.
+	 * 
+	 * Note: The numbers can be arbitrarily large and are non-negative.
+	 * 
+	 * @param num1
+	 * @param num2
+	 * @return
+	 */
+	public String multiply(String num1, String num2) {
+		int len2 = num2.length();
+		List<String> list = new ArrayList<>(len2);
+		for (int j = len2 - 1; j >= 0; j--) {
+			list.add(multi(num2.substring(j, j + 1), num1));
+		}
+		String res = summation(list);
+		int i = 0;
+		for (; i < res.length(); i++) {
+			if (res.charAt(i) != '0')
+				break;
+		}
+		if (i == res.length())
+			return "0";
+		return res.substring(i);
+	}
+
+	public String summation(List<String> list) {
+		String res = "";
+		for (int i = 0; i < list.size(); i++) {
+			res = add(res, list.get(i), i);
+		}
+		return res;
+	}
+
+	public String add(String s1, String s2, int offset) {
+		StringBuffer buf = new StringBuffer();
+		int carry = 0;
+		int n1 = s1.length();
+		int n2 = s2.length();
+		int i = n1 - 1;
+		int j = n2 - 1;
+		while (offset-- > 0) {
+			buf.append(s1.charAt(i--));
+		}
+		while (j >= 0 || i >= 0) {
+			int sum = 0;
+			if (j >= 0)
+				sum += s2.charAt(j--) - '0';
+			if (i >= 0)
+				sum += s1.charAt(i--) - '0';
+			sum += carry;
+			carry = sum / 10;
+			buf.append(sum % 10);
+		}
+		if (carry != 0)
+			buf.append(carry);
+		return buf.reverse().toString();
+	}
+
+	public String multi(String s1, String s2) {
+		StringBuffer buf = new StringBuffer();
+		int carry = 0;
+		int num = Integer.valueOf(s1);
+		for (int i = s2.length() - 1; i >= 0; i--) {
+			int val = s2.charAt(i) - '0';
+			int p = val * num + carry;
+			carry = p / 10;
+			buf.append(p % 10);
+		}
+		if (carry != 0)
+			buf.append(carry);
+		return buf.reverse().toString();
+	}
+
+	/**
 	 * Problem 46 Permutations - Given a collection of numbers, return all
 	 * possible permutations.
 	 * 
@@ -1379,6 +1676,99 @@ public class Solution {
 				matrix[n - 1 - j][i] = matrix[n - 1 - i][n - 1 - j];
 				matrix[n - 1 - i][n - 1 - j] = matrix[j][n - 1 - i];
 				matrix[j][n - 1 - i] = tmp;
+			}
+		}
+	}
+
+	/**
+	 * Problem 51 N-Queens - The n-queens puzzle is the problem of placing n
+	 * queens on an n×n chessboard such that no two queens attack each oGiven an
+	 * integer n, return all distinct solutions to the n-queens puzzle.
+	 * 
+	 * Each solution contains a distinct board configuration of the n-queens'
+	 * placement, where 'Q' and '.' both indicate a queen and an empty space
+	 * respectively.
+	 * 
+	 * For example, There exist two distinct solutions to the 4-queens
+	 * puzzle:ther.
+	 * 
+	 * @idea backtracking
+	 * @param n
+	 * @return
+	 */
+	public List<List<String>> solveNQueens(int n) {
+		int[] queens = new int[n];
+		List<List<String>> res = new ArrayList<>();
+		StringBuffer buf = new StringBuffer();
+		for (int i = 0; i < n; i++) {
+			buf.append(".");
+		}
+		base = new String(buf);
+		solveNQueens(res, queens, n, 0);
+		return res;
+	}
+
+	private String base = null;
+
+	public void solveNQueens(List<List<String>> list, int[] queens, int n,
+			int row) {
+		if (row == n) {
+			setChessBoard(list, queens);
+			return;
+		}
+		for (int i = 0; i < n; i++) {
+			queens[row] = i;
+			if (constraint(queens, row)) {
+				solveNQueens(list, queens, n, row + 1);
+			}
+		}
+	}
+
+	public boolean constraint(int[] queens, int row) {
+		for (int i = 0; i < row; i++) {
+			if (queens[row] == queens[i]
+					|| Math.abs(i - row) == Math.abs(queens[row] - queens[i])) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public void setChessBoard(List<List<String>> list, int[] queens) {
+		List<String> res = new ArrayList<>();
+		for (int val : queens) {
+			StringBuffer buf = new StringBuffer(base);
+			res.add(buf.replace(val, val + 1, "Q").toString());
+		}
+		list.add(res);
+	}
+
+	/**
+	 * Problem 52 N-Queens II - Follow up for N-Queens problem.
+	 * 
+	 * Now, instead outputting board configurations, return the total number of
+	 * distinct solutions.
+	 * 
+	 * @param n
+	 * @return
+	 */
+	public int totalNQueens(int n) {
+		int[] queens = new int[n];
+		solveNQueens(queens, n, 0);
+		return countQueens;
+	}
+
+	private int countQueens = 0;
+
+	public void solveNQueens(int[] queens, int n, int row) {
+		if (row == n) {
+			countQueens++;
+			return;
+		}
+		for (int i = 0; i < n; i++) {
+			queens[row] = i;
+			if (constraint(queens, row)) {
+				solveNQueens(queens, n, row + 1);
 			}
 		}
 	}
@@ -4237,6 +4627,21 @@ public class Solution {
 	 * @param q
 	 * @return
 	 */
+	public TreeNode lowestCommonAncestorEasy(TreeNode root, TreeNode p,
+			TreeNode q) {
+		if (root == null)
+			return null;
+		if (root == p || root == q)
+			return root;
+		TreeNode left = lowestCommonAncestorEasy(root.left, p, q);
+		TreeNode right = lowestCommonAncestorEasy(root.right, p, q);
+		if (left != null && right != null)
+			return root;
+		if (left != null)
+			return left;
+		return right;
+	}
+
 	public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
 		if (root == p || root == q)
 			return root;
@@ -4731,6 +5136,150 @@ public class Solution {
 			v[i] = min;
 		}
 		return v[n];
+	}
+
+	/**
+	 * Problem 282 Expression Add Operators - Given a string that contains only
+	 * digits 0-9 and a target value, return all possibilities to add binary
+	 * operators (not unary) +, -, or * between the digits so they evaluate to
+	 * the target value.
+	 * 
+	 * Examples:
+	 * 
+	 * @example "123", 6 -> ["1+2+3", "1*2*3"]
+	 * @example "232", 8 -> ["2*3+2", "2+3*2"]
+	 * @example "105", 5 -> ["1*0+5","10-5"]
+	 * @example "00", 0 -> ["0+0", "0-0", "0*0"]
+	 * @example "3456237490", 9191 -> []
+	 * @idea iterator from i=0 to i=length; and for each value, consider
+	 *       operator +,-,*; we need to record the previous value for * operator
+	 *       because * will change the order of calculation
+	 * @param num
+	 * @param target
+	 * @return
+	 */
+	public List<String> addOperators(String num, int target) {
+		List<String> res = new ArrayList<>();
+		int n = num.length();
+		for (int i = 1; i <= n; i++) {
+			String cur = num.substring(0, i);
+			long val = Long.valueOf(cur);
+			if (String.valueOf(val).length() != cur.length())
+				continue;
+			dfs(res, num, i, target, cur, val, val, "#");
+		}
+		return res;
+	}
+
+	public void dfs(List<String> res, String num, int position, int target,
+			String cur, long cv, long pv, String op) {
+		if (position == num.length() && cv == target) {
+			res.add(cur);
+		} else {
+			for (int i = position + 1; i <= num.length(); i++) {
+				String tmp = num.substring(position, i);
+				long val = Long.valueOf(tmp);
+				if (String.valueOf(val).length() != tmp.length())
+					continue;
+				dfs(res, num, i, target, cur + "+" + tmp, cv + val, val, "+");
+				dfs(res, num, i, target, cur + "-" + tmp, cv - val, val, "-");
+				dfs(res, num, i, target, cur + "*" + tmp, op.equals("+") ? cv
+						- pv + pv * val : (op.equals("-") ? pv + cv - pv * val
+						: pv * val), pv * val, op);
+			}
+		}
+	}
+
+	/**
+	 * Problem 283 Move Zeroes - Given an array nums, write a function to move
+	 * all 0's to the end of it while maintaining the relative order of the
+	 * non-zero elements.
+	 * 
+	 * For example, given nums = [0, 1, 0, 3, 12], after calling your function,
+	 * nums should be [1, 3, 12, 0, 0].
+	 * 
+	 * Note: You must do this in-place without making a copy of the array.
+	 * Minimize the total number of operations.
+	 * 
+	 * @param nums
+	 */
+	public void moveZeroes(int[] nums) {
+		int count = 0;
+		int n = nums.length;
+		for (int i = 0; i < n - count;) {
+			if (nums[i] != 0) {
+				i++;
+			} else {
+				int j = i;
+				for (; j < n - count - 1; j++) {
+					nums[j] = nums[j + 1];
+				}
+				count++;
+				nums[j] = 0;
+			}
+		}
+	}
+}
+
+// Java Iterator interface reference:
+// https://docs.oracle.com/javase/8/docs/api/java/util/Iterator.html
+/**
+ * Problem 284 Peeking Iterator - Given an Iterator class interface with
+ * methods: next() and hasNext(), design and implement a PeekingIterator that
+ * support the peek() operation -- it essentially peek() at the element that
+ * will be returned by the next call to next().
+ * 
+ * Here is an example. Assume that the iterator is initialized to the beginning
+ * of the list: [1, 2, 3].
+ * 
+ * Call next() gets you 1, the first element in the list.
+ * 
+ * Now you call peek() and it returns 2, the next element. Calling next() after
+ * that still return 2.
+ * 
+ * You call next() the final time and it returns 3, the last element. Calling
+ * hasNext() after that should return false.
+ * 
+ * @author Administrator
+ * 
+ */
+class PeekingIterator implements Iterator<Integer> {
+	private List<Integer> list;
+
+	public PeekingIterator(Iterator<Integer> iterator) {
+		list = new LinkedList<>();
+		while (iterator != null && iterator.hasNext()) {
+			list.add(iterator.next());
+		}
+	}
+
+	// Returns the next element in the iteration without advancing the iterator.
+	public Integer peek() {
+		if (list.size() != 0) {
+			return list.get(0);
+		}
+		return null;
+	}
+
+	// hasNext() and next() should behave the same as in the Iterator interface.
+	// Override them if needed.
+	@Override
+	public Integer next() {
+		if (list.size() != 0) {
+			return list.remove(0);
+		}
+		return null;
+	}
+
+	@Override
+	public boolean hasNext() {
+		return !list.isEmpty();
+	}
+
+	@Override
+	public void remove() {
+		// TODO Auto-generated method stub
+
 	}
 }
 
