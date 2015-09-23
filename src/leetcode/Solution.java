@@ -15,6 +15,10 @@ import java.util.Set;
 import java.util.Stack;
 import java.util.TreeMap;
 
+/**
+ * @author Administrator
+ * 
+ */
 public class Solution {
 	public static void main(String[] args) {
 		Solution solution = new Solution();
@@ -47,7 +51,7 @@ public class Solution {
 		// node3.right = node5;
 		// node5.left = node6;
 		// int[] nums = new int[] { 1, 2, 3 };
-		solution.addOperators("232", 8);
+		solution.searchII(new int[] { 3, 1, 1 }, 3);
 	}
 
 	/**
@@ -1245,6 +1249,55 @@ public class Solution {
 	}
 
 	/**
+	 * Problem 33 Search in Rotated Sorted Array - Suppose a sorted array is
+	 * rotated at some pivot unknown to you beforehand.
+	 * 
+	 * (i.e., 0 1 2 4 5 6 7 might become 4 5 6 7 0 1 2).
+	 * 
+	 * You are given a target value to search. If found in the array return its
+	 * index, otherwise return -1.
+	 * 
+	 * You may assume no duplicate exists in the array.
+	 * 
+	 * @idea 二分查找，顺序的转折点相当于将一个递增的三角形切开为一个梯形和一个三角形
+	 * @param nums
+	 * @param target
+	 * @return
+	 */
+	public int search(int[] nums, int target) {
+		int n = nums.length;
+		if (n == 0)
+			return -1;
+		int left = 0;
+		int right = n - 1;
+		while (left < right) {
+			int middle = (left + right) / 2;
+			if (nums[middle] == target) {
+				return middle;
+			} else if (nums[middle] > target) {
+				if (nums[middle] >= nums[left]) {
+					if (target >= nums[left])
+						right = middle - 1;
+					else
+						left = middle + 1;
+				} else {
+					right = middle - 1;
+				}
+			} else {
+				if (nums[middle] >= nums[left]) {
+					left = middle + 1;
+				} else {
+					if (target > nums[right])
+						right = middle - 1;
+					else
+						left = middle + 1;
+				}
+			}
+		}
+		return nums[left] == target ? left : -1;
+	}
+
+	/**
 	 * Problem 34 Search for a Range - Given a sorted array of integers, find
 	 * the starting and ending position of a given target value.
 	 * 
@@ -1681,6 +1734,78 @@ public class Solution {
 	}
 
 	/**
+	 * Problem 49 Group Anagrams - Given an array of strings, group anagrams
+	 * together.
+	 * 
+	 * For example, given: ["eat", "tea", "tan", "ate", "nat", "bat"], Return:
+	 * 
+	 * [ ["ate", "eat","tea"], ["nat","tan"], ["bat"] ]
+	 * 
+	 * @param strs
+	 * @return
+	 */
+	public List<List<String>> groupAnagrams(String[] strs) {
+		Arrays.sort(strs);
+		List<List<String>> res = new ArrayList<>();
+		Map<String, List<String>> map = new HashMap<String, List<String>>();
+		for (String str : strs) {
+			String now = null;
+			if (str.length() > 1) {
+				char[] chars = str.toCharArray();
+				Arrays.sort(chars);
+				now = new String(chars);
+			} else {
+				now = str;
+			}
+			List<String> list = null;
+			if (map.containsKey(now)) {
+				list = map.get(now);
+				list.add(str);
+			} else {
+				list = new ArrayList<>();
+				list.add(str);
+				map.put(now, list);
+			}
+		}
+		for (Map.Entry<String, List<String>> entry : map.entrySet()) {
+			res.add(entry.getValue());
+		}
+		return res;
+	}
+
+	/**
+	 * Problem 50 Pow(x, n) - Implement pow(x, n).
+	 * 
+	 * @idea binary search, and math
+	 * @param x
+	 * @param n
+	 * @return
+	 */
+	public double myPow(double x, int n) {
+		boolean negative = false;
+
+		if (n == 0)
+			return 1;
+		if (n == 1)
+			return x;
+		if (n == -1)
+			return 1 / x;
+		if (n < 0) {
+			negative = true;
+			n = -n;
+		}
+		if (n % 2 == 0) {
+			double res = myPow(x, n / 2);
+			res *= res;
+			return negative ? 1 / res : res;
+		} else {
+			double res = myPow(x, n / 2);
+			res *= res * x;
+			return negative ? 1 / res : res;
+		}
+	}
+
+	/**
 	 * Problem 51 N-Queens - The n-queens puzzle is the problem of placing n
 	 * queens on an n×n chessboard such that no two queens attack each oGiven an
 	 * integer n, return all distinct solutions to the n-queens puzzle.
@@ -1792,6 +1917,53 @@ public class Solution {
 	}
 
 	/**
+	 * Problem 54 Spiral Matrix - Given a matrix of m x n elements (m rows, n
+	 * columns), return all elements of the matrix in spiral order.
+	 * 
+	 * For example, Given the following matrix:
+	 * 
+	 * [ [ 1, 2, 3 ], [ 4, 5, 6 ], [ 7, 8, 9 ] ] You should return
+	 * [1,2,3,6,9,8,7,4,5].
+	 * 
+	 * @param matrix
+	 * @return
+	 */
+	public List<Integer> spiralOrder(int[][] matrix) {
+		List<Integer> res = new ArrayList<>();
+		int m = matrix.length;
+		if (m == 0)
+			return res;
+		int n = matrix[0].length;
+		int min = Math.min(m, n);
+		int layer = -1;
+		if (min % 2 == 0)
+			layer = min / 2;
+		else
+			layer = min / 2 + 1;
+
+		for (int i = 0; i < layer; i++) {
+			int j = i;
+			int k = i + 1;
+			for (; j < n - i; j++) {
+				res.add(matrix[i][j]);
+			}
+			j--;
+			for (; k < m - i; k++) {
+				res.add(matrix[k][j]);
+			}
+			k--;
+			j--;
+			for (; j > i && k >= i + 1; j--) {
+				res.add(matrix[k][j]);
+			}
+			for (; k > i && j >= i; k--) {
+				res.add(matrix[k][j]);
+			}
+		}
+		return res;
+	}
+
+	/**
 	 * Problem 55 Jump Game -- Given an array of non-negative integers, you are
 	 * initially positioned at the first index of the array.
 	 * 
@@ -1844,6 +2016,48 @@ public class Solution {
 		if (parts.length == 0)
 			return 0;
 		return parts[parts.length - 1].length();
+	}
+
+	/**
+	 * Problem 59 Spiral Matrix II - Given an integer n, generate a square
+	 * matrix filled with elements from 1 to n2 in spiral order.
+	 * 
+	 * For example, Given n = 3,
+	 * 
+	 * You should return the following matrix: [ [ 1, 2, 3 ], [ 8, 9, 4 ], [ 7,
+	 * 6, 5 ] ]
+	 * 
+	 * @param n
+	 * @return
+	 */
+	public int[][] generateMatrix(int n) {
+		int[][] res = new int[n][n];
+		int layer = -1;
+		if (n % 2 == 0)
+			layer = n / 2;
+		else
+			layer = n / 2 + 1;
+		int m = 1;
+		for (int i = 0; i < layer; i++) {
+			int j = i;
+			int k = i + 1;
+			for (; j < n - i; j++) {
+				res[i][j] = m++;
+			}
+			j--;
+			for (; k < n - i; k++) {
+				res[k][j] = m++;
+			}
+			k--;
+			j--;
+			for (; j > i && k >= i + 1; j--) {
+				res[k][j] = m++;
+			}
+			for (; k > i && j >= i; k--) {
+				res[k][j] = m++;
+			}
+		}
+		return res;
 	}
 
 	/**
@@ -1906,6 +2120,49 @@ public class Solution {
 		for (int i = 1; i < m; i++) {
 			for (int j = 1; j < n; j++) {
 				path[i][j] = path[i - 1][j] + path[i][j - 1];
+			}
+		}
+		return path[m - 1][n - 1];
+	}
+
+	/**
+	 * Problem 63 Unique Paths II - Follow up for "Unique Paths":
+	 * 
+	 * Now consider if some obstacles are added to the grids. How many unique
+	 * paths would there be?
+	 * 
+	 * An obstacle and empty space is marked as 1 and 0 respectively in the
+	 * grid.
+	 * 
+	 * For example, There is one obstacle in the middle of a 3x3 grid as
+	 * illustrated below.
+	 * 
+	 * [ [0,0,0], [0,1,0], [0,0,0] ] The total number of unique paths is 2.
+	 * 
+	 * Note: m and n will be at most 100.
+	 * 
+	 * @param obstacleGrid
+	 * @return
+	 */
+	public int uniquePathsWithObstacles(int[][] obstacleGrid) {
+		int m = obstacleGrid.length;
+		if (m == 0)
+			return 0;
+		int n = obstacleGrid[0].length;
+		int[][] path = new int[m][n];
+		path[0][0] = obstacleGrid[0][0] == 0 ? 1 : 0;
+		for (int i = 1; i < m; i++) {
+			if (obstacleGrid[i][0] != 1)
+				path[i][0] = path[i - 1][0];
+		}
+		for (int i = 1; i < n; i++) {
+			if (obstacleGrid[0][i] != 1)
+				path[0][i] = path[0][i - 1];
+		}
+		for (int i = 1; i < m; i++) {
+			for (int j = 1; j < n; j++) {
+				if (obstacleGrid[i][j] != 1)
+					path[i][j] = path[i - 1][j] + path[i][j - 1];
 			}
 		}
 		return path[m - 1][n - 1];
@@ -2106,6 +2363,112 @@ public class Solution {
 	}
 
 	/**
+	 * Problem 73 Set Matrix Zeroes - Given a m x n matrix, if an element is 0,
+	 * set its entire row and column to 0. Do it in place.
+	 * 
+	 * @param matrix
+	 */
+	public void setZeroes(int[][] matrix) {
+		int n = matrix.length;
+		if (n == 0)
+			return;
+		int m = matrix[0].length;
+		boolean[] flagRow = new boolean[n];
+		boolean[] flagCol = new boolean[m];
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < m; j++) {
+				if (matrix[i][j] == 0) {
+					flagRow[i] = true;
+					flagCol[j] = true;
+				}
+
+			}
+		}
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < m; j++) {
+				if (flagRow[i] || flagCol[j])
+					matrix[i][j] = 0;
+			}
+		}
+	}
+
+	public void setZeroesConstantSpace(int[][] matrix) {
+
+		int m = -1;
+		for (int i = 0; i < matrix.length; i++) {
+			boolean foundZero = false;
+			for (int j = 0; j < matrix[i].length; j++) {
+				if (matrix[i][j] == 0) {
+					foundZero = true;
+					break;
+				}
+			}
+			if (foundZero && m == -1) {
+				m = i;
+				continue;
+			}
+			if (foundZero) {
+				for (int j = 0; j < matrix[i].length; j++) {
+					if (matrix[i][j] == 0)
+						matrix[m][j] = 0;
+					matrix[i][j] = 0;
+				}
+			}
+		}
+		if (m != -1) {
+			for (int j = 0; j < matrix[m].length; j++) {
+				if (matrix[m][j] == 0)
+					for (int i = 0; i < matrix.length; i++)
+						matrix[i][j] = 0;
+				matrix[m][j] = 0;
+			}
+		}
+	}
+
+	/**
+	 * Problem 74 Search a 2D Matrix - Write an efficient algorithm that
+	 * searches for a value in an m x n matrix. This matrix has the following
+	 * properties:
+	 * 
+	 * Integers in each row are sorted from left to right. The first integer of
+	 * each row is greater than the last integer of the previous row. For
+	 * example,
+	 * 
+	 * Consider the following matrix:
+	 * 
+	 * [ [1, 3, 5, 7], [10, 11, 16, 20], [23, 30, 34, 50] ] Given target = 3,
+	 * return true.
+	 * 
+	 * @param matrix
+	 * @param target
+	 * @return
+	 */
+	public boolean searchMatrix(int[][] matrix, int target) {
+		int n = matrix.length;
+		if (n == 0)
+			return false;
+		int m = matrix[0].length;
+		int left = 0;
+		int right = n * m - 1;
+		while (left < right) {
+			int middle = (left + right) / 2;
+			int row = middle / m;
+			int col = middle % m;
+			if (matrix[row][col] > target) {
+				right = middle - 1;
+			} else if (matrix[row][col] < target) {
+				left = middle + 1;
+			} else {
+				return true;
+			}
+		}
+		int middle = (left + right) / 2;
+		int row = middle / m;
+		int col = middle % m;
+		return matrix[row][col] == target;
+	}
+
+	/**
 	 * Problem 75 Sort Colors - Given an array with n objects colored red, white
 	 * or blue, sort them so that objects of the same color are adjacent, with
 	 * the colors in the order red, white and blue.
@@ -2132,6 +2495,124 @@ public class Solution {
 				end++;
 			}
 		}
+	}
+
+	/**
+	 * Problem 77 Combinations - Given two integers n and k, return all possible
+	 * combinations of k numbers out of 1 ... n.
+	 * 
+	 * For example, If n = 4 and k = 2, a solution is:
+	 * 
+	 * [ [2,4], [3,4], [2,3], [1,2], [1,3], [1,4], ]
+	 * 
+	 * @param n
+	 * @param k
+	 * @return
+	 */
+	public List<List<Integer>> combine(int n, int k) {
+		List<List<Integer>> res = new ArrayList<>();
+		if (k > n || k == 0)
+			return res;
+		List<Integer> nums = new ArrayList<>();
+		combine(1, n, k, res, nums);
+		return res;
+	}
+
+	public void combine(int start, int n, int k, List<List<Integer>> res,
+			List<Integer> nums) {
+		if (nums.size() == k) {
+			List<Integer> val = new ArrayList<>();
+			for (int ele : nums) {
+				val.add(ele);
+			}
+			res.add(val);
+			return;
+		}
+		for (int i = start; i <= n; i++) {
+			nums.add(i);
+			combine(i + 1, n, k, res, nums);
+			nums.remove(nums.size() - 1);
+		}
+	}
+
+	/**
+	 * Problem 80 Remove Duplicates from Sorted Array II - Follow up for
+	 * "Remove Duplicates": What if duplicates are allowed at most twice?
+	 * 
+	 * For example, Given sorted array nums = [1,1,1,2,2,3],
+	 * 
+	 * Your function should return length = 5, with the first five elements of
+	 * nums being 1, 1, 2, 2 and 3. It doesn't matter what you leave beyond the
+	 * new length.
+	 * 
+	 * @param nums
+	 * @return
+	 */
+	public int removeDuplicatesII(int[] nums) {
+		int n = nums.length;
+		if (n <= 2)
+			return n;
+		int val = nums[0];
+		int count = 1;
+		int length = n;
+		for (int i = 1; i < n; i++) {
+			if (nums[i] == val) {
+				if (count >= 2) {
+					length--;
+				}
+				count++;
+			} else {
+				val = nums[i];
+				if (count > 2) {
+					int dif = count - 2;
+					for (int j = i - dif; j < n - dif; j++) {
+						nums[j] = nums[j + dif];
+					}
+					i -= dif;
+					n -= dif;
+				}
+				count = 1;
+
+			}
+		}
+		return length;
+	}
+
+	public boolean searchII(int[] nums, int target) {
+		int n = nums.length;
+		if (n == 0)
+			return false;
+		int left = 0;
+		int right = n - 1;
+		while (left <= right) {
+			int middle = (left + right) / 2;
+			if (nums[middle] == target) {
+				return true;
+			} else if (nums[middle] > target) {
+				if (nums[middle] > nums[left]) {
+					if (target >= nums[left])
+						right = middle - 1;
+					else
+						left = middle + 1;
+				} else if (nums[middle] < nums[left]) {
+					right = middle - 1;
+				} else {
+					left++;
+				}
+			} else {
+				if (nums[middle] > nums[left]) {
+					left = middle + 1;
+				} else if (nums[middle] < nums[left]) {
+					if (target > nums[right])
+						right = middle - 1;
+					else
+						left = middle + 1;
+				} else {
+					left++;
+				}
+			}
+		}
+		return false;
 	}
 
 	/**
