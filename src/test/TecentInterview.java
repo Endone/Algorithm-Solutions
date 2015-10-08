@@ -19,6 +19,12 @@ public class TecentInterview {
 		bst2LinkedList(node);
 	}
 
+	/**
+	 * 将二叉查找树转换为双向顺序链表
+	 * 
+	 * @param root
+	 * @return
+	 */
 	public static TreeNode bst2LinkedList(TreeNode root) {
 		return bst2LinkedList(root, false);
 	}

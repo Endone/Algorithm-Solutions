@@ -6,15 +6,15 @@ public class Sort {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		int[] nums = new int[] { 2, 10, 1, 8, 9, 6, 7, 3, 5, 4 };
-		// insertionSort(nums);
+		int[] nums = new int[] { 2, 10, 1, 8, 9, 6, 7, 3, 5, 4, 0 };
+		// insertionSort2(nums);
 		// bubbleSort(nums);
 		// selectionSort(nums);
 		// shellSort(nums);
-		// heapSort(nums);
+		heapSort2(nums);
 		// mergeSort(nums, 0, nums.length - 1);
 		// quickSort(nums, 0, nums.length - 1);
-		bucketSort(nums, 11);
+		// bucketSort(nums, 11);
 	}
 
 	/**
@@ -32,6 +32,17 @@ public class Sort {
 			nums[j + 1] = val;
 		}
 		for (int val : nums) {
+			System.out.println(val);
+		}
+	}
+
+	public static void insertionSort2(int[] a) {
+		int n = a.length;
+		int i, j;
+		for (i = 1; i < n; i++)
+			for (j = i - 1; j >= 0 && a[j] > a[j + 1]; j--)
+				swap(a, j, j + 1);
+		for (int val : a) {
 			System.out.println(val);
 		}
 	}
@@ -189,6 +200,75 @@ public class Sort {
 				}
 			}
 		}
+	}
+
+	public static void heapSort2(int[] nums) {
+		MakeMinHeap(nums, nums.length);
+		MinheapsortTodescendarray(nums, nums.length);
+		for (int val : nums) {
+			System.out.println(val);
+		}
+	}
+
+	// 建立最小堆
+	public static void MakeMinHeap(int a[], int n) {
+		for (int i = n / 2 - 1; i >= 0; i--)
+			MinHeapFixdown(a, i, n);
+	}
+
+	public static void MinheapsortTodescendarray(int a[], int n) {
+		for (int i = n - 1; i >= 1; i--) {
+			swap(a, i, 0);
+			MinHeapFixdown(a, 0, i);
+		}
+	}
+
+	// 在最小堆中加入新的数据nNum
+	public static void MinHeapAddNumber(int a[], int n, int nNum) {
+		a[n] = nNum;
+		MinHeapFixup(a, n);
+	}
+
+	public static void MinHeapFixup(int a[], int i) {
+		int j, temp;
+
+		temp = a[i];
+		j = (i - 1) / 2; // 父结点
+		while (j >= 0 && i != 0) {
+			if (a[j] <= temp)
+				break;
+
+			a[i] = a[j]; // 把较大的子结点往下移动,替换它的子结点
+			i = j;
+			j = (i - 1) / 2;
+		}
+		a[i] = temp;
+	}
+
+	// 从i节点开始调整,n为节点总数 从0开始计算 i节点的子节点为 2*i+1, 2*i+2
+	public static void MinHeapFixdown(int a[], int i, int n) {
+		int j, temp;
+
+		temp = a[i];
+		j = 2 * i + 1;
+		while (j < n) {
+			if (j + 1 < n && a[j + 1] < a[j]) // 在左右孩子中找最小的
+				j++;
+
+			if (a[j] >= temp)
+				break;
+
+			a[i] = a[j]; // 把较小的子结点往上移动,替换它的父结点
+			i = j;
+			j = 2 * i + 1;
+		}
+		a[i] = temp;
+	}
+
+	// 在最小堆中删除数
+	public static void MinHeapDeleteNumber(int a[], int n) {
+		swap(a, 0, n - 1);
+		MinHeapFixdown(a, 0, n - 1);
 	}
 
 	private static void swap(int[] data, int i, int j) {
